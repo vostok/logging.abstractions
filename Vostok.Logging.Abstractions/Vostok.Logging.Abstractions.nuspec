@@ -8,7 +8,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>https://github.com/vostok/logging.abstractions/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/vostok/logging.abstractions</projectUrl>
-    <description>Logging library for microservice toolkit http://vostok.tools/</description>
+    <description>Logging abstractions library for microservice toolkit http://vostok.tools/</description>
     <copyright>Copyright (c) 2017-2018 SKB Kontur</copyright>
   </metadata>
   <files>

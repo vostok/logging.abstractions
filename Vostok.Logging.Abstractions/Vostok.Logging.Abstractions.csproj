@@ -13,10 +13,13 @@
     <Copyright>Copyright (c) 2017-2018 SKB Kontur</Copyright>
     <PackageProjectUrl>https://github.com/vostok/logging.abstractions</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/vostok/logging.abstractions/blob/master/LICENSE</PackageLicenseUrl>
+    <Description>Logging abstractions library for microservice toolkit http://vostok.tools/</Description>
   </PropertyGroup>
+
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
+
   <ItemGroup>
     <Compile Update="Extensions\LogExtensions.cs">
       <DesignTime>True</DesignTime>
