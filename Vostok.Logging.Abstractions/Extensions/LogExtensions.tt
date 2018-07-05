@@ -1,0 +1,103 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".cs" #>
+using System;
+using JetBrains.Annotations;
+
+namespace Vostok.Logging.Abstractions
+{
+    public static class LogExtensions
+    {
+<#
+    foreach (var level in new [] { "Debug", "Info", "Warn", "Error", "Fatal" })
+    {
+#>
+        #region <#=level #>
+
+        public static void <#=level #>(this ILog log, [CanBeNull] string message)
+        {
+            if (!log.IsEnabledFor(LogLevel.<#=level #>))
+                return;
+
+            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, message));
+        }
+
+        public static void <#=level #>(this ILog log, [CanBeNull] Exception exception)
+        {
+            if (!log.IsEnabledFor(LogLevel.<#=level #>))
+                return;
+
+            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, null, exception: exception));
+        }
+
+        public static void <#=level #>(this ILog log, [CanBeNull] Exception exception, [CanBeNull] string message)
+        {
+            if (!log.IsEnabledFor(LogLevel.<#=level #>))
+                return;
+
+            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, message, exception: exception));
+        }
+
+        [StringFormatMethod("messageTemplate")]
+        public static void <#=level #><T>(this ILog log, [CanBeNull] string messageTemplate, [CanBeNull] T properties)
+        {
+            if (!log.IsEnabledFor(LogLevel.<#=level #>))
+                return;
+
+            if (!properties.GetType().IsConstructedGenericType)
+            {
+                log.<#=level #>(messageTemplate, (object)properties);
+                return;
+            }
+
+            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, messageTemplate, properties.ToDictionary()));
+        }
+
+        [StringFormatMethod("messageTemplate")]
+        public static void <#=level #>(this ILog log, [CanBeNull] string messageTemplate, [CanBeNull] params object[] parameters)
+        {
+            if (!log.IsEnabledFor(LogLevel.<#=level #>))
+                return;
+
+            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, messageTemplate, parameters.ToDictionary()));
+        }
+
+        [StringFormatMethod("messageTemplate")]
+        public static void <#=level #><T>(this ILog log, [CanBeNull] Exception exception, [CanBeNull] string messageTemplate, [CanBeNull] T properties)
+        {
+            if (!log.IsEnabledFor(LogLevel.<#=level #>))
+                return;
+
+            if (!properties.GetType().IsConstructedGenericType)
+            {
+                log.<#=level #>(exception, messageTemplate, (object)properties);
+                return;
+            }
+
+            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, messageTemplate, properties.ToDictionary(), exception));
+        }
+
+        [StringFormatMethod("messageTemplate")]
+        public static void <#=level #>(this ILog log, [CanBeNull] Exception exception, [CanBeNull] string messageTemplate, [CanBeNull] params object[] parameters)
+        {
+            if (!log.IsEnabledFor(LogLevel.<#=level #>))
+                return;
+
+            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, messageTemplate, parameters.ToDictionary(), exception));
+        }
+
+        [Obsolete]
+        public static void <#=level #>(this ILog log, [CanBeNull] string message, [CanBeNull] Exception exception)
+        {
+            if (!log.IsEnabledFor(LogLevel.<#=level #>))
+                return;
+
+            log.<#=level #>(exception, message);
+        }
+
+        #endregion
+
+<#
+    }
+#>
+    }
+}
