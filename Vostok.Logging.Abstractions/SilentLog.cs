@@ -5,5 +5,7 @@
         public void Log(LogEvent @event) { }
 
         public bool IsEnabledFor(LogLevel level) => false;
+
+        public ILog ForContext(string context) => this;
     }
 }
