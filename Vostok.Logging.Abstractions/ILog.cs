@@ -1,4 +1,6 @@
-﻿namespace Vostok.Logging.Abstractions
+﻿using JetBrains.Annotations;
+
+namespace Vostok.Logging.Abstractions
 {
     public interface ILog
     {
