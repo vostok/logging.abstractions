@@ -26,7 +26,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.<#=level #>))
                 return;
 
-            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, null, exception: exception));
+            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, null, exception));
         }
 
         public static void <#=level #>(this ILog log, [CanBeNull] Exception exception, [CanBeNull] string message)
@@ -34,7 +34,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.<#=level #>))
                 return;
 
-            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, message, exception: exception));
+            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, message, exception));
         }
 
         [StringFormatMethod("messageTemplate")]
@@ -43,13 +43,13 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.<#=level #>))
                 return;
 
-            if (!properties.GetType().IsConstructedGenericType)
+            if (!typeof(T).IsConstructedGenericType)
             {
                 log.<#=level #>(messageTemplate, (object)properties);
                 return;
             }
 
-            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, messageTemplate, properties.ToDictionary()));
+            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, messageTemplate).WithObjectProperties(properties));
         }
 
         [StringFormatMethod("messageTemplate")]
@@ -58,7 +58,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.<#=level #>))
                 return;
 
-            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, messageTemplate, parameters.ToDictionary()));
+            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, messageTemplate).WithParameters(parameters));
         }
 
         [StringFormatMethod("messageTemplate")]
@@ -67,13 +67,13 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.<#=level #>))
                 return;
 
-            if (!properties.GetType().IsConstructedGenericType)
+            if (!typeof(T).IsConstructedGenericType)
             {
                 log.<#=level #>(exception, messageTemplate, (object)properties);
                 return;
             }
 
-            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, messageTemplate, properties.ToDictionary(), exception));
+            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, messageTemplate, exception).WithObjectProperties(properties));
         }
 
         [StringFormatMethod("messageTemplate")]
@@ -82,7 +82,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.<#=level #>))
                 return;
 
-            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, messageTemplate, parameters.ToDictionary(), exception));
+            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, messageTemplate, exception).WithParameters(parameters));
         }
 
         [Obsolete]

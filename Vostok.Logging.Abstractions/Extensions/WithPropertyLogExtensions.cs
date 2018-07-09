@@ -2,6 +2,14 @@
 {
     public static class WithPropertyLogExtensions
     {
+        /// <summary>
+        /// Returns a wrapper log that adds the given property to each <see cref="LogEvent"/> before logging.
+        /// </summary>
+        public static ILog WithProperty<T>(this ILog log, string key, T value)
+        {
+            return new WithPropertyLog<T>(log, key, value);
+        }
+
         private class WithPropertyLog<T> : ILog
         {
             private readonly ILog baseLog;
@@ -17,7 +25,7 @@
 
             public void Log(LogEvent @event)
             {
-                baseLog.Log(@event.WithProperty(key, value));
+                baseLog.Log(@event?.WithProperty(key, value));
             }
 
             public bool IsEnabledFor(LogLevel level)

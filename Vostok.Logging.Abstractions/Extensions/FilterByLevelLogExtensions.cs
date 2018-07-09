@@ -2,6 +2,9 @@
 {
     public static class FilterByLevelLogExtensions
     {
+        /// <summary>
+        /// Returns a wrapper log that ignores <see cref="LogEvent"/>s with log level less than <paramref name="minLevel"/>.
+        /// </summary>
         public static ILog FilterByLevel(this ILog log, LogLevel minLevel)
         {
             return new FilterByLevelLog(log, minLevel);
@@ -20,6 +23,7 @@
 
             public void Log(LogEvent @event)
             {
+                // TODO(krait): Allow nulls?
                 if (@event.Level >= minLevel)
                     baseLog.Log(@event);
             }

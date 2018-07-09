@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace Vostok.Logging.Abstractions.Flow
+namespace Vostok.Logging.Abstractions
 {
     internal class DictionarySnapshot<TKey, TValue> : IReadOnlyDictionary<TKey, TValue> where TValue : class
     //TODO(mylov): Write tests for it.
+    // TODO(krait): Also copy this to vostok.commons.
     {
         private const int defaultCapacity = 4;
 

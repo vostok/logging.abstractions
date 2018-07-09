@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
-using Vostok.Logging.Abstractions.Flow;
 
 namespace Vostok.Logging.Abstractions
 {
@@ -21,8 +20,8 @@ namespace Vostok.Logging.Abstractions
         [CanBeNull]
         public Exception Exception { get; }
 
-        public LogEvent(LogLevel level, DateTimeOffset timestamp, [CanBeNull] string messageTemplate, [CanBeNull] IReadOnlyDictionary<string, object> properties = null, [CanBeNull] Exception exception = null)
-            : this(level, timestamp, messageTemplate, CreateProperties(properties), exception)
+        public LogEvent(LogLevel level, DateTimeOffset timestamp, [CanBeNull] string messageTemplate, [CanBeNull] Exception exception = null)
+            : this(level, timestamp, messageTemplate, null, exception)
         {
         }
 
@@ -44,14 +43,10 @@ namespace Vostok.Logging.Abstractions
             return new LogEvent(Level, Timestamp, MessageTemplate, properties, Exception);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static DictionarySnapshot<string, object> CreateProperties()
         {
             return new DictionarySnapshot<string, object>(StringComparer.InvariantCultureIgnoreCase);
-        }
-
-        private static DictionarySnapshot<string, object> CreateProperties(IReadOnlyDictionary<string, object> collection)
-        {
-            return collection?.Aggregate(CreateProperties(), (current, property) => current.Set(property.Key, property.Value));
         }
     }
 }
