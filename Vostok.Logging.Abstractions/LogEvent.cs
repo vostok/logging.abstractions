@@ -7,16 +7,38 @@ namespace Vostok.Logging.Abstractions
 {
     public sealed class LogEvent
     {
+        /// <summary>
+        /// The <see cref="LogLevel"/> of the event. See <see cref="LogLevel"/> enumeration for tips on when to use which log level.
+        /// </summary>
         public LogLevel Level { get; }
 
+        /// <summary>
+        /// The timestamp of the event. Represents the time when the event was created, rather then the time when it was written to a file or processed in any other way. The local time zone is kept here for future use. 
+        /// </summary>
         public DateTimeOffset Timestamp { get; }
 
+        /// <summary>
+        /// The template of the log message that can be filled with values from <see cref="Properties"/>. See <see cref="LogEventFormatter"/> for details. Can be null for events containing only <see cref="Exception"/>.
+        /// </summary>
         [CanBeNull]
         public string MessageTemplate { get; }
 
+        /// <summary>
+        /// <para>Contains various user-defined properties of the event.</para>
+        /// <list type="bullet">
+        ///     <listheader>There are two kinds of properties:</listheader>
+        ///     <item>Named properties. These should be set using logging extensions with the 'properties' argument like <see cref="LogExtensions.Info{T}(ILog,string,T)"/>.</item> 
+        ///     <item>Positional parameters. These should be set using logging extensions with the 'parameters' argument like <see cref="LogExtensions.Info(ILog,string,object[])"/> and are then referenced by their position in the array instead of name.</item>
+        /// </list>
+        /// <para>Both kinds of properties can be substituted into the <see cref="MessageTemplate"/>. See <see cref="LogEventFormatter"/> for details.</para>
+        /// <para>Can be null if there is no properties.</para>
+        /// </summary>
         [CanBeNull]
-        public IReadOnlyDictionary<string, object> Properties;
+        public IReadOnlyDictionary<string, object> Properties { get; }
 
+        /// <summary>
+        /// The error associated with this log event. Can be null if there is no error.
+        /// </summary>
         [CanBeNull]
         public Exception Exception { get; }
 
@@ -34,6 +56,9 @@ namespace Vostok.Logging.Abstractions
             Exception = exception;
         }
 
+        /// <summary>
+        /// Returns a copy of the log event with property <paramref name="key"/> set to <paramref name="value"/>. Existing properties can be overwritten this way.
+        /// </summary>
         public LogEvent WithProperty<T>([NotNull] string key, [NotNull] T value)
         {
             var properties = Properties == null 
