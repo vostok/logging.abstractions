@@ -13,6 +13,9 @@ namespace Vostok.Logging.Abstractions
 #>
         #region <#=level #>
 
+        /// <summary>
+        /// Logs the given <paramref name="message"/> on the <see cref="LogLevel.<#=level #>"/> level without any additional properties.
+        /// </summary>
         public static void <#=level #>(this ILog log, [CanBeNull] string message)
         {
             if (!log.IsEnabledFor(LogLevel.<#=level #>))
@@ -21,6 +24,9 @@ namespace Vostok.Logging.Abstractions
             log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, message));
         }
 
+        /// <summary>
+        /// Logs the given <paramref name="exception"/> on the <see cref="LogLevel.<#=level #>"/> level without a message or any additional properties.
+        /// </summary>
         public static void <#=level #>(this ILog log, [CanBeNull] Exception exception)
         {
             if (!log.IsEnabledFor(LogLevel.<#=level #>))
@@ -29,6 +35,9 @@ namespace Vostok.Logging.Abstractions
             log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, null, exception));
         }
 
+        /// <summary>
+        /// Logs the given <paramref name="message"/> and <paramref name="exception"/> on the <see cref="LogLevel.<#=level #>"/> level without any additional properties.
+        /// </summary>
         public static void <#=level #>(this ILog log, [CanBeNull] Exception exception, [CanBeNull] string message)
         {
             if (!log.IsEnabledFor(LogLevel.<#=level #>))
@@ -37,6 +46,9 @@ namespace Vostok.Logging.Abstractions
             log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, message, exception));
         }
 
+        /// <summary>
+        /// Logs the given <paramref name="messageTemplate"/> on the <see cref="LogLevel.<#=level #>"/> level with given <paramref name="properties" />. The <paramref name="messageTemplate"/> can contain placeholders for <paramref name="properties"/>, see <see cref="LogEventFormatter"/> for details.
+        /// </summary>
         [StringFormatMethod("messageTemplate")]
         public static void <#=level #><T>(this ILog log, [CanBeNull] string messageTemplate, [CanBeNull] T properties)
         {
@@ -52,6 +64,9 @@ namespace Vostok.Logging.Abstractions
             log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, messageTemplate).WithObjectProperties(properties));
         }
 
+        /// <summary>
+        /// Logs the given <paramref name="messageTemplate"/> on the <see cref="LogLevel.<#=level #>"/> level with given <paramref name="parameters" />. The <paramref name="messageTemplate"/> can contain placeholders for <paramref name="parameters"/>, see <see cref="LogEventFormatter"/> for details.
+        /// </summary>
         [StringFormatMethod("messageTemplate")]
         public static void <#=level #>(this ILog log, [CanBeNull] string messageTemplate, [CanBeNull] params object[] parameters)
         {
@@ -61,6 +76,9 @@ namespace Vostok.Logging.Abstractions
             log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, messageTemplate).WithParameters(parameters));
         }
 
+        /// <summary>
+        /// Logs the given <paramref name="messageTemplate"/> and <paramref name="exception"/> on the <see cref="LogLevel.<#=level #>"/> level with given <paramref name="properties" />. The <paramref name="messageTemplate"/> can contain placeholders for <paramref name="properties"/>, see <see cref="LogEventFormatter"/> for details.
+        /// </summary>
         [StringFormatMethod("messageTemplate")]
         public static void <#=level #><T>(this ILog log, [CanBeNull] Exception exception, [CanBeNull] string messageTemplate, [CanBeNull] T properties)
         {
@@ -76,6 +94,9 @@ namespace Vostok.Logging.Abstractions
             log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, messageTemplate, exception).WithObjectProperties(properties));
         }
 
+        /// <summary>
+        /// Logs the given <paramref name="messageTemplate"/> and <paramref name="exception"/> on the <see cref="LogLevel.<#=level #>"/> level with given <paramref name="parameters" />. The <paramref name="messageTemplate"/> can contain placeholders for <paramref name="parameters"/>, see <see cref="LogEventFormatter"/> for details.
+        /// </summary>
         [StringFormatMethod("messageTemplate")]
         public static void <#=level #>(this ILog log, [CanBeNull] Exception exception, [CanBeNull] string messageTemplate, [CanBeNull] params object[] parameters)
         {
@@ -85,7 +106,7 @@ namespace Vostok.Logging.Abstractions
             log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, messageTemplate, exception).WithParameters(parameters));
         }
 
-        [Obsolete]
+        [Obsolete("Use the <#=level #>(ILog, Exception, string) overload instead.")]
         public static void <#=level #>(this ILog log, [CanBeNull] string message, [CanBeNull] Exception exception)
         {
             if (!log.IsEnabledFor(LogLevel.<#=level #>))

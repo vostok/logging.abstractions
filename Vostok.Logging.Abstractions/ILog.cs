@@ -21,10 +21,9 @@ namespace Vostok.Logging.Abstractions
         bool IsEnabledFor(LogLevel level);
 
         /// <summary>
-        /// 
+        /// <para>Returns a copy of the log operating in the given <paramref name="context" />. Handling of these context strings is implementation-specific.</para>
+        /// <para>If you are implementing a log and don't need this method, just return <c>this</c> in the implementation.</para>
         /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
         ILog ForContext(string context);
     }
 }

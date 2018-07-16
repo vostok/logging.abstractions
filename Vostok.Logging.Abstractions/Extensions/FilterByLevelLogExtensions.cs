@@ -23,8 +23,7 @@
 
             public void Log(LogEvent @event)
             {
-                // TODO(krait): Allow nulls?
-                if (@event.Level >= minLevel)
+                if (@event?.Level >= minLevel)
                     baseLog.Log(@event);
             }
 
