@@ -5,8 +5,13 @@ using JetBrains.Annotations;
 
 namespace Vostok.Logging.Abstractions
 {
+    /// <summary>
+    /// A single event to be logged. Consists of a timestamp, a log message, a saved exception and user-defined properties.
+    /// </summary>
     public sealed class LogEvent
     {
+        [CanBeNull]
+        private readonly DictionarySnapshot<string, object> properties;
         /// <summary>
         /// The <see cref="LogLevel"/> of the event. See <see cref="LogLevel"/> enumeration for tips on when to use which log level.
         /// </summary>
@@ -34,7 +39,7 @@ namespace Vostok.Logging.Abstractions
         /// <para>Can be null if there is no properties.</para>
         /// </summary>
         [CanBeNull]
-        public IReadOnlyDictionary<string, object> Properties { get; }
+        public IReadOnlyDictionary<string, object> Properties => properties;
 
         /// <summary>
         /// The error associated with this log event. Can be null if there is no error.
@@ -52,8 +57,8 @@ namespace Vostok.Logging.Abstractions
             Level = level;
             Timestamp = timestamp;
             MessageTemplate = messageTemplate;
-            Properties = properties;
             Exception = exception;
+            this.properties = properties;
         }
 
         /// <summary>
@@ -61,11 +66,23 @@ namespace Vostok.Logging.Abstractions
         /// </summary>
         public LogEvent WithProperty<T>([NotNull] string key, [NotNull] T value)
         {
-            var properties = Properties == null 
+            var newProperties = properties == null 
                 ? CreateProperties().Set(key, value)
-                : ((DictionarySnapshot<string, object>)Properties).Set(key, value);
+                : properties.Set(key, value);
 
-            return new LogEvent(Level, Timestamp, MessageTemplate, properties, Exception);
+            return new LogEvent(Level, Timestamp, MessageTemplate, newProperties, Exception);
+        }
+
+        /// <summary>
+        /// Returns a copy of the log event with property <paramref name="key"/> removed.
+        /// </summary>
+        public LogEvent WithoutProperty([NotNull] string key)
+        {
+            var newProperties = properties?.Remove(key);
+
+            return ReferenceEquals(newProperties, properties)
+                ? this
+                : new LogEvent(Level, Timestamp, MessageTemplate, newProperties, Exception);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

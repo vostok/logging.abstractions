@@ -80,6 +80,21 @@ namespace Vostok.Logging.Abstractions
             return new DictionarySnapshot<TKey, TValue>(keyValuePairs, Count + 1, keyComparer);
         }
 
+        public DictionarySnapshot<TKey, TValue> Remove(TKey key)
+        {
+            if (Find(key, out var _, out var oldIndex))
+            {
+                var newProperties = new Pair[keyValuePairs.Length];
+
+                Array.Copy(keyValuePairs, 0, newProperties, 0, oldIndex);
+                Array.Copy(keyValuePairs, oldIndex + 1, newProperties, oldIndex, keyValuePairs.Length - oldIndex - 1);
+
+                return new DictionarySnapshot<TKey, TValue>(newProperties, Count - 1, keyComparer);
+            }
+
+            return this;
+        }
+
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
             for (var i = 0; i < Count; i++)
