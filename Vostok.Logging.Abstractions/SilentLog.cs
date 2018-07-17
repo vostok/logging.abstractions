@@ -1,5 +1,8 @@
 ﻿namespace Vostok.Logging.Abstractions
 {
+    /// <summary>
+    /// Represents a log that just discards all incoming <see cref="LogEvent"/>s.
+    /// </summary>
     public class SilentLog : ILog
     {
         public void Log(LogEvent @event)
