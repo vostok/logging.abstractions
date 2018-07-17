@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
+using Vostok.Logging.Abstractions.Helpers;
 
 namespace Vostok.Logging.Abstractions
 {

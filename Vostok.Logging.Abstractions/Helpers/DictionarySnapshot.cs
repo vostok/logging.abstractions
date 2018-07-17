@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace Vostok.Logging.Abstractions
+namespace Vostok.Logging.Abstractions.Helpers
 {
     internal class DictionarySnapshot<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
         where TValue : class
