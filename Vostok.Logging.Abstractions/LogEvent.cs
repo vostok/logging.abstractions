@@ -98,7 +98,7 @@ namespace Vostok.Logging.Abstractions
             return new LogEvent(Level, Timestamp, MessageTemplate, newProperties, Exception);
         }
 
-        private LogEvent WithProperty<T>([NotNull] string key, [NotNull] T value, bool allowOverwrite)
+        internal LogEvent WithProperty<T>([NotNull] string key, [NotNull] T value, bool allowOverwrite)
         {
             var newProperties = properties == null
                 ? CreateProperties().Set(key, value)
