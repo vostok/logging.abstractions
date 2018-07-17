@@ -53,7 +53,7 @@ namespace Vostok.Logging.Abstractions.Helpers
             return Find(key, out value, out var _);
         }
 
-        public DictionarySnapshot<TKey, TValue> Set(TKey key, TValue value)
+        public DictionarySnapshot<TKey, TValue> Set(TKey key, TValue value, bool overwrite = true)
         {
             Pair[] newProperties;
 
@@ -61,7 +61,7 @@ namespace Vostok.Logging.Abstractions.Helpers
 
             if (Find(key, out var oldValue, out var oldIndex))
             {
-                if (Equals(value, oldValue))
+                if (!overwrite || Equals(value, oldValue))
                     return this;
 
                 newProperties = ReallocateArray(keyValuePairs.Length);

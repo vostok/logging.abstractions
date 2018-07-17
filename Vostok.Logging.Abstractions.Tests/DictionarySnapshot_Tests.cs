@@ -100,6 +100,19 @@ namespace Vostok.Logging.Abstractions.Tests
         }
 
         [Test]
+        public void Set_should_not_overwrite_existing_value_when_it_is_explicitly_prohibited()
+        {
+            var snapshotBefore = Snapshot.Empty
+                .Set("k1", "v1")
+                .Set("k2", "v2")
+                .Set("k3", "v3");
+
+            var snapshotAfter = snapshotBefore.Set("k2", "vx", false);
+
+            snapshotAfter.Should().BeSameAs(snapshotBefore);
+        }
+
+        [Test]
         public void Set_should_not_modify_base_instance_when_deriving_from_it_by_replacing_existing_value()
         {
             var snapshotBefore = Snapshot.Empty
