@@ -29,12 +29,14 @@ namespace Vostok.Logging.Abstractions
         {
             var baseLogsForContext = new ILog[baseLogs.Length];
             var sameContext = true;
-            for (int i = 0; i < baseLogs.Length; i++)
+
+            for (var i = 0; i < baseLogs.Length; i++)
             {
                 baseLogsForContext[i] = baseLogs[i].ForContext(context);
                 if (baseLogsForContext[i] != baseLogs[i])
                     sameContext = false;
             }
+
             return sameContext ? this : new CompositeLog(baseLogsForContext);
         }
     }

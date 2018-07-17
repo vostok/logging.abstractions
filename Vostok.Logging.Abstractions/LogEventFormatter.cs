@@ -30,7 +30,7 @@ namespace Vostok.Logging.Abstractions
             if (properties == null)
                 return template;
 
-            var resultBuilder = new StringBuilder(template.Length * 3); // TODO(krait): Pool StringBuilders. This will require the Pool<T> collection from vostok.commons.
+            var resultBuilder = new StringBuilder(template.Length*3); // TODO(krait): Pool StringBuilders. This will require the Pool<T> collection from vostok.commons.
             var tokenBuilder = new TokenBuilder(template.Length);
 
             for (var i = 0; i < template.Length; i++)
@@ -89,12 +89,20 @@ namespace Vostok.Logging.Abstractions
 
         private struct TokenBuilder
         {
-            public int Length { get; private set; }
+            private readonly char[] chars;
 
             public TokenBuilder(int length)
             {
                 Length = 0;
                 chars = new char[length];
+            }
+
+            public int Length { get; private set; }
+
+            public bool IsEmpty
+            {
+                [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                get { return Length == 0; }
             }
 
             public bool TryFindToken(string template, int startIndex)
@@ -153,14 +161,6 @@ namespace Vostok.Logging.Abstractions
             {
                 Length = 0;
             }
-
-            public bool IsEmpty
-            {
-                [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                get { return Length == 0; }
-            }
-
-            private readonly char[] chars;
         }
     }
 }

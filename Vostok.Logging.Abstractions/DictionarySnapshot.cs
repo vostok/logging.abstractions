@@ -6,11 +6,12 @@ using System.Threading;
 
 namespace Vostok.Logging.Abstractions
 {
-    internal class DictionarySnapshot<TKey, TValue> : IReadOnlyDictionary<TKey, TValue> where TValue : class
+    internal class DictionarySnapshot<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
+        where TValue : class
     //TODO(mylov): Write tests for it.
     // TODO(krait): Also copy this to vostok.commons.
     {
-        private const int defaultCapacity = 4;
+        private const int DefaultCapacity = 4;
 
         public static readonly DictionarySnapshot<TKey, TValue> Empty = new DictionarySnapshot<TKey, TValue>(0);
 
@@ -18,9 +19,15 @@ namespace Vostok.Logging.Abstractions
 
         private readonly IEqualityComparer<TKey> keyComparer;
 
-        public DictionarySnapshot(IEqualityComparer<TKey> keyComparer = null) : this(defaultCapacity, keyComparer) { }
+        public DictionarySnapshot(IEqualityComparer<TKey> keyComparer = null)
+            : this(DefaultCapacity, keyComparer)
+        {
+        }
 
-        public DictionarySnapshot(int capacity, IEqualityComparer<TKey> keyComparer = null) : this(new Pair[capacity], 0, keyComparer) { }
+        public DictionarySnapshot(int capacity, IEqualityComparer<TKey> keyComparer = null)
+            : this(new Pair[capacity], 0, keyComparer)
+        {
+        }
 
         private DictionarySnapshot(Pair[] keyValuePairs, int count, IEqualityComparer<TKey> keyComparer)
         {
@@ -65,7 +72,7 @@ namespace Vostok.Logging.Abstractions
 
             if (keyValuePairs.Length == Count)
             {
-                newProperties = ReallocateArray(Math.Max(defaultCapacity, keyValuePairs.Length * 2));
+                newProperties = ReallocateArray(Math.Max(DefaultCapacity, keyValuePairs.Length*2));
                 newProperties[Count] = newProperty;
                 return new DictionarySnapshot<TKey, TValue>(newProperties, Count + 1, keyComparer);
             }

@@ -12,6 +12,21 @@ namespace Vostok.Logging.Abstractions
     {
         [CanBeNull]
         private readonly DictionarySnapshot<string, object> properties;
+
+        public LogEvent(LogLevel level, DateTimeOffset timestamp, [CanBeNull] string messageTemplate, [CanBeNull] Exception exception = null)
+            : this(level, timestamp, messageTemplate, null, exception)
+        {
+        }
+
+        private LogEvent(LogLevel level, DateTimeOffset timestamp, string messageTemplate, DictionarySnapshot<string, object> properties, Exception exception)
+        {
+            Level = level;
+            Timestamp = timestamp;
+            MessageTemplate = messageTemplate;
+            Exception = exception;
+            this.properties = properties;
+        }
+
         /// <summary>
         /// The <see cref="LogLevel"/> of the event. See <see cref="LogLevel"/> enumeration for tips on when to use which log level.
         /// </summary>
@@ -47,26 +62,12 @@ namespace Vostok.Logging.Abstractions
         [CanBeNull]
         public Exception Exception { get; }
 
-        public LogEvent(LogLevel level, DateTimeOffset timestamp, [CanBeNull] string messageTemplate, [CanBeNull] Exception exception = null)
-            : this(level, timestamp, messageTemplate, null, exception)
-        {
-        }
-
-        private LogEvent(LogLevel level, DateTimeOffset timestamp, string messageTemplate, DictionarySnapshot<string, object> properties, Exception exception)
-        {
-            Level = level;
-            Timestamp = timestamp;
-            MessageTemplate = messageTemplate;
-            Exception = exception;
-            this.properties = properties;
-        }
-
         /// <summary>
         /// Returns a copy of the log event with property <paramref name="key"/> set to <paramref name="value"/>. Existing properties can be overwritten this way.
         /// </summary>
         public LogEvent WithProperty<T>([NotNull] string key, [NotNull] T value)
         {
-            var newProperties = properties == null 
+            var newProperties = properties == null
                 ? CreateProperties().Set(key, value)
                 : properties.Set(key, value);
 
