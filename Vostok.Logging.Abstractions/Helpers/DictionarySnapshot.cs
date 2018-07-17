@@ -8,7 +8,6 @@ namespace Vostok.Logging.Abstractions.Helpers
 {
     internal class DictionarySnapshot<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
         where TValue : class
-    //TODO(mylov): Write tests for it.
     // TODO(krait): Also copy this to vostok.commons.
     {
         private const int DefaultCapacity = 4;
