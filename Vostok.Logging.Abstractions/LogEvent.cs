@@ -71,6 +71,9 @@ namespace Vostok.Logging.Abstractions
                 ? CreateProperties().Set(key, value)
                 : properties.Set(key, value);
 
+            if (ReferenceEquals(newProperties, properties))
+                return this;
+
             return new LogEvent(Level, Timestamp, MessageTemplate, newProperties, Exception);
         }
 
@@ -81,9 +84,10 @@ namespace Vostok.Logging.Abstractions
         {
             var newProperties = properties?.Remove(key);
 
-            return ReferenceEquals(newProperties, properties)
-                ? this
-                : new LogEvent(Level, Timestamp, MessageTemplate, newProperties, Exception);
+            if (ReferenceEquals(newProperties, properties))
+                return this;
+
+            return new LogEvent(Level, Timestamp, MessageTemplate, newProperties, Exception);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

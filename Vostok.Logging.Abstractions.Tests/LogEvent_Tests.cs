@@ -38,5 +38,14 @@ namespace Vostok.Logging.Abstractions.Tests
             @event = @event.WithProperty("A", 1);
             @event.Properties.Should().BeEquivalentTo(new Dictionary<string, object> {{"A", 1}});
         }
+
+        [Test]
+        public void WithProperty_should_return_same_log_event_when_rewriting_a_property_with_same_value()
+        {
+            var @event = new LogEvent(LogLevel.Info, DateTimeOffset.UtcNow, "message").WithProperty("A", 1);
+            var newEvent = @event.WithProperty("A", 1);
+
+            newEvent.Should().BeSameAs(@event);
+        }
     }
 }
