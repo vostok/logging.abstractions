@@ -9,7 +9,7 @@ namespace Vostok.Logging.Abstractions
         /// Returns a wrapper log that ignores <see cref="LogEvent"/>s with log level less than <paramref name="minLevel"/>.
         /// </summary>
         [Pure]
-        public static ILog FilterByLevel(this ILog log, LogLevel minLevel)
+        public static ILog WithMinimumLevel(this ILog log, LogLevel minLevel)
         {
             return new FilterByLevelLog(log, minLevel);
         }
