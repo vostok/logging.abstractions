@@ -77,6 +77,16 @@ namespace Vostok.Logging.Abstractions.Tests
         }
 
         [Test]
+        public void WithMinimumLevel_should_return_a_log_that_handles_null_events_gracefully()
+        {
+            filteredLog = baseLog.WithMinimumLevel(LogLevel.Warn);
+
+            filteredLog.Log(null);
+
+            baseLog.ReceivedCalls().Should().BeEmpty();
+        }
+
+        [Test]
         public void WithDisabledLevels_should_return_a_log_that_does_not_forward_log_events_of_given_levels([Values] LogLevel disabledLevel)
         {
             filteredLog = baseLog.WithDisabledLevels(disabledLevel);
@@ -126,6 +136,16 @@ namespace Vostok.Logging.Abstractions.Tests
         
                 baseLog.Received(1).IsEnabledFor(level);
             }
+        }
+
+        [Test]
+        public void WithDisabledLevels_should_return_a_log_that_handles_null_events_gracefully()
+        {
+            filteredLog = baseLog.WithDisabledLevels(LogLevel.Warn);
+
+            filteredLog.Log(null);
+
+            baseLog.Received(1).Log(null);
         }
     }
 }

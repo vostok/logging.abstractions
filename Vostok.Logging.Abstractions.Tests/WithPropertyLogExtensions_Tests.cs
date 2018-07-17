@@ -38,7 +38,7 @@ namespace Vostok.Logging.Abstractions.Tests
         }
 
         [Test]
-        public void WithProperty_should_not_overwrite_existing_properties_by_default()
+        public void WithProperty_should_return_a_log_that_does_not_overwrite_existing_properties_by_default()
         {
             enrichedLog = baseLog.WithProperty("name2", "valueX");
 
@@ -49,7 +49,7 @@ namespace Vostok.Logging.Abstractions.Tests
         }
 
         [Test]
-        public void WithProperty_should_overwrite_existing_properties_when_explicitly_asked_to()
+        public void WithProperty_should_return_a_log_that_overwrites_existing_properties_when_explicitly_asked_to()
         {
             enrichedLog = baseLog.WithProperty("name2", "valueX", true);
 
@@ -57,6 +57,18 @@ namespace Vostok.Logging.Abstractions.Tests
 
             observedEvent.Properties.Should().HaveCount(2);
             observedEvent.Properties?["name2"].Should().Be("valueX");
+        }
+
+        [Test]
+        public void WithProperty_should_return_a_log_that_handles_null_events_gracefully()
+        {
+            enrichedLog = baseLog.WithProperty("name3", "value3");
+
+            enrichedLog.Log(null);
+
+            observedEvent.Should().BeNull();
+
+            baseLog.Received(1).Log(null);
         }
     }
 }
