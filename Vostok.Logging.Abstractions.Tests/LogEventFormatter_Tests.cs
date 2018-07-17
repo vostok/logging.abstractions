@@ -211,6 +211,12 @@ namespace Vostok.Logging.Abstractions.Tests
         }
 
         [Test]
+        public void FormatMessage_should_return_empty_string_for_empty_template()
+        {
+            LogEventFormatter.FormatMessage("", new Dictionary<string, object>()).Should().BeEmpty();
+        }
+
+        [Test]
         public void FormatMessage_should_return_template_for_null_properties()
         {
             LogEventFormatter.FormatMessage("aa{prop}bb", null).Should().BeEquivalentTo("aa{prop}bb");
