@@ -42,7 +42,7 @@ namespace Vostok.Logging.Abstractions
 
         public IEnumerable<TValue> Values => this.Select(pair => pair.Value);
 
-        public TValue this[TKey key] => Find(key, out var value, out var _) ? value : throw new KeyNotFoundException();
+        public TValue this[TKey key] => Find(key, out var value, out var _) ? value : throw new KeyNotFoundException($"A value with key '{key}' is not present.");
 
         public bool ContainsKey(TKey key)
         {
