@@ -11,6 +11,7 @@ namespace Vostok.Logging.Abstractions
     /// <summary>
     /// A helper class to render log messages. See <see cref="FormatMessage"/> for details.
     /// </summary>
+    [PublicAPI]
     public static class LogEventFormatter
     {
         /// <summary>

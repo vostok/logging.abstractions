@@ -1,10 +1,14 @@
-﻿namespace Vostok.Logging.Abstractions
+﻿using JetBrains.Annotations;
+
+namespace Vostok.Logging.Abstractions
 {
+    [PublicAPI]
     public static class FilterByLevelLogExtensions
     {
         /// <summary>
         /// Returns a wrapper log that ignores <see cref="LogEvent"/>s with log level less than <paramref name="minLevel"/>.
         /// </summary>
+        [Pure]
         public static ILog FilterByLevel(this ILog log, LogLevel minLevel)
         {
             return new FilterByLevelLog(log, minLevel);
@@ -35,7 +39,8 @@
             public ILog ForContext(string context)
             {
                 var baseLogForContext = baseLog.ForContext(context);
-                return baseLogForContext == baseLog ? this : new FilterByLevelLog(baseLogForContext, minLevel);
+
+                return ReferenceEquals(baseLogForContext, baseLog) ? this : new FilterByLevelLog(baseLogForContext, minLevel);
             }
         }
     }

@@ -1,4 +1,6 @@
-﻿namespace Vostok.Logging.Abstractions
+﻿using JetBrains.Annotations;
+
+namespace Vostok.Logging.Abstractions
 {
     /// <summary>
     /// <list type="bullet">
@@ -10,6 +12,7 @@
     ///     <item><see cref="Fatal"/> — for critical errors that result in application shutdown.</item>
     /// </list>
     /// </summary>
+    [PublicAPI]
     public enum LogLevel
     {
         Debug,

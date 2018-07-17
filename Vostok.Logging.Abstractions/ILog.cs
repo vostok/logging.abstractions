@@ -6,6 +6,7 @@ namespace Vostok.Logging.Abstractions
     /// <para>Represents a log.</para>
     /// <para>Implementations are expected to be thread-safe and never throw exceptions in any method.</para>
     /// </summary>
+    [PublicAPI]
     public interface ILog
     {
         /// <summary>

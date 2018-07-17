@@ -1,10 +1,12 @@
 ﻿using System.Linq;
+using JetBrains.Annotations;
 
 namespace Vostok.Logging.Abstractions
 {
     /// <summary>
     /// A log that passes messages on to all of the base logs.
     /// </summary>
+    [PublicAPI]
     public class CompositeLog : ILog
     {
         private readonly ILog[] baseLogs;

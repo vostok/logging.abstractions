@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Linq.Expressions;
+using JetBrains.Annotations;
 
 namespace Vostok.Logging.Abstractions
 {
     // TODO(krait): Tests.
     internal static class LogEventExtensions
     {
+        [Pure]
         public static LogEvent WithParameters(this LogEvent @event, object[] parameters)
         {
             if (parameters == null)
@@ -19,6 +21,7 @@ namespace Vostok.Logging.Abstractions
             return @event;
         }
 
+        [Pure]
         public static LogEvent WithObjectProperties<T>(this LogEvent @event, T @object)
         {
             if (@object == null)

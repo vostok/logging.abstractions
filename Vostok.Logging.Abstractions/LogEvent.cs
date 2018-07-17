@@ -9,6 +9,7 @@ namespace Vostok.Logging.Abstractions
     /// <summary>
     /// A single event to be logged. Consists of a timestamp, a log message, a saved exception and user-defined properties.
     /// </summary>
+    [PublicAPI]
     public sealed class LogEvent
     {
         [CanBeNull]
@@ -66,6 +67,7 @@ namespace Vostok.Logging.Abstractions
         /// <summary>
         /// Returns a copy of the log event with property <paramref name="key"/> set to <paramref name="value"/>. Existing properties can be overwritten this way.
         /// </summary>
+        [Pure]
         public LogEvent WithProperty<T>([NotNull] string key, [NotNull] T value)
         {
             var newProperties = properties == null
@@ -81,6 +83,7 @@ namespace Vostok.Logging.Abstractions
         /// <summary>
         /// Returns a copy of the log event with property <paramref name="key"/> removed.
         /// </summary>
+        [Pure]
         public LogEvent WithoutProperty([NotNull] string key)
         {
             var newProperties = properties?.Remove(key);

@@ -1,10 +1,14 @@
-﻿namespace Vostok.Logging.Abstractions
+﻿using JetBrains.Annotations;
+
+namespace Vostok.Logging.Abstractions
 {
+    [PublicAPI]
     public static class WithPropertyLogExtensions
     {
         /// <summary>
         /// Returns a wrapper log that adds the given property to each <see cref="LogEvent"/> before logging.
         /// </summary>
+        [Pure]
         public static ILog WithProperty<T>(this ILog log, string key, T value)
         {
             return new WithPropertyLog<T>(log, key, value);
