@@ -3,6 +3,7 @@ using JetBrains.Annotations;
 
 namespace Vostok.Logging.Abstractions
 {
+	[PublicAPI]
     public static class LogExtensions
     {
         #region Debug
@@ -107,6 +108,14 @@ namespace Vostok.Logging.Abstractions
                 return;
 
             log.Debug(exception, message);
+        }
+
+		/// <summary>
+        /// Returns true if given <paramref name="log"/> is enabled to log events of <see cref="LogLevel.Debug"/> level, or false otherwise.
+        /// </summary>
+        public static bool IsEnabledForDebug(this ILog log)
+        {
+			return log.IsEnabledFor(LogLevel.Debug);
         }
 
         #endregion
@@ -215,6 +224,14 @@ namespace Vostok.Logging.Abstractions
             log.Info(exception, message);
         }
 
+		/// <summary>
+        /// Returns true if given <paramref name="log"/> is enabled to log events of <see cref="LogLevel.Info"/> level, or false otherwise.
+        /// </summary>
+        public static bool IsEnabledForInfo(this ILog log)
+        {
+			return log.IsEnabledFor(LogLevel.Info);
+        }
+
         #endregion
 
         #region Warn
@@ -319,6 +336,14 @@ namespace Vostok.Logging.Abstractions
                 return;
 
             log.Warn(exception, message);
+        }
+
+		/// <summary>
+        /// Returns true if given <paramref name="log"/> is enabled to log events of <see cref="LogLevel.Warn"/> level, or false otherwise.
+        /// </summary>
+        public static bool IsEnabledForWarn(this ILog log)
+        {
+			return log.IsEnabledFor(LogLevel.Warn);
         }
 
         #endregion
@@ -427,6 +452,14 @@ namespace Vostok.Logging.Abstractions
             log.Error(exception, message);
         }
 
+		/// <summary>
+        /// Returns true if given <paramref name="log"/> is enabled to log events of <see cref="LogLevel.Error"/> level, or false otherwise.
+        /// </summary>
+        public static bool IsEnabledForError(this ILog log)
+        {
+			return log.IsEnabledFor(LogLevel.Error);
+        }
+
         #endregion
 
         #region Fatal
@@ -531,6 +564,14 @@ namespace Vostok.Logging.Abstractions
                 return;
 
             log.Fatal(exception, message);
+        }
+
+		/// <summary>
+        /// Returns true if given <paramref name="log"/> is enabled to log events of <see cref="LogLevel.Fatal"/> level, or false otherwise.
+        /// </summary>
+        public static bool IsEnabledForFatal(this ILog log)
+        {
+			return log.IsEnabledFor(LogLevel.Fatal);
         }
 
         #endregion

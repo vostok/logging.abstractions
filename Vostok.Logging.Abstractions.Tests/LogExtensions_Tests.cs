@@ -218,6 +218,16 @@ namespace Vostok.Logging.Abstractions.Tests
                             e.Exception == exception));
         }
 
+        [Test]
+        public void IsEnabledMethod_should_work_correctly_for_level([Values] LogLevel level)
+        {
+            var method = typeof (LogExtensions).GetMethods().Single(m => m.Name == nameof(ILog.IsEnabledFor) + level);
+
+            method.Invoke(null, new object[] { log });
+
+            log.Received(1).IsEnabledFor(level);
+        }
+
         private static MethodInfo GetLogMethod(LogLevel level, params Type[] argumentsTypes)
         {
             var levelMethods = typeof (LogExtensions).GetMethods().Where(m => m.Name.Equals(level.ToString()));

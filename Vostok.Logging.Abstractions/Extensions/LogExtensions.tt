@@ -116,6 +116,14 @@ namespace Vostok.Logging.Abstractions
             log.<#=level #>(exception, message);
         }
 
+		/// <summary>
+        /// Returns true if given <paramref name="log"/> is enabled to log events of <see cref="LogLevel.<#=level #>"/> level, or false otherwise.
+        /// </summary>
+        public static bool IsEnabledFor<#=level #>(this ILog log)
+        {
+			return log.IsEnabledFor(LogLevel.<#=level #>);
+        }
+
         #endregion
 
 <#
