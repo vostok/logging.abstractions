@@ -215,5 +215,15 @@ namespace Vostok.Logging.Abstractions.Tests
         {
             LogEventFormatter.FormatMessage("aa{prop}bb", null).Should().BeEquivalentTo("aa{prop}bb");
         }
+
+        [Test]
+        public void FormatMessage_should_produce_repeatable_results()
+        {
+            for (var i = 0; i < 100; i++)
+            {
+                LogEventFormatter.FormatMessage("aa{prop}bb", new Dictionary<string, object> {{"prop", "_"}})
+                    .Should().BeEquivalentTo("aa_bb");
+            }
+        }
     }
 }

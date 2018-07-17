@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text;
 using JetBrains.Annotations;
+using Vostok.Logging.Abstractions.Helpers;
 
 namespace Vostok.Logging.Abstractions
 {
@@ -30,7 +31,7 @@ namespace Vostok.Logging.Abstractions
             if (properties == null)
                 return template;
 
-            var resultBuilder = new StringBuilder(template.Length*3); // TODO(krait): Pool StringBuilders. This will require the Pool<T> collection from vostok.commons.
+            var resultBuilder = StringBuilderCache.Acquire(template.Length * 2);
             var tokenBuilder = new TokenBuilder(template.Length);
 
             for (var i = 0; i < template.Length; i++)
@@ -84,7 +85,7 @@ namespace Vostok.Logging.Abstractions
             if (!tokenBuilder.IsEmpty)
                 tokenBuilder.MoveToBuilder(resultBuilder);
 
-            return resultBuilder.ToString();
+            return StringBuilderCache.GetStringAndRelease(resultBuilder);
         }
 
         private struct TokenBuilder
