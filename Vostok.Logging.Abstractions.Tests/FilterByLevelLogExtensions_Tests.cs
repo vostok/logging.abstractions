@@ -4,7 +4,7 @@ using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace Vostok.Logging.Abstractions
+namespace Vostok.Logging.Abstractions.Tests
 {
     [TestFixture]
     internal class FilterByLevelLogExtensions_Tests
