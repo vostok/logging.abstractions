@@ -101,11 +101,7 @@ namespace Vostok.Logging.Abstractions
 
             public int Length { get; private set; }
 
-            public bool IsEmpty
-            {
-                [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                get { return Length == 0; }
-            }
+            public bool IsEmpty => Length == 0;
 
             public bool TryFindToken(string template, int startIndex)
             {
