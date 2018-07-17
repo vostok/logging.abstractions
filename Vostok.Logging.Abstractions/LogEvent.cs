@@ -65,19 +65,23 @@ namespace Vostok.Logging.Abstractions
         public Exception Exception { get; }
 
         /// <summary>
-        /// Returns a copy of the log event with property <paramref name="key"/> set to <paramref name="value"/>. Existing properties can be overwritten this way.
+        /// <para>Returns a copy of the log event with property <paramref name="key"/> set to <paramref name="value"/>. </para>
+        /// <para>Existing properties can be overwritten this way.</para>
         /// </summary>
         [Pure]
         public LogEvent WithProperty<T>([NotNull] string key, [NotNull] T value)
         {
-            var newProperties = properties == null
-                ? CreateProperties().Set(key, value)
-                : properties.Set(key, value);
+            return WithProperty(key, value, true);
+        }
 
-            if (ReferenceEquals(newProperties, properties))
-                return this;
-
-            return new LogEvent(Level, Timestamp, MessageTemplate, newProperties, Exception);
+        /// <summary>
+        /// <para>Returns a copy of the log event with property <paramref name="key"/> set to <paramref name="value"/>. </para>
+        /// <para>Existing properties can not be overwritten this way: the same <see cref="LogEvent"/> is returned upon conflict.</para>
+        /// </summary>
+        [Pure]
+        public LogEvent WithPropertyIfAbsent<T>([NotNull] string key, [NotNull] T value)
+        {
+            return WithProperty(key, value, false);
         }
 
         /// <summary>
@@ -87,6 +91,18 @@ namespace Vostok.Logging.Abstractions
         public LogEvent WithoutProperty([NotNull] string key)
         {
             var newProperties = properties?.Remove(key);
+
+            if (ReferenceEquals(newProperties, properties))
+                return this;
+
+            return new LogEvent(Level, Timestamp, MessageTemplate, newProperties, Exception);
+        }
+
+        private LogEvent WithProperty<T>([NotNull] string key, [NotNull] T value, bool allowOverwrite)
+        {
+            var newProperties = properties == null
+                ? CreateProperties().Set(key, value)
+                : properties.Set(key, value, allowOverwrite);
 
             if (ReferenceEquals(newProperties, properties))
                 return this;
