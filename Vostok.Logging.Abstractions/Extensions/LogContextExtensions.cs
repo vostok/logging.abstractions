@@ -17,11 +17,5 @@ namespace Vostok.Logging.Abstractions
         {
             return log.ForContext(typeof (T));
         }
-
-        [Pure]
-        public static ILog ForContext<T>(this ILog log, T _)
-        {
-            return log.ForContext<T>();
-        }
     }
 }
