@@ -75,5 +75,57 @@ namespace Vostok.Logging.Abstractions
                 baseLog.Received(1).IsEnabledFor(sameOrHigherLevel);
             }
         }
+
+        [Test]
+        public void WithDisabledLevels_should_return_a_log_that_does_not_forward_log_events_of_given_levels([Values] LogLevel disabledLevel)
+        {
+            filteredLog = baseLog.WithDisabledLevels(disabledLevel);
+
+            filteredLog.Log(new LogEvent(disabledLevel, DateTimeOffset.UtcNow, null));
+
+            baseLog.ReceivedCalls().Should().BeEmpty();
+        }
+
+        [Test]
+        public void WithDisabledLevels_should_return_a_log_that_forwards_log_events_of_unmentioned_levels([Values] LogLevel disabledLevel)
+        {
+            filteredLog = baseLog.WithDisabledLevels(disabledLevel);
+
+            foreach (var level in allLevels.Where(l => l != disabledLevel))
+            {
+                var @event = new LogEvent(level, DateTimeOffset.UtcNow, null);
+
+                filteredLog.Log(@event);
+
+                baseLog.Received(1).Log(@event);
+            }
+        }
+
+        [Test]
+        public void WithDisabledLevels_should_return_a_log_that_is_unconditionally_disabled_for_given_levels([Values] LogLevel disabledLevel)
+        {
+            baseLog.IsEnabledFor(disabledLevel).Returns(true);
+
+            filteredLog = baseLog.WithDisabledLevels(disabledLevel);
+
+            filteredLog.IsEnabledFor(disabledLevel).Should().BeFalse();
+
+            baseLog.ReceivedCalls().Should().BeEmpty();
+        }
+        
+        [Test]
+        public void WithDisabledLevels_should_return_a_log_that_delegates_IsEnabled_calls_to_base_log_for_unmentioned_levels([Values] LogLevel disabledLevel)
+        {
+            filteredLog = baseLog.WithDisabledLevels(disabledLevel);
+        
+            foreach (var level in allLevels.Where(l => l != disabledLevel))
+            {
+                baseLog.IsEnabledFor(level).Returns(true);
+        
+                filteredLog.IsEnabledFor(level).Should().BeTrue();
+        
+                baseLog.Received(1).IsEnabledFor(level);
+            }
+        }
     }
 }

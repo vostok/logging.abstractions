@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System.Linq;
+using JetBrains.Annotations;
 
 namespace Vostok.Logging.Abstractions
 {
@@ -12,6 +13,15 @@ namespace Vostok.Logging.Abstractions
         public static ILog WithMinimumLevel(this ILog log, LogLevel minLevel)
         {
             return new FilterByLevelLog(log, minLevel);
+        }
+
+        /// <summary>
+        /// Returns a wrapper log that ignores <see cref="LogEvent"/>s with log levels among provided <paramref name="disabledLevels"/>.
+        /// </summary>
+        [Pure]
+        public static ILog WithDisabledLevels(this ILog log, params LogLevel[] disabledLevels)
+        {
+            return new DisabledLevelsLog(log, disabledLevels);
         }
 
         private class FilterByLevelLog : ILog
@@ -41,6 +51,38 @@ namespace Vostok.Logging.Abstractions
                 var baseLogForContext = baseLog.ForContext(context);
 
                 return ReferenceEquals(baseLogForContext, baseLog) ? this : new FilterByLevelLog(baseLogForContext, minLevel);
+            }
+        }
+
+        private class DisabledLevelsLog : ILog
+        {
+            private readonly ILog baseLog;
+            private readonly LogLevel[] disabledLevels;
+
+            public DisabledLevelsLog(ILog baseLog, LogLevel[] disabledLevels)
+            {
+                this.baseLog = baseLog;
+                this.disabledLevels = disabledLevels;
+            }
+
+            public void Log(LogEvent @event)
+            {
+                if (@event == null || !disabledLevels.Contains(@event.Level))
+                {
+                    baseLog.Log(@event);
+                }
+            }
+
+            public bool IsEnabledFor(LogLevel level)
+            {
+                return !disabledLevels.Contains(level) && baseLog.IsEnabledFor(level);
+            }
+
+            public ILog ForContext(string context)
+            {
+                var baseLogForContext = baseLog.ForContext(context);
+
+                return ReferenceEquals(baseLogForContext, baseLog) ? this : new DisabledLevelsLog(baseLogForContext, disabledLevels);
             }
         }
     }
