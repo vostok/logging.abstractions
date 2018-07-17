@@ -47,5 +47,50 @@ namespace Vostok.Logging.Abstractions.Tests
 
             newEvent.Should().BeSameAs(@event);
         }
+
+        [Test]
+        public void WithoutProperty_should_have_no_effect_on_event_without_any_properties()
+        {
+            var @event = new LogEvent(LogLevel.Info, DateTimeOffset.UtcNow, "message");
+            var newEvent = @event.WithoutProperty("A");
+
+            newEvent.Should().BeSameAs(@event);
+        }
+
+        [Test]
+        public void WithoutProperty_should_have_no_effect_on_event_without_given_property()
+        {
+            var @event = new LogEvent(LogLevel.Info, DateTimeOffset.UtcNow, "message")
+                .WithProperty("B", 1)
+                .WithProperty("C", 2);
+
+            var newEvent = @event.WithoutProperty("A");
+
+            newEvent.Should().BeSameAs(@event);
+        }
+
+        [Test]
+        public void WithoutProperty_should_remove_property_with_given_name()
+        {
+            var @event = new LogEvent(LogLevel.Info, DateTimeOffset.UtcNow, "message")
+                .WithProperty("B", 1)
+                .WithProperty("C", 2);
+
+            var newEvent = @event.WithoutProperty("B");
+
+            newEvent.Properties.Should().BeEquivalentTo(new Dictionary<string, object> { { "C", 2 } });
+        }
+
+        [Test]
+        public void WithoutProperty_should_be_case_insensitive()
+        {
+            var @event = new LogEvent(LogLevel.Info, DateTimeOffset.UtcNow, "message")
+                .WithProperty("B", 1)
+                .WithProperty("C", 2);
+
+            var newEvent = @event.WithoutProperty("c");
+
+            newEvent.Properties.Should().BeEquivalentTo(new Dictionary<string, object> { { "B", 1 } });
+        }
     }
 }
