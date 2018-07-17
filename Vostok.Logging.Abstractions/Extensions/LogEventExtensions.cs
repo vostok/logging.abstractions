@@ -13,7 +13,7 @@ namespace Vostok.Logging.Abstractions
             if (parameters == null)
                 return @event;
 
-            for (int i = 0; i < parameters.Length; i++)
+            for (var i = 0; i < parameters.Length; i++)
             {
                 @event = @event.WithProperty(i.ToString(), parameters[i]);
             }
@@ -27,9 +27,8 @@ namespace Vostok.Logging.Abstractions
             if (@object == null)
                 return @event;
 
-            for (int i = 0; i < ObjectWrapper<T>.Properties.Length; i++)
+            foreach (var property in ObjectWrapper<T>.Properties)
             {
-                var property = ObjectWrapper<T>.Properties[i];
                 @event = @event.WithProperty(property.key, property.getter(@object));
             }
 
