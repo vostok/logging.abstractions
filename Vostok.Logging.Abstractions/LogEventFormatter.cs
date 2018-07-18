@@ -47,7 +47,7 @@ namespace Vostok.Logging.Abstractions
                 }
 
                 if (!tokenBuilder.IsEmpty)
-                    tokenBuilder.MoveToBuilder(resultBuilder);
+                    tokenBuilder.MoveToResult(resultBuilder);
 
                 if (i == template.Length - 1)
                 {
@@ -85,7 +85,7 @@ namespace Vostok.Logging.Abstractions
             }
 
             if (!tokenBuilder.IsEmpty)
-                tokenBuilder.MoveToBuilder(resultBuilder);
+                tokenBuilder.MoveToResult(resultBuilder);
 
             CharArrayCache.Return(tokenBuilderChars);
 
@@ -135,12 +135,12 @@ namespace Vostok.Logging.Abstractions
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void MoveToBuilder(StringBuilder builder)
+            public void MoveToResult(StringBuilder result)
             {
                 if (Length == 0)
                     return;
 
-                builder.Append(chars, 0, Length);
+                result.Append(chars, 0, Length);
                 Length = 0;
             }
 
