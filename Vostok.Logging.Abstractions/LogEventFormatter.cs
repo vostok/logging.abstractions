@@ -33,7 +33,8 @@ namespace Vostok.Logging.Abstractions
                 return template;
 
             var resultBuilder = StringBuilderCache.Acquire(template.Length * 2);
-            var tokenBuilder = new TokenBuilder(template.Length);
+            var tokenBuilderChars = CharArrayCache.Acquire(template.Length);
+            var tokenBuilder = new TokenBuilder(tokenBuilderChars);
 
             for (var i = 0; i < template.Length; i++)
             {
@@ -86,6 +87,8 @@ namespace Vostok.Logging.Abstractions
             if (!tokenBuilder.IsEmpty)
                 tokenBuilder.MoveToBuilder(resultBuilder);
 
+            CharArrayCache.Return(tokenBuilderChars);
+
             return StringBuilderCache.GetStringAndRelease(resultBuilder);
         }
 
@@ -93,10 +96,11 @@ namespace Vostok.Logging.Abstractions
         {
             private readonly char[] chars;
 
-            public TokenBuilder(int length)
+            public TokenBuilder(char[] chars)
             {
+                this.chars = chars;
+
                 Length = 0;
-                chars = new char[length];
             }
 
             public int Length { get; private set; }
