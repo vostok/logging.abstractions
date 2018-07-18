@@ -5,7 +5,9 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Configurations>Debug;Release</Configurations>
     <LangVersion>7.2</LangVersion>
-    <Version>0.0.2</Version>
+
+    <VersionPrefix>0.0.2</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
 
     <Authors>Vostok team</Authors>
     <Company>SKB Kontur</Company>
