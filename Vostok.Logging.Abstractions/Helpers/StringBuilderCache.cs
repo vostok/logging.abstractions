@@ -5,7 +5,7 @@ namespace Vostok.Logging.Abstractions.Helpers
 {
     internal static class StringBuilderCache
     {
-        private const int MaximumSize = 512;
+        private const int MaximumSize = 768;
 
         [ThreadStatic]
         private static StringBuilder CachedInstance;

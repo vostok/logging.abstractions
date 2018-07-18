@@ -4,7 +4,7 @@ namespace Vostok.Logging.Abstractions.Helpers
 {
     internal static class CharArrayCache
     {
-        private const int MaximumSize = 256;
+        private const int MaximumSize = 384;
 
         [ThreadStatic]
         private static char[] CachedArray;
