@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 
 namespace Vostok.Logging.Abstractions
@@ -35,8 +36,8 @@ namespace Vostok.Logging.Abstractions
 
             public WithPropertyLog(ILog baseLog, string key, T value, bool allowOverwrite)
             {
-                this.baseLog = baseLog;
-                this.key = key;
+                this.baseLog = baseLog ?? throw new ArgumentNullException(nameof(baseLog));
+                this.key = key ?? throw new ArgumentNullException(nameof(key));
                 this.value = value;
                 this.allowOverwrite = allowOverwrite;
             }
@@ -66,8 +67,8 @@ namespace Vostok.Logging.Abstractions
 
             public WithPropertiesLog(ILog baseLog, IReadOnlyDictionary<string, object> properties, bool allowOverwrite)
             {
-                this.baseLog = baseLog;
-                this.properties = properties;
+                this.baseLog = baseLog ?? throw new ArgumentNullException(nameof(baseLog));
+                this.properties = properties ?? throw new ArgumentNullException(nameof(properties));
                 this.allowOverwrite = allowOverwrite;
             }
 

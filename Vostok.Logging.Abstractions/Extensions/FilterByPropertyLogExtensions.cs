@@ -14,7 +14,7 @@ namespace Vostok.Logging.Abstractions
         /// <para>Log events that do have a property whose value is not of type <typeparamref name="T"/> are also dropped.</para>
         /// </summary>
         [Pure]
-        public static ILog WithEventsSelectedByProperty<T>(this ILog log, string key, Predicate<T> allow)
+        public static ILog WithEventsSelectedByProperty<T>([NotNull] this ILog log, [NotNull] string key, [NotNull] Predicate<T> allow)
         {
             return new PropertyFilterLog<T>(log, key, allow, true);
         }
@@ -23,7 +23,7 @@ namespace Vostok.Logging.Abstractions
         /// <para>Returns a wrapper log that only logs events whose properties are matched by <paramref name="allow"/> predicate.</para>
         /// </summary>
         [Pure]
-        public static ILog WithEventsSelectedByProperties(this ILog log, Predicate<IReadOnlyDictionary<string, object>> allow)
+        public static ILog WithEventsSelectedByProperties([NotNull] this ILog log, [NotNull] Predicate<IReadOnlyDictionary<string, object>> allow)
         {
             return new PropertiesFilterLog(log, allow, true);
         }
@@ -34,7 +34,7 @@ namespace Vostok.Logging.Abstractions
         /// <para>Log events that do have a property whose value is not of type <typeparamref name="T"/> are also logged.</para>
         /// </summary>
         [Pure]
-        public static ILog WithEventsDroppedByProperty<T>(this ILog log, string key, Predicate<T> reject)
+        public static ILog WithEventsDroppedByProperty<T>([NotNull] this ILog log, [NotNull] string key, [NotNull] Predicate<T> reject)
         {
             return new PropertyFilterLog<T>(log, key, reject, false);
         }
@@ -43,7 +43,7 @@ namespace Vostok.Logging.Abstractions
         /// <para>Returns a wrapper log that drops events whose properties are matched by <paramref name="reject"/> predicate.</para>
         /// </summary>
         [Pure]
-        public static ILog WithEventsDroppedByProperties(this ILog log, Predicate<IReadOnlyDictionary<string, object>> reject)
+        public static ILog WithEventsDroppedByProperties([NotNull] this ILog log, [NotNull] Predicate<IReadOnlyDictionary<string, object>> reject)
         {
             return new PropertiesFilterLog(log, reject, false);
         }
@@ -57,9 +57,9 @@ namespace Vostok.Logging.Abstractions
 
             public PropertyFilterLog(ILog baseLog, string key, Predicate<T> criterion, bool criterionAllowsEvents)
             {
-                this.baseLog = baseLog;
-                this.key = key;
-                this.criterion = criterion;
+                this.baseLog = baseLog ?? throw new ArgumentNullException(nameof(baseLog));
+                this.key = key ?? throw new ArgumentNullException(nameof(key));
+                this.criterion = criterion ?? throw new ArgumentNullException(nameof(criterion));
                 this.criterionAllowsEvents = criterionAllowsEvents;
             }
 
@@ -100,8 +100,8 @@ namespace Vostok.Logging.Abstractions
 
             public PropertiesFilterLog(ILog baseLog, Predicate<IReadOnlyDictionary<string, object>> criterion, bool criterionAllowsEvents)
             {
-                this.baseLog = baseLog;
-                this.criterion = criterion;
+                this.baseLog = baseLog ?? throw new ArgumentNullException(nameof(baseLog));
+                this.criterion = criterion ?? throw new ArgumentNullException(nameof(criterion));
                 this.criterionAllowsEvents = criterionAllowsEvents;
             }
 

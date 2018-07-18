@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using JetBrains.Annotations;
 
 namespace Vostok.Logging.Abstractions
@@ -13,7 +14,7 @@ namespace Vostok.Logging.Abstractions
 
         public CompositeLog(params ILog[] baseLogs)
         {
-            this.baseLogs = baseLogs;
+            this.baseLogs = baseLogs ?? throw new ArgumentNullException(nameof(baseLogs));
         }
 
         public void Log(LogEvent @event)

@@ -44,7 +44,7 @@ namespace Vostok.Logging.Abstractions
                 var typeProperties = typeof (T).GetProperties();
                 var properties = new (string, Func<T, object>)[typeProperties.Length];
 
-                for (int i = 0; i < typeProperties.Length; i++)
+                for (var i = 0; i < typeProperties.Length; i++)
                 {
                     var parameter = Expression.Parameter(typeof (T));
                     var getter = Expression.Lambda<Func<T, object>>(

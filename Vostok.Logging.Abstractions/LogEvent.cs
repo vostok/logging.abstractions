@@ -90,6 +90,9 @@ namespace Vostok.Logging.Abstractions
         [Pure]
         public LogEvent WithoutProperty([NotNull] string key)
         {
+            if (key == null)
+                throw new ArgumentNullException(nameof(key));
+
             var newProperties = properties?.Remove(key);
 
             if (ReferenceEquals(newProperties, properties))
@@ -100,6 +103,12 @@ namespace Vostok.Logging.Abstractions
 
         internal LogEvent WithProperty<T>([NotNull] string key, [NotNull] T value, bool allowOverwrite)
         {
+            if (key == null)
+                throw new ArgumentNullException(nameof(key));
+
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+
             var newProperties = properties == null
                 ? CreateProperties().Set(key, value)
                 : properties.Set(key, value, allowOverwrite);

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using JetBrains.Annotations;
 
 namespace Vostok.Logging.Abstractions
@@ -10,7 +11,7 @@ namespace Vostok.Logging.Abstractions
         /// Returns a wrapper log that ignores <see cref="LogEvent"/>s with log level less than <paramref name="minLevel"/>.
         /// </summary>
         [Pure]
-        public static ILog WithMinimumLevel(this ILog log, LogLevel minLevel)
+        public static ILog WithMinimumLevel([NotNull] this ILog log, LogLevel minLevel)
         {
             return new FilterByLevelLog(log, minLevel);
         }
@@ -19,7 +20,7 @@ namespace Vostok.Logging.Abstractions
         /// Returns a wrapper log that ignores <see cref="LogEvent"/>s with log levels among provided <paramref name="disabledLevels"/>.
         /// </summary>
         [Pure]
-        public static ILog WithDisabledLevels(this ILog log, params LogLevel[] disabledLevels)
+        public static ILog WithDisabledLevels([NotNull] this ILog log, [NotNull] params LogLevel[] disabledLevels)
         {
             return new DisabledLevelsLog(log, disabledLevels);
         }
@@ -31,7 +32,7 @@ namespace Vostok.Logging.Abstractions
 
             public FilterByLevelLog(ILog baseLog, LogLevel minLevel)
             {
-                this.baseLog = baseLog;
+                this.baseLog = baseLog ?? throw new ArgumentNullException(nameof(baseLog));
                 this.minLevel = minLevel;
             }
 
@@ -61,8 +62,8 @@ namespace Vostok.Logging.Abstractions
 
             public DisabledLevelsLog(ILog baseLog, LogLevel[] disabledLevels)
             {
-                this.baseLog = baseLog;
-                this.disabledLevels = disabledLevels;
+                this.baseLog = baseLog ?? throw new ArgumentNullException(nameof(baseLog));
+                this.disabledLevels = disabledLevels ?? throw new ArgumentNullException(nameof(disabledLevels));
             }
 
             public void Log(LogEvent @event)
