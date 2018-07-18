@@ -1,4 +1,4 @@
-sdk *default:
+notests *default:
   build:
     target: Vostok.Logging.Abstractions.sln
     configuration: NoTests
@@ -9,8 +9,9 @@ sdk *default:
     - Vostok.Logging.Abstractions/bin/Release/netstandard2.0/Vostok.Logging.Abstractions.dll
 
   deps:
+    - vostok.devtools
 
-full-build > sdk:
+full-build > notests:
   build:
     target: Vostok.Logging.Abstractions.sln
     configuration: Release
