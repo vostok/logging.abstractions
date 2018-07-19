@@ -1,5 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\..\vostok.devtools\git-commit-to-assembly-title\Vostok.Tools.GitCommit2AssemblyTitle.props" />
+
   <PropertyGroup>
     <TargetFrameworks>netcoreapp2.0;net471</TargetFrameworks>
     <LangVersion>7.2</LangVersion>
