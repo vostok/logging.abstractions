@@ -50,7 +50,6 @@ namespace Vostok.Logging.Abstractions
         /// <summary>
         /// Logs the given <paramref name="messageTemplate"/> on the <see cref="LogLevel.<#=level #>"/> level with given <paramref name="properties" />. The <paramref name="messageTemplate"/> can contain placeholders for <paramref name="properties"/>, see <see cref="LogEventFormatter"/> for details.
         /// </summary>
-        [StringFormatMethod("messageTemplate")]
         public static void <#=level #><T>(this ILog log, [CanBeNull] string messageTemplate, [CanBeNull] T properties)
         {
             if (!log.IsEnabledFor(LogLevel.<#=level #>))
@@ -80,7 +79,6 @@ namespace Vostok.Logging.Abstractions
         /// <summary>
         /// Logs the given <paramref name="messageTemplate"/> and <paramref name="exception"/> on the <see cref="LogLevel.<#=level #>"/> level with given <paramref name="properties" />. The <paramref name="messageTemplate"/> can contain placeholders for <paramref name="properties"/>, see <see cref="LogEventFormatter"/> for details.
         /// </summary>
-        [StringFormatMethod("messageTemplate")]
         public static void <#=level #><T>(this ILog log, [CanBeNull] Exception exception, [CanBeNull] string messageTemplate, [CanBeNull] T properties)
         {
             if (!log.IsEnabledFor(LogLevel.<#=level #>))

@@ -44,7 +44,6 @@ namespace Vostok.Logging.Abstractions
         /// <summary>
         /// Logs the given <paramref name="messageTemplate"/> on the <see cref="LogLevel.Debug"/> level with given <paramref name="properties" />. The <paramref name="messageTemplate"/> can contain placeholders for <paramref name="properties"/>, see <see cref="LogEventFormatter"/> for details.
         /// </summary>
-        [StringFormatMethod("messageTemplate")]
         public static void Debug<T>(this ILog log, [CanBeNull] string messageTemplate, [CanBeNull] T properties)
         {
             if (!log.IsEnabledFor(LogLevel.Debug))
@@ -74,7 +73,6 @@ namespace Vostok.Logging.Abstractions
         /// <summary>
         /// Logs the given <paramref name="messageTemplate"/> and <paramref name="exception"/> on the <see cref="LogLevel.Debug"/> level with given <paramref name="properties" />. The <paramref name="messageTemplate"/> can contain placeholders for <paramref name="properties"/>, see <see cref="LogEventFormatter"/> for details.
         /// </summary>
-        [StringFormatMethod("messageTemplate")]
         public static void Debug<T>(this ILog log, [CanBeNull] Exception exception, [CanBeNull] string messageTemplate, [CanBeNull] T properties)
         {
             if (!log.IsEnabledFor(LogLevel.Debug))
@@ -158,7 +156,6 @@ namespace Vostok.Logging.Abstractions
         /// <summary>
         /// Logs the given <paramref name="messageTemplate"/> on the <see cref="LogLevel.Info"/> level with given <paramref name="properties" />. The <paramref name="messageTemplate"/> can contain placeholders for <paramref name="properties"/>, see <see cref="LogEventFormatter"/> for details.
         /// </summary>
-        [StringFormatMethod("messageTemplate")]
         public static void Info<T>(this ILog log, [CanBeNull] string messageTemplate, [CanBeNull] T properties)
         {
             if (!log.IsEnabledFor(LogLevel.Info))
@@ -188,7 +185,6 @@ namespace Vostok.Logging.Abstractions
         /// <summary>
         /// Logs the given <paramref name="messageTemplate"/> and <paramref name="exception"/> on the <see cref="LogLevel.Info"/> level with given <paramref name="properties" />. The <paramref name="messageTemplate"/> can contain placeholders for <paramref name="properties"/>, see <see cref="LogEventFormatter"/> for details.
         /// </summary>
-        [StringFormatMethod("messageTemplate")]
         public static void Info<T>(this ILog log, [CanBeNull] Exception exception, [CanBeNull] string messageTemplate, [CanBeNull] T properties)
         {
             if (!log.IsEnabledFor(LogLevel.Info))
@@ -272,7 +268,6 @@ namespace Vostok.Logging.Abstractions
         /// <summary>
         /// Logs the given <paramref name="messageTemplate"/> on the <see cref="LogLevel.Warn"/> level with given <paramref name="properties" />. The <paramref name="messageTemplate"/> can contain placeholders for <paramref name="properties"/>, see <see cref="LogEventFormatter"/> for details.
         /// </summary>
-        [StringFormatMethod("messageTemplate")]
         public static void Warn<T>(this ILog log, [CanBeNull] string messageTemplate, [CanBeNull] T properties)
         {
             if (!log.IsEnabledFor(LogLevel.Warn))
@@ -302,7 +297,6 @@ namespace Vostok.Logging.Abstractions
         /// <summary>
         /// Logs the given <paramref name="messageTemplate"/> and <paramref name="exception"/> on the <see cref="LogLevel.Warn"/> level with given <paramref name="properties" />. The <paramref name="messageTemplate"/> can contain placeholders for <paramref name="properties"/>, see <see cref="LogEventFormatter"/> for details.
         /// </summary>
-        [StringFormatMethod("messageTemplate")]
         public static void Warn<T>(this ILog log, [CanBeNull] Exception exception, [CanBeNull] string messageTemplate, [CanBeNull] T properties)
         {
             if (!log.IsEnabledFor(LogLevel.Warn))
@@ -386,7 +380,6 @@ namespace Vostok.Logging.Abstractions
         /// <summary>
         /// Logs the given <paramref name="messageTemplate"/> on the <see cref="LogLevel.Error"/> level with given <paramref name="properties" />. The <paramref name="messageTemplate"/> can contain placeholders for <paramref name="properties"/>, see <see cref="LogEventFormatter"/> for details.
         /// </summary>
-        [StringFormatMethod("messageTemplate")]
         public static void Error<T>(this ILog log, [CanBeNull] string messageTemplate, [CanBeNull] T properties)
         {
             if (!log.IsEnabledFor(LogLevel.Error))
@@ -416,7 +409,6 @@ namespace Vostok.Logging.Abstractions
         /// <summary>
         /// Logs the given <paramref name="messageTemplate"/> and <paramref name="exception"/> on the <see cref="LogLevel.Error"/> level with given <paramref name="properties" />. The <paramref name="messageTemplate"/> can contain placeholders for <paramref name="properties"/>, see <see cref="LogEventFormatter"/> for details.
         /// </summary>
-        [StringFormatMethod("messageTemplate")]
         public static void Error<T>(this ILog log, [CanBeNull] Exception exception, [CanBeNull] string messageTemplate, [CanBeNull] T properties)
         {
             if (!log.IsEnabledFor(LogLevel.Error))
@@ -500,7 +492,6 @@ namespace Vostok.Logging.Abstractions
         /// <summary>
         /// Logs the given <paramref name="messageTemplate"/> on the <see cref="LogLevel.Fatal"/> level with given <paramref name="properties" />. The <paramref name="messageTemplate"/> can contain placeholders for <paramref name="properties"/>, see <see cref="LogEventFormatter"/> for details.
         /// </summary>
-        [StringFormatMethod("messageTemplate")]
         public static void Fatal<T>(this ILog log, [CanBeNull] string messageTemplate, [CanBeNull] T properties)
         {
             if (!log.IsEnabledFor(LogLevel.Fatal))
@@ -530,7 +521,6 @@ namespace Vostok.Logging.Abstractions
         /// <summary>
         /// Logs the given <paramref name="messageTemplate"/> and <paramref name="exception"/> on the <see cref="LogLevel.Fatal"/> level with given <paramref name="properties" />. The <paramref name="messageTemplate"/> can contain placeholders for <paramref name="properties"/>, see <see cref="LogEventFormatter"/> for details.
         /// </summary>
-        [StringFormatMethod("messageTemplate")]
         public static void Fatal<T>(this ILog log, [CanBeNull] Exception exception, [CanBeNull] string messageTemplate, [CanBeNull] T properties)
         {
             if (!log.IsEnabledFor(LogLevel.Fatal))
