@@ -223,6 +223,14 @@ namespace Vostok.Logging.Abstractions.Tests
         }
 
         [Test]
+        public void FormatMessage_should_correctly_render_null_property_values()
+        {
+            var properties = new Dictionary<string, object> { { "prop", null } };
+
+            LogEventFormatter.FormatMessage("aa {prop} bb", properties).Should().BeEquivalentTo("aa null bb");
+        }
+
+        [Test]
         public void FormatMessage_should_produce_repeatable_results()
         {
             for (var i = 0; i < 100; i++)

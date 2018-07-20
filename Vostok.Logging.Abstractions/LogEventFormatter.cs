@@ -78,7 +78,7 @@ namespace Vostok.Logging.Abstractions
                     var key = tokenBuilder.GetKeyFromBuffer();
                     if (properties.TryGetValue(key, out var value))
                     {
-                        resultBuilder.Append((value as IFormattable)?.ToString(null, CultureInfo.InvariantCulture) ?? value);
+                        resultBuilder.Append(FormatPropertyValue(value));
                         tokenBuilder.Clear();
                     }
                 }
@@ -90,6 +90,14 @@ namespace Vostok.Logging.Abstractions
             CharArrayCache.Return(tokenBuilderChars);
 
             return StringBuilderCache.GetStringAndRelease(resultBuilder);
+        }
+
+        private static string FormatPropertyValue(object value)
+        {
+            if (value is IFormattable formattableValue)
+                return formattableValue.ToString(null, CultureInfo.InvariantCulture);
+
+            return value?.ToString() ?? "null";
         }
 
         private struct TokenBuilder
