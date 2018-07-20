@@ -8,6 +8,7 @@
     <Configurations>Debug;Release</Configurations>
     <LangVersion>7.2</LangVersion>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IncludeSymbols>true</IncludeSymbols>
   </PropertyGroup>
 
