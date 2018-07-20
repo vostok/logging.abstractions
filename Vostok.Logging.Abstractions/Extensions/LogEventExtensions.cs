@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Reflection;
 using JetBrains.Annotations;
 
 namespace Vostok.Logging.Abstractions
 {
-    // TODO(krait): Tests.
     internal static class LogEventExtensions
     {
         [Pure]
@@ -29,10 +29,22 @@ namespace Vostok.Logging.Abstractions
 
             foreach (var property in ObjectWrapper<T>.Properties)
             {
-                @event = @event.WithProperty(property.key, property.getter(@object));
+                @event = @event.WithProperty(property.key, GetPropertyValue(@object, property.getter));
             }
 
             return @event;
+        }
+
+        private static object GetPropertyValue<T>(T @object, Func<T, object> propertyGetter)
+        {
+            try
+            {
+                return propertyGetter(@object);
+            }
+            catch
+            {
+                return "<error in property getter>";
+            }
         }
 
         private static class ObjectWrapper<T>
@@ -41,20 +53,27 @@ namespace Vostok.Logging.Abstractions
 
             private static (string, Func<T, object>)[] BuildProperties()
             {
-                var typeProperties = typeof (T).GetProperties();
-                var properties = new (string, Func<T, object>)[typeProperties.Length];
-
-                for (var i = 0; i < typeProperties.Length; i++)
+                try
                 {
-                    var parameter = Expression.Parameter(typeof (T));
-                    var getter = Expression.Lambda<Func<T, object>>(
-                            Expression.Convert(Expression.PropertyOrField(parameter, typeProperties[i].Name), typeof (object)),
-                            parameter)
-                        .Compile();
-                    properties[i] = (typeProperties[i].Name, getter);
-                }
+                    var typeProperties = typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public);
+                    var propertyGetters = new(string, Func<T, object>)[typeProperties.Length];
 
-                return properties;
+                    for (var i = 0; i < typeProperties.Length; i++)
+                    {
+                        var parameter = Expression.Parameter(typeof(T));
+                        var getter = Expression.Lambda<Func<T, object>>(
+                                Expression.Convert(Expression.PropertyOrField(parameter, typeProperties[i].Name), typeof(object)),
+                                parameter)
+                            .Compile();
+                        propertyGetters[i] = (typeProperties[i].Name, getter);
+                    }
+
+                    return propertyGetters;
+                }
+                catch
+                {
+                    return new (string, Func<T, object>)[]{};
+                }
             }
         }
     }
