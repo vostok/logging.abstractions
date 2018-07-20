@@ -49,6 +49,16 @@ namespace Vostok.Logging.Abstractions.Tests
         }
 
         [Test]
+        public void WithProperty_should_allow_null_property_values()
+        {
+            var @event = new LogEvent(LogLevel.Info, DateTimeOffset.UtcNow, "message").WithProperty("A", null as object);
+            var newEvent = @event.WithProperty("B", null as object);
+
+            newEvent?.Properties?["A"].Should().BeNull();
+            newEvent?.Properties?["B"].Should().BeNull();
+        }
+
+        [Test]
         public void WithPropertyIfAbsent_should_add_absent_property_to_log_event_properties()
         {
             var @event = new LogEvent(LogLevel.Info, DateTimeOffset.UtcNow, "message").WithProperty("A", 1);
@@ -76,6 +86,16 @@ namespace Vostok.Logging.Abstractions.Tests
             var @event = new LogEvent(LogLevel.Info, DateTimeOffset.UtcNow, "message");
             @event = @event.WithPropertyIfAbsent("A", 1);
             @event.Properties.Should().BeEquivalentTo(new Dictionary<string, object> { { "A", 1 } });
+        }
+
+        [Test]
+        public void WithPropertyIfAbsent_should_allow_null_property_values()
+        {
+            var @event = new LogEvent(LogLevel.Info, DateTimeOffset.UtcNow, "message").WithPropertyIfAbsent("A", null as object);
+            var newEvent = @event.WithPropertyIfAbsent("B", null as object);
+
+            newEvent?.Properties?["A"].Should().BeNull();
+            newEvent?.Properties?["B"].Should().BeNull();
         }
 
         [Test]
