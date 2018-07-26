@@ -15,6 +15,9 @@ namespace Vostok.Logging.Abstractions
         [CanBeNull]
         private readonly DictionarySnapshot<string, object> properties;
 
+        /// <summary>
+        /// Creates a new log event.
+        /// </summary>
         public LogEvent(LogLevel level, DateTimeOffset timestamp, [CanBeNull] string messageTemplate, [CanBeNull] Exception exception = null)
             : this(level, timestamp, messageTemplate, null, exception)
         {
@@ -40,7 +43,11 @@ namespace Vostok.Logging.Abstractions
         public DateTimeOffset Timestamp { get; }
 
         /// <summary>
-        /// The template of the log message that can be filled with values from <see cref="Properties"/>. See <see cref="LogEventFormatter"/> for details. Can be null for events containing only <see cref="Exception"/>.
+        /// <para>The template of the log message containing placeholders to be filled with values from <see cref="Properties"/>.</para>
+        /// <para>For example, the template "foo{0} {key}" and properties { '0': 'bar', 'key': 'baz' } produce the follwing output: "foobar baz".</para>
+        /// <para>Use double curly braces to escape curly braces in text: "{{key}}", { 'key': 'value' } --> "{{key}}".</para>
+        /// <para>Any mismatched braces or nonexistent keys are kept as-is: "key1} {key2}", { 'key1': 'value' } --> "key1} {key2}".</para>
+        /// <para>Can be null for events containing only <see cref="Exception"/>.</para>
         /// </summary>
         [CanBeNull]
         public string MessageTemplate { get; }
@@ -52,7 +59,7 @@ namespace Vostok.Logging.Abstractions
         ///     <item>Named properties. These should be set using logging extensions with the 'properties' argument like <see cref="LogExtensions.Info{T}(ILog,string,T)"/>.</item> 
         ///     <item>Positional parameters. These should be set using logging extensions with the 'parameters' argument like <see cref="LogExtensions.Info(ILog,string,object[])"/> and are then referenced by their position in the array instead of name.</item>
         /// </list>
-        /// <para>Both kinds of properties can be substituted into the <see cref="MessageTemplate"/>. See <see cref="LogEventFormatter"/> for details.</para>
+        /// <para>Both kinds of properties can be substituted into the <see cref="MessageTemplate"/>. See <see cref="MessageTemplate"/> for details.</para>
         /// <para>Can be null if there is no properties.</para>
         /// </summary>
         [CanBeNull]
