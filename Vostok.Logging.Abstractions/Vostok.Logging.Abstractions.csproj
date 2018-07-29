@@ -30,7 +30,7 @@
     <Product>Vostok</Product>
     <Copyright>Copyright (c) 2017-2018 SKB Kontur</Copyright>
     <Title>Vostok logging abstractions library</Title>
-    <Description>Logging abstractions library for microservice toolkit http://vostok.tools/</Description>
+    <Description>A library with core logging interfaces, such as ILog and LogEvent.</Description>
   </PropertyGroup>
 
   <PropertyGroup>
