@@ -37,6 +37,7 @@
     <PackageProjectUrl>https://github.com/vostok/logging.abstractions</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/vostok/logging.abstractions/blob/master/LICENSE</PackageLicenseUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageIconUrl>https://raw.githubusercontent.com/vostok/devtools/master/assets/Vostok-icon.png</PackageIconUrl>
     <PackageTags>vostok vostok.logging</PackageTags>
     <RepositoryUrl>https://github.com/vostok/logging.abstractions</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
