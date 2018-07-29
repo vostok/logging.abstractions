@@ -22,14 +22,14 @@ namespace Vostok.Logging.Abstractions
         }
 
         [Pure]
-        public static LogEvent WithObjectProperties<T>(this LogEvent @event, T @object)
+        public static LogEvent WithObjectProperties<T>(this LogEvent @event, T @object, bool allowOverwrite = true)
         {
             if (@object == null)
                 return @event;
 
             foreach (var property in ObjectWrapper<T>.Properties)
             {
-                @event = @event.WithProperty(property.key, GetPropertyValue(@object, property.getter));
+                @event = @event.WithProperty(property.key, GetPropertyValue(@object, property.getter), allowOverwrite);
             }
 
             return @event;
