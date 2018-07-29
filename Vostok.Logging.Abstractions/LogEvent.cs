@@ -16,7 +16,7 @@ namespace Vostok.Logging.Abstractions
         private readonly DictionarySnapshot<string, object> properties;
 
         /// <summary>
-        /// Creates a new log event.
+        /// Creates a new log event with specified <paramref name="level"/>, <paramref name="timestamp"/>, <paramref name="messageTemplate"/>, <paramref name="exception"/> and empty properties.
         /// </summary>
         public LogEvent(LogLevel level, DateTimeOffset timestamp, [CanBeNull] string messageTemplate, [CanBeNull] Exception exception = null)
             : this(level, timestamp, messageTemplate, null, exception)
@@ -44,7 +44,7 @@ namespace Vostok.Logging.Abstractions
 
         /// <summary>
         /// <para>The template of the log message containing placeholders to be filled with values from <see cref="Properties"/>.</para>
-        /// <para>For example, the template "foo{0} {key}" and properties { '0': 'bar', 'key': 'baz' } produce the follwing output: "foobar baz".</para>
+        /// <para>For example, the template "foo{0} {key}" and properties { '0': 'bar', 'key': 'baz' } produce the following output: "foobar baz".</para>
         /// <para>Use double curly braces to escape curly braces in text: "{{key}}", { 'key': 'value' } --> "{{key}}".</para>
         /// <para>Any mismatched braces or nonexistent keys are kept as-is: "key1} {key2}", { 'key1': 'value' } --> "key1} {key2}".</para>
         /// <para>Can be null for events containing only <see cref="Exception"/>.</para>
