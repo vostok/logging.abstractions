@@ -18,7 +18,7 @@ namespace Vostok.Logging.Abstractions.Tests
         {
             baseLog = Substitute.For<ILog>();
 
-            @event = new LogEvent(LogLevel.Info, DateTimeOffset.UtcNow, null);
+            @event = new LogEvent(LogLevel.Info, DateTimeOffset.Now, null);
         }
 
         [Test]

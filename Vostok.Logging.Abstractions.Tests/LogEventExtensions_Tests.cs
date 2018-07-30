@@ -13,7 +13,7 @@ namespace Vostok.Logging.Abstractions.Tests
         [SetUp]
         public void TestSetup()
         {
-            eventBefore = new LogEvent(LogLevel.Info, DateTimeOffset.UtcNow, null)
+            eventBefore = new LogEvent(LogLevel.Info, DateTimeOffset.Now, null)
                 .WithProperty("A", 1)
                 .WithProperty("B", 2);
         }

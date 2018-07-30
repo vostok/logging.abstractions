@@ -39,6 +39,7 @@ namespace Vostok.Logging.Abstractions.Tests
                     Arg.Is<LogEvent>(
                         e =>
                             e.Level == level &&
+                            HasRoughlyLocalTimestamp(e) &&
                             e.MessageTemplate.Equals(message) &&
                             e.Properties == null &&
                             e.Exception == null));
@@ -59,6 +60,7 @@ namespace Vostok.Logging.Abstractions.Tests
                     Arg.Is<LogEvent>(
                         e =>
                             e.Level == level &&
+                            HasRoughlyLocalTimestamp(e) &&
                             e.MessageTemplate == null &&
                             e.Properties == null &&
                             e.Exception == exception));
@@ -79,6 +81,7 @@ namespace Vostok.Logging.Abstractions.Tests
                     Arg.Is<LogEvent>(
                         e =>
                             e.Level == level &&
+                            HasRoughlyLocalTimestamp(e) &&
                             e.MessageTemplate.Equals(message) &&
                             e.Properties == null &&
                             e.Exception == exception));
@@ -100,6 +103,7 @@ namespace Vostok.Logging.Abstractions.Tests
                     Arg.Is<LogEvent>(
                         e =>
                             e.Level == level &&
+                            HasRoughlyLocalTimestamp(e) &&
                             e.MessageTemplate.Equals(message) &&
                             e.Properties.SequenceEqual(new Dictionary<string, object> {{"A", 1}}) &&
                             e.Exception == null));
@@ -136,6 +140,7 @@ namespace Vostok.Logging.Abstractions.Tests
                     Arg.Is<LogEvent>(
                         e =>
                             e.Level == level &&
+                            HasRoughlyLocalTimestamp(e) &&
                             e.MessageTemplate.Equals(message) &&
                             e.Properties.SequenceEqual(new Dictionary<string, object> {{"0", obj}}) &&
                             e.Exception == null));
@@ -157,6 +162,7 @@ namespace Vostok.Logging.Abstractions.Tests
                     Arg.Is<LogEvent>(
                         e =>
                             e.Level == level &&
+                            HasRoughlyLocalTimestamp(e) &&
                             e.MessageTemplate.Equals(message) &&
                             e.Properties.SequenceEqual(new Dictionary<string, object> {{"A", 1}}) &&
                             e.Exception == exception));
@@ -193,6 +199,7 @@ namespace Vostok.Logging.Abstractions.Tests
                     Arg.Is<LogEvent>(
                         e =>
                             e.Level == level &&
+                            HasRoughlyLocalTimestamp(e) &&
                             e.MessageTemplate.Equals(message) &&
                             e.Properties.SequenceEqual(new Dictionary<string, object> {{"0", obj}}) &&
                             e.Exception == exception));
@@ -213,6 +220,7 @@ namespace Vostok.Logging.Abstractions.Tests
                     Arg.Is<LogEvent>(
                         e =>
                             e.Level == level &&
+                            HasRoughlyLocalTimestamp(e) &&
                             e.MessageTemplate.Equals(message) &&
                             e.Properties == null &&
                             e.Exception == exception));
@@ -258,6 +266,11 @@ namespace Vostok.Logging.Abstractions.Tests
 
                     return parameters.Where(p => !p.IsGenericParameter).SequenceEqual(argumentsTypes);
                 });
+        }
+
+        private static bool HasRoughlyLocalTimestamp(LogEvent @event)
+        {
+            return Math.Abs((@event.Timestamp.DateTime - DateTime.Now).TotalMinutes) <= 1.0;
         }
 
         private void SetLogEnabledForCurrentLevel(LogLevel level, bool isEnabled)

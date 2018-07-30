@@ -34,7 +34,7 @@ namespace Vostok.Logging.Abstractions.Tests
         [Test]
         public void Log_method_should_forward_log_event_to_all_underlying_logs_in_order()
         {
-            var @event = new LogEvent(LogLevel.Info, DateTimeOffset.UtcNow, null);
+            var @event = new LogEvent(LogLevel.Info, DateTimeOffset.Now, null);
 
             compositeLog.Log(@event);
 

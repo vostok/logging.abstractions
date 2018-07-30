@@ -27,7 +27,7 @@ namespace Vostok.Logging.Abstractions.Tests
 
             foreach (var lowerLevel in allLevels.Where(l => l < minLevel))
             {
-                filteredLog.Log(new LogEvent(lowerLevel, DateTimeOffset.UtcNow, null));
+                filteredLog.Log(new LogEvent(lowerLevel, DateTimeOffset.Now, null));
 
                 baseLog.ReceivedCalls().Should().BeEmpty();
             }
@@ -40,7 +40,7 @@ namespace Vostok.Logging.Abstractions.Tests
 
             foreach (var sameOrHigherLevel in allLevels.Where(l => l >= minLevel))
             {
-                var @event = new LogEvent(sameOrHigherLevel, DateTimeOffset.UtcNow, null);
+                var @event = new LogEvent(sameOrHigherLevel, DateTimeOffset.Now, null);
 
                 filteredLog.Log(@event);
 
@@ -91,7 +91,7 @@ namespace Vostok.Logging.Abstractions.Tests
         {
             filteredLog = baseLog.WithDisabledLevels(disabledLevel);
 
-            filteredLog.Log(new LogEvent(disabledLevel, DateTimeOffset.UtcNow, null));
+            filteredLog.Log(new LogEvent(disabledLevel, DateTimeOffset.Now, null));
 
             baseLog.ReceivedCalls().Should().BeEmpty();
         }
@@ -103,7 +103,7 @@ namespace Vostok.Logging.Abstractions.Tests
 
             foreach (var level in allLevels.Where(l => l != disabledLevel))
             {
-                var @event = new LogEvent(level, DateTimeOffset.UtcNow, null);
+                var @event = new LogEvent(level, DateTimeOffset.Now, null);
 
                 filteredLog.Log(@event);
 

@@ -16,7 +16,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Debug))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Debug, DateTimeOffset.UtcNow, message));
+            log.Log(new LogEvent(LogLevel.Debug, DateTimeOffset.Now, message));
         }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Debug))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Debug, DateTimeOffset.UtcNow, null, exception));
+            log.Log(new LogEvent(LogLevel.Debug, DateTimeOffset.Now, null, exception));
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Debug))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Debug, DateTimeOffset.UtcNow, message, exception));
+            log.Log(new LogEvent(LogLevel.Debug, DateTimeOffset.Now, message, exception));
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Vostok.Logging.Abstractions
                 return;
             }
 
-            log.Log(new LogEvent(LogLevel.Debug, DateTimeOffset.UtcNow, messageTemplate).WithObjectProperties(properties));
+            log.Log(new LogEvent(LogLevel.Debug, DateTimeOffset.Now, messageTemplate).WithObjectProperties(properties));
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Debug))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Debug, DateTimeOffset.UtcNow, messageTemplate).WithParameters(parameters));
+            log.Log(new LogEvent(LogLevel.Debug, DateTimeOffset.Now, messageTemplate).WithParameters(parameters));
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace Vostok.Logging.Abstractions
                 return;
             }
 
-            log.Log(new LogEvent(LogLevel.Debug, DateTimeOffset.UtcNow, messageTemplate, exception).WithObjectProperties(properties));
+            log.Log(new LogEvent(LogLevel.Debug, DateTimeOffset.Now, messageTemplate, exception).WithObjectProperties(properties));
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Debug))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Debug, DateTimeOffset.UtcNow, messageTemplate, exception).WithParameters(parameters));
+            log.Log(new LogEvent(LogLevel.Debug, DateTimeOffset.Now, messageTemplate, exception).WithParameters(parameters));
         }
 
         [Obsolete("Use the Debug(ILog, Exception, string) overload instead.")]
@@ -128,7 +128,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Info))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Info, DateTimeOffset.UtcNow, message));
+            log.Log(new LogEvent(LogLevel.Info, DateTimeOffset.Now, message));
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Info))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Info, DateTimeOffset.UtcNow, null, exception));
+            log.Log(new LogEvent(LogLevel.Info, DateTimeOffset.Now, null, exception));
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Info))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Info, DateTimeOffset.UtcNow, message, exception));
+            log.Log(new LogEvent(LogLevel.Info, DateTimeOffset.Now, message, exception));
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace Vostok.Logging.Abstractions
                 return;
             }
 
-            log.Log(new LogEvent(LogLevel.Info, DateTimeOffset.UtcNow, messageTemplate).WithObjectProperties(properties));
+            log.Log(new LogEvent(LogLevel.Info, DateTimeOffset.Now, messageTemplate).WithObjectProperties(properties));
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Info))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Info, DateTimeOffset.UtcNow, messageTemplate).WithParameters(parameters));
+            log.Log(new LogEvent(LogLevel.Info, DateTimeOffset.Now, messageTemplate).WithParameters(parameters));
         }
 
         /// <summary>
@@ -196,7 +196,7 @@ namespace Vostok.Logging.Abstractions
                 return;
             }
 
-            log.Log(new LogEvent(LogLevel.Info, DateTimeOffset.UtcNow, messageTemplate, exception).WithObjectProperties(properties));
+            log.Log(new LogEvent(LogLevel.Info, DateTimeOffset.Now, messageTemplate, exception).WithObjectProperties(properties));
         }
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Info))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Info, DateTimeOffset.UtcNow, messageTemplate, exception).WithParameters(parameters));
+            log.Log(new LogEvent(LogLevel.Info, DateTimeOffset.Now, messageTemplate, exception).WithParameters(parameters));
         }
 
         [Obsolete("Use the Info(ILog, Exception, string) overload instead.")]
@@ -240,7 +240,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Warn))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Warn, DateTimeOffset.UtcNow, message));
+            log.Log(new LogEvent(LogLevel.Warn, DateTimeOffset.Now, message));
         }
 
         /// <summary>
@@ -251,7 +251,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Warn))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Warn, DateTimeOffset.UtcNow, null, exception));
+            log.Log(new LogEvent(LogLevel.Warn, DateTimeOffset.Now, null, exception));
         }
 
         /// <summary>
@@ -262,7 +262,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Warn))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Warn, DateTimeOffset.UtcNow, message, exception));
+            log.Log(new LogEvent(LogLevel.Warn, DateTimeOffset.Now, message, exception));
         }
 
         /// <summary>
@@ -279,7 +279,7 @@ namespace Vostok.Logging.Abstractions
                 return;
             }
 
-            log.Log(new LogEvent(LogLevel.Warn, DateTimeOffset.UtcNow, messageTemplate).WithObjectProperties(properties));
+            log.Log(new LogEvent(LogLevel.Warn, DateTimeOffset.Now, messageTemplate).WithObjectProperties(properties));
         }
 
         /// <summary>
@@ -291,7 +291,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Warn))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Warn, DateTimeOffset.UtcNow, messageTemplate).WithParameters(parameters));
+            log.Log(new LogEvent(LogLevel.Warn, DateTimeOffset.Now, messageTemplate).WithParameters(parameters));
         }
 
         /// <summary>
@@ -308,7 +308,7 @@ namespace Vostok.Logging.Abstractions
                 return;
             }
 
-            log.Log(new LogEvent(LogLevel.Warn, DateTimeOffset.UtcNow, messageTemplate, exception).WithObjectProperties(properties));
+            log.Log(new LogEvent(LogLevel.Warn, DateTimeOffset.Now, messageTemplate, exception).WithObjectProperties(properties));
         }
 
         /// <summary>
@@ -320,7 +320,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Warn))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Warn, DateTimeOffset.UtcNow, messageTemplate, exception).WithParameters(parameters));
+            log.Log(new LogEvent(LogLevel.Warn, DateTimeOffset.Now, messageTemplate, exception).WithParameters(parameters));
         }
 
         [Obsolete("Use the Warn(ILog, Exception, string) overload instead.")]
@@ -352,7 +352,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Error))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Error, DateTimeOffset.UtcNow, message));
+            log.Log(new LogEvent(LogLevel.Error, DateTimeOffset.Now, message));
         }
 
         /// <summary>
@@ -363,7 +363,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Error))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Error, DateTimeOffset.UtcNow, null, exception));
+            log.Log(new LogEvent(LogLevel.Error, DateTimeOffset.Now, null, exception));
         }
 
         /// <summary>
@@ -374,7 +374,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Error))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Error, DateTimeOffset.UtcNow, message, exception));
+            log.Log(new LogEvent(LogLevel.Error, DateTimeOffset.Now, message, exception));
         }
 
         /// <summary>
@@ -391,7 +391,7 @@ namespace Vostok.Logging.Abstractions
                 return;
             }
 
-            log.Log(new LogEvent(LogLevel.Error, DateTimeOffset.UtcNow, messageTemplate).WithObjectProperties(properties));
+            log.Log(new LogEvent(LogLevel.Error, DateTimeOffset.Now, messageTemplate).WithObjectProperties(properties));
         }
 
         /// <summary>
@@ -403,7 +403,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Error))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Error, DateTimeOffset.UtcNow, messageTemplate).WithParameters(parameters));
+            log.Log(new LogEvent(LogLevel.Error, DateTimeOffset.Now, messageTemplate).WithParameters(parameters));
         }
 
         /// <summary>
@@ -420,7 +420,7 @@ namespace Vostok.Logging.Abstractions
                 return;
             }
 
-            log.Log(new LogEvent(LogLevel.Error, DateTimeOffset.UtcNow, messageTemplate, exception).WithObjectProperties(properties));
+            log.Log(new LogEvent(LogLevel.Error, DateTimeOffset.Now, messageTemplate, exception).WithObjectProperties(properties));
         }
 
         /// <summary>
@@ -432,7 +432,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Error))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Error, DateTimeOffset.UtcNow, messageTemplate, exception).WithParameters(parameters));
+            log.Log(new LogEvent(LogLevel.Error, DateTimeOffset.Now, messageTemplate, exception).WithParameters(parameters));
         }
 
         [Obsolete("Use the Error(ILog, Exception, string) overload instead.")]
@@ -464,7 +464,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Fatal))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Fatal, DateTimeOffset.UtcNow, message));
+            log.Log(new LogEvent(LogLevel.Fatal, DateTimeOffset.Now, message));
         }
 
         /// <summary>
@@ -475,7 +475,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Fatal))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Fatal, DateTimeOffset.UtcNow, null, exception));
+            log.Log(new LogEvent(LogLevel.Fatal, DateTimeOffset.Now, null, exception));
         }
 
         /// <summary>
@@ -486,7 +486,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Fatal))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Fatal, DateTimeOffset.UtcNow, message, exception));
+            log.Log(new LogEvent(LogLevel.Fatal, DateTimeOffset.Now, message, exception));
         }
 
         /// <summary>
@@ -503,7 +503,7 @@ namespace Vostok.Logging.Abstractions
                 return;
             }
 
-            log.Log(new LogEvent(LogLevel.Fatal, DateTimeOffset.UtcNow, messageTemplate).WithObjectProperties(properties));
+            log.Log(new LogEvent(LogLevel.Fatal, DateTimeOffset.Now, messageTemplate).WithObjectProperties(properties));
         }
 
         /// <summary>
@@ -515,7 +515,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Fatal))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Fatal, DateTimeOffset.UtcNow, messageTemplate).WithParameters(parameters));
+            log.Log(new LogEvent(LogLevel.Fatal, DateTimeOffset.Now, messageTemplate).WithParameters(parameters));
         }
 
         /// <summary>
@@ -532,7 +532,7 @@ namespace Vostok.Logging.Abstractions
                 return;
             }
 
-            log.Log(new LogEvent(LogLevel.Fatal, DateTimeOffset.UtcNow, messageTemplate, exception).WithObjectProperties(properties));
+            log.Log(new LogEvent(LogLevel.Fatal, DateTimeOffset.Now, messageTemplate, exception).WithObjectProperties(properties));
         }
 
         /// <summary>
@@ -544,7 +544,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Fatal))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Fatal, DateTimeOffset.UtcNow, messageTemplate, exception).WithParameters(parameters));
+            log.Log(new LogEvent(LogLevel.Fatal, DateTimeOffset.Now, messageTemplate, exception).WithParameters(parameters));
         }
 
         [Obsolete("Use the Fatal(ILog, Exception, string) overload instead.")]

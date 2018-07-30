@@ -22,7 +22,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.<#=level #>))
                 return;
 
-            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, message));
+            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.Now, message));
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.<#=level #>))
                 return;
 
-            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, null, exception));
+            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.Now, null, exception));
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.<#=level #>))
                 return;
 
-            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, message, exception));
+            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.Now, message, exception));
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Vostok.Logging.Abstractions
                 return;
             }
 
-            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, messageTemplate).WithObjectProperties(properties));
+            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.Now, messageTemplate).WithObjectProperties(properties));
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.<#=level #>))
                 return;
 
-            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, messageTemplate).WithParameters(parameters));
+            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.Now, messageTemplate).WithParameters(parameters));
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Vostok.Logging.Abstractions
                 return;
             }
 
-            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, messageTemplate, exception).WithObjectProperties(properties));
+            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.Now, messageTemplate, exception).WithObjectProperties(properties));
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.<#=level #>))
                 return;
 
-            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.UtcNow, messageTemplate, exception).WithParameters(parameters));
+            log.Log(new LogEvent(LogLevel.<#=level #>, DateTimeOffset.Now, messageTemplate, exception).WithParameters(parameters));
         }
 
         [Obsolete("Use the <#=level #>(ILog, Exception, string) overload instead.")]

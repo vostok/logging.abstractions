@@ -20,7 +20,7 @@ namespace Vostok.Logging.Abstractions.Tests
             baseLog = Substitute.For<ILog>();
             baseLog.When(log => log.Log(Arg.Any<LogEvent>())).Do(info => observedEvent = info.Arg<LogEvent>());
 
-            originalEvent = new LogEvent(LogLevel.Info, DateTimeOffset.UtcNow, null)
+            originalEvent = new LogEvent(LogLevel.Info, DateTimeOffset.Now, null)
                 .WithProperty("name1", "value1")
                 .WithProperty("name2", "value2");
 
