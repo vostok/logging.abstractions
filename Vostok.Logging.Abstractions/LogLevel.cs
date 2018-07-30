@@ -15,10 +15,29 @@ namespace Vostok.Logging.Abstractions
     [PublicAPI]
     public enum LogLevel
     {
+        /// <summary>
+        /// Used for verbose output. This log level should usually be ignored on production installations.
+        /// </summary>
         Debug,
+
+        /// <summary>
+        /// Used for neutral messages.
+        /// </summary>
         Info,
+
+        /// <summary>
+        /// Used for non-critical errors that don't interrupt the normal operation of the application.
+        /// </summary>
         Warn,
+
+        /// <summary>
+        /// Used for unexpected errors that may require human attention.
+        /// </summary>
         Error,
+
+        /// <summary>
+        /// Used for critical errors that result in application shutdown.
+        /// </summary>
         Fatal
     }
 }
