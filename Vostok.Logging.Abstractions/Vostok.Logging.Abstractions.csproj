@@ -62,4 +62,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Include="..\..\vostok.commons.collections\Vostok.Commons.Collections\ImmutableArrayDictionary.cs" Link="Commons\ImmutableArrayDictionary.cs" />
+  </ItemGroup>
+
 </Project>

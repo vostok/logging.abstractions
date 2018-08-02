@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
-using Vostok.Logging.Abstractions.Helpers;
+using Vostok.Commons.Collections;
 
 namespace Vostok.Logging.Abstractions
 {
@@ -13,7 +13,7 @@ namespace Vostok.Logging.Abstractions
     public sealed class LogEvent
     {
         [CanBeNull]
-        private readonly DictionarySnapshot<string, object> properties;
+        private readonly ImmutableArrayDictionary<string, object> properties;
 
         /// <summary>
         /// Creates a new log event with specified <paramref name="level"/>, <paramref name="timestamp"/>, <paramref name="messageTemplate"/>, <paramref name="exception"/> and empty properties.
@@ -23,7 +23,7 @@ namespace Vostok.Logging.Abstractions
         {
         }
 
-        private LogEvent(LogLevel level, DateTimeOffset timestamp, string messageTemplate, DictionarySnapshot<string, object> properties, Exception exception)
+        private LogEvent(LogLevel level, DateTimeOffset timestamp, string messageTemplate, ImmutableArrayDictionary<string, object> properties, Exception exception)
         {
             Level = level;
             Timestamp = timestamp;
@@ -124,9 +124,9 @@ namespace Vostok.Logging.Abstractions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static DictionarySnapshot<string, object> CreateProperties()
+        private static ImmutableArrayDictionary<string, object> CreateProperties()
         {
-            return new DictionarySnapshot<string, object>(StringComparer.Ordinal);
+            return new ImmutableArrayDictionary<string, object>(StringComparer.Ordinal);
         }
     }
 }

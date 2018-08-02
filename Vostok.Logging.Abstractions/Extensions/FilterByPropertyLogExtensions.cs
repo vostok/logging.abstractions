@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using Vostok.Logging.Abstractions.Helpers;
+using Vostok.Commons.Collections;
 
 namespace Vostok.Logging.Abstractions
 {
@@ -107,7 +107,7 @@ namespace Vostok.Logging.Abstractions
 
             public void Log(LogEvent @event)
             {
-                var criterionMatches = criterion(@event?.Properties ?? DictionarySnapshot<string, object>.Empty);
+                var criterionMatches = criterion(@event?.Properties ?? ImmutableArrayDictionary<string, object>.Empty);
                 if (criterionMatches == criterionAllowsEvents)
                 {
                     baseLog.Log(@event);
