@@ -24,11 +24,11 @@ namespace Vostok.Logging.Abstractions.Tests
         }
 
         [Test]
-        public void WithProperty_should_be_case_insensitive()
+        public void WithProperty_should_be_case_sensitive()
         {
             var @event = new LogEvent(LogLevel.Info, DateTimeOffset.Now, "message").WithProperty("a", 1);
             @event = @event.WithProperty("A", 2);
-            @event.Properties.Should().BeEquivalentTo(new Dictionary<string, object> {{"A", 2}});
+            @event.Properties.Should().BeEquivalentTo(new Dictionary<string, object> {{"a", 1}, {"A", 2}});
         }
 
         [Test]
@@ -74,10 +74,10 @@ namespace Vostok.Logging.Abstractions.Tests
         }
 
         [Test]
-        public void WithPropertyIfAbsent_should_be_case_insensitive()
+        public void WithPropertyIfAbsent_should_be_case_sensitive()
         {
             var @event = new LogEvent(LogLevel.Info, DateTimeOffset.Now, "message").WithProperty("a", 1);
-            @event.WithPropertyIfAbsent("A", 2).Should().BeSameAs(@event);
+            @event.WithPropertyIfAbsent("A", 2).Properties.Should().BeEquivalentTo(new Dictionary<string, object> { { "a", 1 }, { "A", 2 } });
         }
 
         [Test]
@@ -140,7 +140,7 @@ namespace Vostok.Logging.Abstractions.Tests
 
             var newEvent = @event.WithoutProperty("c");
 
-            newEvent.Properties.Should().BeEquivalentTo(new Dictionary<string, object> { { "B", 1 } });
+            newEvent.Should().BeSameAs(@event);
         }
     }
 }

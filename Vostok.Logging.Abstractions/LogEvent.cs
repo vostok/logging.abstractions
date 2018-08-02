@@ -126,7 +126,7 @@ namespace Vostok.Logging.Abstractions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static DictionarySnapshot<string, object> CreateProperties()
         {
-            return new DictionarySnapshot<string, object>(StringComparer.InvariantCultureIgnoreCase);
+            return new DictionarySnapshot<string, object>(StringComparer.Ordinal);
         }
     }
 }
