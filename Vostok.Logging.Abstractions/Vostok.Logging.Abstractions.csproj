@@ -63,6 +63,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\vostok.devtools\jetbrains-annotations\JetBrainsAnnotations.cs" Link="Annotations\JetBrainsAnnotations.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="..\..\vostok.commons.collections\Vostok.Commons.Collections\ImmutableArrayDictionary.cs" Link="Commons\ImmutableArrayDictionary.cs" />
   </ItemGroup>
 
