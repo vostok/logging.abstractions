@@ -5,6 +5,7 @@ using Vostok.Logging.Abstractions.Helpers;
 
 namespace Vostok.Logging.Abstractions.Tests.Helpers
 {
+
     [TestFixture]
     internal class ObjectPropertiesExtractor_Tests
     {
