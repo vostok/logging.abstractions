@@ -2,7 +2,7 @@
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace Vostok.Logging.Abstractions.Tests
+namespace Vostok.Logging.Abstractions.Tests.Extensions
 {
     [TestFixture]
     internal class LogEventExtensions_Tests
@@ -75,12 +75,11 @@ namespace Vostok.Logging.Abstractions.Tests
         }
 
         [Test]
-        public void WithObjectProperties_should_handle_properties_with_private_getters()
+        public void WithObjectProperties_should_skip_properties_with_private_getters()
         {
             eventAfter = eventBefore.WithObjectProperties(new ClassWithPrivateGetterProperty());
 
-            eventAfter.Properties.Should().HaveCount(3);
-            eventAfter.Properties?["Property"].Should().Be(1);
+            eventAfter.Properties.Should().HaveCount(2);
         }
 
         [Test]
@@ -91,7 +90,7 @@ namespace Vostok.Logging.Abstractions.Tests
             eventAfter.Properties.Should().HaveCount(5);
             eventAfter.Properties?["Property1"].Should().Be(1);
             eventAfter.Properties?["Property2"].Should().Be(2);
-            eventAfter.Properties?["Property3"].Should().Be("<error in property getter>");
+            eventAfter.Properties?["Property3"].Should().BeOfType<string>().Which.Should().StartWith("<error: ");
         }
 
         private class ClassWithPrivateProperty

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Linq.Expressions;
-using System.Reflection;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
+using Vostok.Logging.Abstractions.Helpers;
 
 namespace Vostok.Logging.Abstractions
 {
@@ -27,54 +25,12 @@ namespace Vostok.Logging.Abstractions
             if (@object == null)
                 return @event;
 
-            foreach (var property in ObjectWrapper<T>.Properties)
+            foreach (var (name, value) in ObjectPropertiesExtractor.ExtractProperties(@object))
             {
-                @event = @event.WithProperty(property.key, GetPropertyValue(@object, property.getter), allowOverwrite);
+                @event = @event.WithProperty(name, value, allowOverwrite);
             }
 
             return @event;
-        }
-
-        private static object GetPropertyValue<T>(T @object, Func<T, object> propertyGetter)
-        {
-            try
-            {
-                return propertyGetter(@object);
-            }
-            catch
-            {
-                return "<error in property getter>";
-            }
-        }
-
-        private static class ObjectWrapper<T>
-        {
-            public static readonly (string key, Func<T, object> getter)[] Properties = BuildProperties();
-
-            private static (string, Func<T, object>)[] BuildProperties()
-            {
-                try
-                {
-                    var typeProperties = typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public);
-                    var propertyGetters = new(string, Func<T, object>)[typeProperties.Length];
-
-                    for (var i = 0; i < typeProperties.Length; i++)
-                    {
-                        var parameter = Expression.Parameter(typeof(T));
-                        var getter = Expression.Lambda<Func<T, object>>(
-                                Expression.Convert(Expression.PropertyOrField(parameter, typeProperties[i].Name), typeof(object)),
-                                parameter)
-                            .Compile();
-                        propertyGetters[i] = (typeProperties[i].Name, getter);
-                    }
-
-                    return propertyGetters;
-                }
-                catch
-                {
-                    return new (string, Func<T, object>)[]{};
-                }
-            }
         }
     }
 }

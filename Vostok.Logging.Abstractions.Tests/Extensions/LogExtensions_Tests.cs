@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 #pragma warning disable 612
 
-namespace Vostok.Logging.Abstractions.Tests
+namespace Vostok.Logging.Abstractions.Tests.Extensions
 {
     [TestFixture]
     internal class LogExtensions_Tests
