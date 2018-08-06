@@ -1,6 +1,7 @@
 ﻿using System;
 using FluentAssertions;
 using NUnit.Framework;
+using Vostok.Commons.Collections;
 
 namespace Vostok.Logging.Abstractions.Tests.Extensions
 {
@@ -17,26 +18,7 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
                 .WithProperty("A", 1)
                 .WithProperty("B", 2);
         }
-
-        [Test]
-        public void WithParameters_should_return_same_event_when_params_array_is_null()
-        {
-            eventAfter = eventBefore.WithParameters(null);
-
-            eventAfter.Should().BeSameAs(eventBefore);
-        }
-
-        [Test]
-        public void WithParameters_should_enrich_event_with_index_named_properties()
-        {
-            eventAfter = eventBefore.WithParameters(new object[] {"value", null, 123});
-
-            eventAfter.Properties.Should().HaveCount(5);
-            eventAfter?.Properties?["0"].Should().Be("value");
-            eventAfter?.Properties?["1"].Should().BeNull();
-            eventAfter?.Properties?["2"].Should().Be(123);
-        }
-
+      
         [Test]
         public void WithObjectProperties_should_return_same_event_when_params_array_is_null()
         {
@@ -91,6 +73,90 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
             eventAfter.Properties?["Property1"].Should().Be(1);
             eventAfter.Properties?["Property2"].Should().Be(2);
             eventAfter.Properties?["Property3"].Should().BeOfType<string>().Which.Should().StartWith("<error: ");
+        }
+
+        [Test]
+        public void WithParameters_should_return_same_event_when_params_array_is_null()
+        {
+            eventAfter = eventBefore.WithParameters(null);
+
+            eventAfter.Should().BeSameAs(eventBefore);
+        }
+
+        [Test]
+        public void WithParameters_should_return_same_event_when_params_array_is_empty()
+        {
+            eventAfter = eventBefore.WithParameters(new object[]{});
+
+            eventAfter.Should().BeSameAs(eventBefore);
+        }
+
+        [Test]
+        public void WithParameters_should_enrich_event_with_index_named_properties_when_message_template_is_null()
+        {
+            eventAfter = eventBefore.WithParameters(new object[] { "value", null, 123 });
+
+            eventAfter.Properties.Should().HaveCount(5);
+            eventAfter?.Properties?["0"].Should().Be("value");
+            eventAfter?.Properties?["1"].Should().BeNull();
+            eventAfter?.Properties?["2"].Should().Be(123);
+        }
+
+        [Test]
+        public void WithParameters_should_enrich_event_with_index_named_properties_when_message_template_contains_only_positional_placeholders()
+        {
+            SetMessageTemplate("..{0}..{1}..{2}");
+
+            eventAfter = eventBefore.WithParameters(new object[] { "value", null, 123 });
+
+            eventAfter.Properties.Should().HaveCount(5);
+            eventAfter?.Properties?["0"].Should().Be("value");
+            eventAfter?.Properties?["1"].Should().BeNull();
+            eventAfter?.Properties?["2"].Should().Be(123);
+        }
+
+        [Test]
+        public void WithParameters_should_enrich_event_with_index_named_properties_when_message_template_contains_less_placeholders_than_there_are_parameters()
+        {
+            SetMessageTemplate("..{0}..{1}");
+
+            eventAfter = eventBefore.WithParameters(new object[] { "value", null, 123 });
+
+            eventAfter.Properties.Should().HaveCount(5);
+            eventAfter?.Properties?["0"].Should().Be("value");
+            eventAfter?.Properties?["1"].Should().BeNull();
+            eventAfter?.Properties?["2"].Should().Be(123);
+        }
+
+        [Test]
+        public void WithParameters_should_enrich_event_with_index_named_properties_when_message_template_contains_more_placeholders_than_there_are_parameters()
+        {
+            SetMessageTemplate("..{0}..{1}..{0}..{1}");
+
+            eventAfter = eventBefore.WithParameters(new object[] { "value", null, 123 });
+
+            eventAfter.Properties.Should().HaveCount(5);
+            eventAfter?.Properties?["0"].Should().Be("value");
+            eventAfter?.Properties?["1"].Should().BeNull();
+            eventAfter?.Properties?["2"].Should().Be(123);
+        }
+
+        [Test]
+        public void WithParameters_should_infer_property_names_from_message_template_when_possible()
+        {
+            SetMessageTemplate("..{prop1}..{prop2}..{prop3}");
+
+            eventAfter = eventBefore.WithParameters(new object[] { "value", null, 123 });
+
+            eventAfter.Properties.Should().HaveCount(5);
+            eventAfter?.Properties?["prop1"].Should().Be("value");
+            eventAfter?.Properties?["prop2"].Should().BeNull();
+            eventAfter?.Properties?["prop3"].Should().Be(123);
+        }
+
+        private void SetMessageTemplate(string template)
+        {
+            eventBefore = new LogEvent(eventBefore.Level, eventBefore.Timestamp, template, (ImmutableArrayDictionary<string, object>) eventBefore.Properties, eventBefore.Exception);
         }
 
         private class ClassWithPrivateProperty

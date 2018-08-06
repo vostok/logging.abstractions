@@ -23,12 +23,13 @@ namespace Vostok.Logging.Abstractions
         {
         }
 
-        private LogEvent(LogLevel level, DateTimeOffset timestamp, string messageTemplate, ImmutableArrayDictionary<string, object> properties, Exception exception)
+        internal LogEvent(LogLevel level, DateTimeOffset timestamp, string messageTemplate, ImmutableArrayDictionary<string, object> properties, Exception exception)
         {
             Level = level;
             Timestamp = timestamp;
             MessageTemplate = messageTemplate;
             Exception = exception;
+
             this.properties = properties;
         }
 
