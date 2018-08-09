@@ -14,9 +14,7 @@ namespace Vostok.Logging.Abstractions
                 return @event;
 
             foreach (var (name, value) in ObjectPropertiesExtractor.ExtractProperties(@object))
-            {
                 @event = @event.WithProperty(name, value, allowOverwrite);
-            }
 
             return @event;
         }
@@ -30,21 +28,13 @@ namespace Vostok.Logging.Abstractions
             var templatePropertyNames = TemplatePropertiesExtractor.ExtractPropertyNames(@event.MessageTemplate);
 
             if (ShouldInferNamesForPositionalParameters(parameters, templatePropertyNames))
-            {
                 // (iloktionov): Name positional parameters with corresponding placeholder names from template:
                 for (var i = 0; i < parameters.Length; i++)
-                {
                     @event = @event.WithProperty(templatePropertyNames[i], parameters[i]);
-                }
-            }
             else
-            {
                 // (iloktionov): Name positional parameters with their indices:
                 for (var i = 0; i < parameters.Length; i++)
-                {
                     @event = @event.WithProperty(i.ToString(), parameters[i]);
-                }
-            }
 
             return @event;
         }
