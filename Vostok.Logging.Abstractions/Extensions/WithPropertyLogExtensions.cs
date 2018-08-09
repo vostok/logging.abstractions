@@ -13,32 +13,40 @@ namespace Vostok.Logging.Abstractions
         /// <para>By default, existing properties are not overwritten. This can be changed via <paramref name="allowOverwrite"/> parameter.</para>
         /// </summary>
         [Pure]
-        public static ILog WithProperty<T>(this ILog log, string key, T value, bool allowOverwrite = false) =>
-            new WithPropertyLog<T>(log, key, () => value, allowOverwrite);
+        public static ILog WithProperty<T>(this ILog log, string key, T value, bool allowOverwrite = false)
+        {
+            return new WithPropertyLog<T>(log, key, () => value, allowOverwrite);
+        }
 
         /// <summary>
         /// <para>Returns a wrapper log that adds a dynamic property with given <paramref name="key"/> and <paramref name="value"/> provider to each <see cref="LogEvent"/> before logging.</para>
         /// <para>By default, existing properties are not overwritten. This can be changed via <paramref name="allowOverwrite"/> parameter.</para>
         /// </summary>
         [Pure]
-        public static ILog WithProperty<T>(this ILog log, string key, Func<T> value, bool allowOverwrite = false) =>
-            new WithPropertyLog<T>(log, key, value, allowOverwrite);
+        public static ILog WithProperty<T>(this ILog log, string key, Func<T> value, bool allowOverwrite = false)
+        {
+            return new WithPropertyLog<T>(log, key, value, allowOverwrite);
+        }
 
         /// <summary>
         /// <para>Returns a wrapper log that adds all of the given properties to each <see cref="LogEvent"/> before logging.</para>
         /// <para>By default, existing properties are not overwritten. This can be changed via <paramref name="allowOverwrite"/> parameter.</para>
         /// </summary>
         [Pure]
-        public static ILog WithProperties(this ILog log, IReadOnlyDictionary<string, object> properties, bool allowOverwrite = false) =>
-            new WithPropertiesLog(log, () => properties?.Select(pair => (pair.Key, pair.Value)), allowOverwrite);
+        public static ILog WithProperties(this ILog log, IReadOnlyDictionary<string, object> properties, bool allowOverwrite = false)
+        {
+            return new WithPropertiesLog(log, () => properties?.Select(pair => (pair.Key, pair.Value)), allowOverwrite);
+        }
 
         /// <summary>
         /// <para>Returns a wrapper log that adds all of the properties returned by given delegate to each <see cref="LogEvent"/> before logging.</para>
         /// <para>By default, existing properties are not overwritten. This can be changed via <paramref name="allowOverwrite"/> parameter.</para>
         /// </summary>
         [Pure]
-        public static ILog WithProperties(this ILog log, Func<IEnumerable<(string, object)>> properties, bool allowOverwrite = false) =>
-            new WithPropertiesLog(log, properties, allowOverwrite);
+        public static ILog WithProperties(this ILog log, Func<IEnumerable<(string, object)>> properties, bool allowOverwrite = false)
+        {
+            return new WithPropertiesLog(log, properties, allowOverwrite);
+        }
 
         /// <summary>
         /// <para>Returns a wrapper log that adds all properties of given <paramref name="@object"/> to each <see cref="LogEvent"/> before logging.</para>
@@ -46,8 +54,10 @@ namespace Vostok.Logging.Abstractions
         /// <para>Usage example: <c>log.WithObjectProperties(new {A = 1, B = 2})</c></para>
         /// </summary>
         [Pure]
-        public static ILog WithObjectProperties<T>(this ILog log, T @object, bool allowOverwrite = false) =>
-            new WithObjectPropertiesLog<T>(log, () => @object, allowOverwrite);
+        public static ILog WithObjectProperties<T>(this ILog log, T @object, bool allowOverwrite = false)
+        {
+            return new WithObjectPropertiesLog<T>(log, () => @object, allowOverwrite);
+        }
 
         /// <summary>
         /// <para>Returns a wrapper log that adds all properties of the object returned by given <paramref name="@object"/> delegate to each <see cref="LogEvent"/> before logging.</para>
@@ -55,8 +65,10 @@ namespace Vostok.Logging.Abstractions
         /// <para>Usage example: <c>log.WithObjectProperties(() => new {A = 1, B = 2})</c></para>
         /// </summary>
         [Pure]
-        public static ILog WithObjectProperties<T>(this ILog log, Func<T> @object, bool allowOverwrite = false) =>
-            new WithObjectPropertiesLog<T>(log, @object, allowOverwrite);
+        public static ILog WithObjectProperties<T>(this ILog log, Func<T> @object, bool allowOverwrite = false)
+        {
+            return new WithObjectPropertiesLog<T>(log, @object, allowOverwrite);
+        }
 
         private class WithPropertyLog<T> : ILog
         {
@@ -73,11 +85,15 @@ namespace Vostok.Logging.Abstractions
                 this.allowOverwrite = allowOverwrite;
             }
 
-            public void Log(LogEvent @event) =>
+            public void Log(LogEvent @event)
+            {
                 baseLog.Log(@event?.WithProperty(key, value(), allowOverwrite));
+            }
 
-            public bool IsEnabledFor(LogLevel level) =>
-                baseLog.IsEnabledFor(level);
+            public bool IsEnabledFor(LogLevel level)
+            {
+                return baseLog.IsEnabledFor(level);
+            }
 
             public ILog ForContext(string context)
             {
@@ -102,12 +118,17 @@ namespace Vostok.Logging.Abstractions
             public void Log(LogEvent @event)
             {
                 foreach (var (key, value) in propertiesProvider() ?? Enumerable.Empty<(string, object)>())
+                {
                     @event = @event?.WithProperty(key, value, allowOverwrite);
+                }
 
                 baseLog.Log(@event);
             }
 
-            public bool IsEnabledFor(LogLevel level) => baseLog.IsEnabledFor(level);
+            public bool IsEnabledFor(LogLevel level)
+            {
+                return baseLog.IsEnabledFor(level);
+            }
 
             public ILog ForContext(string context)
             {
@@ -138,7 +159,10 @@ namespace Vostok.Logging.Abstractions
                 baseLog.Log(@event);
             }
 
-            public bool IsEnabledFor(LogLevel level) => baseLog.IsEnabledFor(level);
+            public bool IsEnabledFor(LogLevel level)
+            {
+                return baseLog.IsEnabledFor(level);
+            }
 
             public ILog ForContext(string context)
             {

@@ -11,13 +11,15 @@ namespace Vostok.Logging.Abstractions.Helpers
     {
         private const int CacheCapacity = 1000;
 
-        private static readonly RecyclingBoundedCache<Type, (string name, Func<object, object> getter)[]> Cache =
-            new RecyclingBoundedCache<Type, (string name, Func<object, object> getter)[]>(CacheCapacity);
+        private static readonly RecyclingBoundedCache<Type, (string name, Func<object, object> getter)[]> Cache
+            = new RecyclingBoundedCache<Type, (string name, Func<object, object> getter)[]>(CacheCapacity);
 
         public static IEnumerable<(string, object)> ExtractProperties(object @object)
         {
             foreach (var (name, getter) in Cache.Obtain(@object.GetType(), LocateProperties))
+            {
                 yield return (name, ObtainPropertyValue(@object, getter));
+            }
         }
 
         private static (string, Func<object, object>)[] LocateProperties(Type type)
@@ -33,7 +35,7 @@ namespace Vostok.Logging.Abstractions.Helpers
                     .Where(property => !property.GetIndexParameters().Any())
                     .ToArray();
 
-                var getters = new (string, Func<object, object>)[properties.Length];
+                var getters = new(string, Func<object, object>)[properties.Length];
 
                 for (var i = 0; i < properties.Length; i++)
                 {

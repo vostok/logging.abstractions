@@ -14,15 +14,19 @@ namespace Vostok.Logging.Abstractions
         /// <para>Log events that do have a property whose value is not of type <typeparamref name="T"/> are also dropped.</para>
         /// </summary>
         [Pure]
-        public static ILog WithEventsSelectedByProperty<T>([NotNull] this ILog log, [NotNull] string key, [NotNull] Predicate<T> allow) =>
-            new PropertyFilterLog<T>(log, key, allow, true);
+        public static ILog WithEventsSelectedByProperty<T>([NotNull] this ILog log, [NotNull] string key, [NotNull] Predicate<T> allow)
+        {
+            return new PropertyFilterLog<T>(log, key, allow, true);
+        }
 
         /// <summary>
         /// <para>Returns a wrapper log that only logs events whose properties are matched by <paramref name="allow"/> predicate.</para>
         /// </summary>
         [Pure]
-        public static ILog WithEventsSelectedByProperties([NotNull] this ILog log, [NotNull] Predicate<IReadOnlyDictionary<string, object>> allow) =>
-            new PropertiesFilterLog(log, allow, true);
+        public static ILog WithEventsSelectedByProperties([NotNull] this ILog log, [NotNull] Predicate<IReadOnlyDictionary<string, object>> allow)
+        {
+            return new PropertiesFilterLog(log, allow, true);
+        }
 
         /// <summary>
         /// <para>Returns a wrapper log that drops events which have a property with given <paramref name="key"/> and a value of type <typeparamref name="T"/> that is matched by <paramref name="reject"/> predicate.</para>
@@ -30,15 +34,19 @@ namespace Vostok.Logging.Abstractions
         /// <para>Log events that do have a property whose value is not of type <typeparamref name="T"/> are also logged.</para>
         /// </summary>
         [Pure]
-        public static ILog WithEventsDroppedByProperty<T>([NotNull] this ILog log, [NotNull] string key, [NotNull] Predicate<T> reject) =>
-            new PropertyFilterLog<T>(log, key, reject, false);
+        public static ILog WithEventsDroppedByProperty<T>([NotNull] this ILog log, [NotNull] string key, [NotNull] Predicate<T> reject)
+        {
+            return new PropertyFilterLog<T>(log, key, reject, false);
+        }
 
         /// <summary>
         /// <para>Returns a wrapper log that drops events whose properties are matched by <paramref name="reject"/> predicate.</para>
         /// </summary>
         [Pure]
-        public static ILog WithEventsDroppedByProperties([NotNull] this ILog log, [NotNull] Predicate<IReadOnlyDictionary<string, object>> reject) =>
-            new PropertiesFilterLog(log, reject, false);
+        public static ILog WithEventsDroppedByProperties([NotNull] this ILog log, [NotNull] Predicate<IReadOnlyDictionary<string, object>> reject)
+        {
+            return new PropertiesFilterLog(log, reject, false);
+        }
 
         private class PropertyFilterLog<T> : ILog
         {
@@ -59,9 +67,9 @@ namespace Vostok.Logging.Abstractions
             {
                 var properties = @event?.Properties;
 
-                var criterionMatches =
-                    properties != null &&
-                    properties.TryGetValue(key, out var value) &&
+                var criterionMatches = 
+                    properties != null && 
+                    properties.TryGetValue(key, out var value) && 
                     value is T typedValue &&
                     criterion(typedValue);
 
@@ -71,7 +79,10 @@ namespace Vostok.Logging.Abstractions
                 }
             }
 
-            public bool IsEnabledFor(LogLevel level) => baseLog.IsEnabledFor(level);
+            public bool IsEnabledFor(LogLevel level)
+            {
+                return baseLog.IsEnabledFor(level);
+            }
 
             public ILog ForContext(string context)
             {
@@ -103,7 +114,10 @@ namespace Vostok.Logging.Abstractions
                 }
             }
 
-            public bool IsEnabledFor(LogLevel level) => baseLog.IsEnabledFor(level);
+            public bool IsEnabledFor(LogLevel level)
+            {
+                return baseLog.IsEnabledFor(level);
+            }
 
             public ILog ForContext(string context)
             {

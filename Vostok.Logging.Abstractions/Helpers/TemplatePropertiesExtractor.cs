@@ -17,8 +17,8 @@ namespace Vostok.Logging.Abstractions.Helpers
         private const char Whitespace = ' ';
         private const char Colon = ':';
 
-        private static readonly RecyclingBoundedCache<string, string[]> Cache =
-            new RecyclingBoundedCache<string, string[]>(CacheCapacity, StringComparer.Ordinal);
+        private static readonly RecyclingBoundedCache<string, string[]> Cache
+            = new RecyclingBoundedCache<string, string[]>(CacheCapacity, StringComparer.Ordinal);
 
         public static string[] ExtractPropertyNames([CanBeNull] string template)
         {
@@ -59,7 +59,9 @@ namespace Vostok.Logging.Abstractions.Helpers
                     // (iloktionov): 1. If the next symbol is also an opening brace, we consume it as text (escaping).
                     // (iloktionov): 2. If the next symbol is something different, we end the text token and try to parse a named token.
                     if (offset + 1 < template.Length && template[offset + 1] == OpeningBrace)
+                    {
                         offset++;
+                    }
                     else break;
                 }
                 else
@@ -119,8 +121,8 @@ namespace Vostok.Logging.Abstractions.Helpers
 
             var formatDelimiter = template.IndexOf(Colon, offset, length);
 
-            name = formatDelimiter < offset
-                ? template.Substring(offset, length)
+            name = formatDelimiter < offset 
+                ? template.Substring(offset, length) 
                 : template.Substring(offset, formatDelimiter - offset);
 
             return IsValidName(name);
@@ -140,15 +142,21 @@ namespace Vostok.Logging.Abstractions.Helpers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static bool IsValidInNamedToken(char c) =>
-            IsValidInName(c) || IsValidInFormat(c) || c == Colon;
+        private static bool IsValidInNamedToken(char c)
+        {
+            return IsValidInName(c) || IsValidInFormat(c) || c == Colon;
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static bool IsValidInName(char c) =>
-            char.IsLetterOrDigit(c) || c == Underscore;
+        private static bool IsValidInName(char c)
+        {
+            return char.IsLetterOrDigit(c) || c == Underscore;
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static bool IsValidInFormat(char c) =>
-            c != ClosingBrace && (char.IsLetterOrDigit(c) || char.IsPunctuation(c) || c == Whitespace);
+        private static bool IsValidInFormat(char c)
+        {
+            return c != ClosingBrace && (char.IsLetterOrDigit(c) || char.IsPunctuation(c) || c == Whitespace);
+        }
     }
 }
