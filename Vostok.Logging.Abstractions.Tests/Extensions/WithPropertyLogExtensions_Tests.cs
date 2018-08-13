@@ -89,6 +89,26 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
         }
 
         [Test]
+        public void WithProperty_with_dynamic_value_should_filter_out_null_values_when_asked_to()
+        {
+            enrichedLog = baseLog.WithProperty("name3", () => null as string);
+
+            enrichedLog.Log(originalEvent);
+
+            observedEvent.Properties?.ContainsKey("name3").Should().BeFalse();
+        }
+
+        [Test]
+        public void WithProperty_with_dynamic_value_should_pass_null_values_when_asked_to()
+        {
+            enrichedLog = baseLog.WithProperty("name3", () => null as string, allowNullValues: true);
+
+            enrichedLog.Log(originalEvent);
+
+            observedEvent.Properties?["name3"]?.Should().BeNull();
+        }
+
+        [Test]
         public void WithProperties_should_return_a_log_that_adds_given_properties_to_log_events()
         {
             enrichedLog = baseLog.WithProperties(new Dictionary<string, object>
@@ -153,6 +173,37 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
         }
 
         [Test]
+        public void WithProperties_should_pass_null_values_when_asked_to()
+        {
+            enrichedLog = baseLog.WithProperties(new Dictionary<string, object>
+            {
+                { "name3", "value3" },
+                { "name4", null }
+            }, true, true);
+
+            enrichedLog.Log(originalEvent);
+
+            observedEvent.Properties?["name3"].Should().Be("value3");
+            observedEvent.Properties?.ContainsKey("name4").Should().BeTrue();
+            observedEvent.Properties?["name4"].Should().BeNull();
+        }
+
+        [Test]
+        public void WithProperties_should_filter_out_null_values_when_asked_to()
+        {
+            enrichedLog = baseLog.WithProperties(new Dictionary<string, object>
+            {
+                { "name3", "value3" },
+                { "name4", null }
+            }, true);
+
+            enrichedLog.Log(originalEvent);
+
+            observedEvent.Properties?["name3"].Should().Be("value3");
+            observedEvent.Properties?.ContainsKey("name4").Should().BeFalse();
+        }
+
+        [Test]
         public void WithProperties_with_dynamic_provider_should_call_the_delegate_for_each_event()
         {
             var counter = 0;
@@ -182,6 +233,37 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
             enrichedLog.Log(originalEvent);
 
             observedEvent.Should().BeSameAs(originalEvent);
+        }
+
+        [Test]
+        public void WithProperties_with_dynamic_provider_should_filter_out_null_values_when_asked_to()
+        {
+            enrichedLog = baseLog.WithProperties(() => new[]
+            {
+                ("name3", 1),
+                ("name4", null as object)
+            });
+
+            enrichedLog.Log(originalEvent);
+
+            observedEvent.Properties?["name3"]?.Should().Be(1);
+            observedEvent.Properties?.ContainsKey("name4").Should().BeFalse();
+        }
+
+        [Test]
+        public void WithProperties_with_dynamic_provider_should_pass_null_values_when_asked_to()
+        {
+            enrichedLog = baseLog.WithProperties(() => new[]
+            {
+                ("name3", 1),
+                ("name4", null as object)
+            }, allowNullValues: true);
+
+            enrichedLog.Log(originalEvent);
+
+            observedEvent.Properties?["name3"]?.Should().Be(1);
+            observedEvent.Properties?.ContainsKey("name4").Should().BeTrue();
+            observedEvent.Properties?["name4"]?.Should().BeNull();
         }
 
         [Test]
@@ -233,6 +315,30 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
         }
 
         [Test]
+        public void WithObjectProperties_should_filter_out_null_values_when_asked_to()
+        {
+            enrichedLog = baseLog.WithObjectProperties(new { name3 = 1, name4 = null as object }, true);
+
+            enrichedLog.Log(originalEvent);
+
+            observedEvent.Properties.Should().HaveCount(3);
+            observedEvent.Properties?["name3"].Should().Be(1);
+            observedEvent.Properties?.ContainsKey("name4").Should().BeFalse();
+        }
+
+        [Test]
+        public void WithObjectProperties_should_pass_null_values_when_asked_to()
+        {
+            enrichedLog = baseLog.WithObjectProperties(new { name3 = 1, name4 = null as object }, true, true);
+
+            enrichedLog.Log(originalEvent);
+
+            observedEvent.Properties.Should().HaveCount(4);
+            observedEvent.Properties?["name3"].Should().Be(1);
+            observedEvent.Properties?["name4"].Should().BeNull();
+        }
+
+        [Test]
         public void WithObjectProperties_with_dynamic_provider_should_call_the_delegate_for_each_event()
         {
             var counter = 0;
@@ -258,6 +364,30 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
             enrichedLog.Log(originalEvent);
 
             observedEvent.Should().BeSameAs(originalEvent);
+        }
+
+        [Test]
+        public void WithObjectProperties_with_dynamic_provider_should_filter_out_null_values_when_asked_to()
+        {
+            enrichedLog = baseLog.WithObjectProperties(() => new { name3 = 1, name4 = null as object }, true);
+
+            enrichedLog.Log(originalEvent);
+
+            observedEvent.Properties.Should().HaveCount(3);
+            observedEvent.Properties?["name3"].Should().Be(1);
+            observedEvent.Properties?.ContainsKey("name4").Should().BeFalse();
+        }
+
+        [Test]
+        public void WithObjectProperties_with_dynamic_provider_should_pass_null_values_when_asked_to()
+        {
+            enrichedLog = baseLog.WithObjectProperties(() => new { name3 = 1, name4 = null as object }, true, true);
+
+            enrichedLog.Log(originalEvent);
+
+            observedEvent.Properties.Should().HaveCount(4);
+            observedEvent.Properties?["name3"].Should().Be(1);
+            observedEvent.Properties?["name4"].Should().BeNull();
         }
     }
 }

@@ -8,13 +8,16 @@ namespace Vostok.Logging.Abstractions
     internal static class LogEventExtensions
     {
         [Pure]
-        public static LogEvent WithObjectProperties<T>(this LogEvent @event, T @object, bool allowOverwrite = true)
+        public static LogEvent WithObjectProperties<T>(this LogEvent @event, T @object, bool allowOverwrite = true, bool allowNullValues = true)
         {
             if (@object == null)
                 return @event;
 
             foreach (var (name, value) in ObjectPropertiesExtractor.ExtractProperties(@object))
             {
+                if (!allowNullValues && value == null)
+                    continue;
+
                 @event = @event.WithProperty(name, value, allowOverwrite);
             }
 
