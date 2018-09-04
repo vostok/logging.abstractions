@@ -65,12 +65,6 @@ namespace Vostok.Logging.Abstractions.Tests.Wrappers
         }
 
         [Test]
-        public void ForContext_with_null_argument_should_return_base_log()
-        {
-            wrapper.ForContext(null).Should().BeSameAs(baseLog);
-        }
-
-        [Test]
         public void ForContext_should_not_produce_wrapper_chains()
         {
             wrapper = wrapper

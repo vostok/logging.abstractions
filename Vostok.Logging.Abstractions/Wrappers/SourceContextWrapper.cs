@@ -38,7 +38,7 @@ namespace Vostok.Logging.Abstractions.Wrappers
         public ILog ForContext(string context)
         {
             if (context == null)
-                return UnwrapBaseLog();
+                throw new ArgumentNullException(nameof(context));
 
             return new SourceContextWrapper(UnwrapBaseLog(), context);
         }

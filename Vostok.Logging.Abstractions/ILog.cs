@@ -25,9 +25,8 @@ namespace Vostok.Logging.Abstractions
         /// <para>Returns a copy of the log operating in the given source <paramref name="context" />. Handling of these context strings is implementation-specific.</para>
         /// <para>Source context is not hierarchical: every <see cref="ForContext"/> call discards any previous context.</para>
         /// <para>If you are implementing a log and don't need this method, just return <c>this</c> in the implementation.</para>
-        /// <para>Specify <c>null</c> <paramref name="context"/> to remove existing source context information.</para>
         /// </summary>
         [NotNull]
-        ILog ForContext([CanBeNull] string context);
+        ILog ForContext([NotNull] string context);
     }
 }
