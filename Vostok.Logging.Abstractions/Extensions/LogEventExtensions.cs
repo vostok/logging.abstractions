@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
+using Vostok.Commons.Formatting;
 using Vostok.Logging.Abstractions.Helpers;
 
 namespace Vostok.Logging.Abstractions

@@ -43,7 +43,8 @@
 
   <ItemGroup>
     <Compile Include="..\..\vostok.commons.collections\Vostok.Commons.Collections\ImmutableArrayDictionary.cs" Link="Commons\ImmutableArrayDictionary.cs" />
-    <Compile Include="..\..\vostok.commons.collections\Vostok.Commons.Collections\RecyclingBoundedCache.cs" Link="Commons\RecyclingBoundedCache.cs" />
   </ItemGroup>
+
+  <Import Project="..\..\vostok.commons.formatting\ObjectPropertiesExtractor.props" />
 
 </Project>
