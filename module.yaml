@@ -12,6 +12,7 @@ notests *default:
     - vostok.devtools
     - vostok.commons.collections/src
     - vostok.commons.formatting/src
+    - vostok.commons.time/src
 
 full-build > notests:
   build:
