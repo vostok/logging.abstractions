@@ -15,7 +15,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Title>Vostok logging abstractions library</Title>
+    <Title>Vostok.Logging.Abstractions</Title>
     <Description>A library with core logging interfaces, such as ILog and LogEvent.</Description>
   </PropertyGroup>
 
