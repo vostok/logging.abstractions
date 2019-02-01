@@ -1,3 +1,7 @@
+## 0.1.4 (01.02.2019):
+
+Added `ILog.SelectEvents(Predicate<LogEvent>)` and `ILog.DropEvents(Predicate<LogEvent>)` extension methods.
+
 ## 0.1.3 (16.01.2019):
 
 Added LogProvider: static shared configuration point for libraries.
