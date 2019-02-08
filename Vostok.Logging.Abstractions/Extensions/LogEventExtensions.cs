@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 using Vostok.Commons.Formatting;
@@ -36,9 +37,17 @@ namespace Vostok.Logging.Abstractions
             if (ShouldInferNamesForPositionalParameters(parameters, templatePropertyNames))
             {
                 // (iloktionov): Name positional parameters with corresponding placeholder names from template:
-                for (var i = 0; i < parameters.Length; i++)
+                for (var i = 0; i < Math.Min(parameters.Length, templatePropertyNames.Length); i++)
                 {
                     @event = @event.WithProperty(templatePropertyNames[i], parameters[i]);
+                }
+
+                if (parameters.Length > templatePropertyNames.Length)
+                {
+                    for (var i = templatePropertyNames.Length; i < parameters.Length; i++)
+                    {
+                        @event = @event.WithProperty(i.ToString(), parameters[i]);
+                    }
                 }
             }
             else
@@ -55,9 +64,6 @@ namespace Vostok.Logging.Abstractions
 
         private static bool ShouldInferNamesForPositionalParameters(object[] parameters, string[] propertyNames)
         {
-            if (parameters.Length != propertyNames.Length)
-                return false;
-
             if (propertyNames.Length == 0)
                 return false;
 

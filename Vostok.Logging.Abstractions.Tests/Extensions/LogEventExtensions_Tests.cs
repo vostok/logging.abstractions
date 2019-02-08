@@ -142,7 +142,7 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
         }
 
         [Test]
-        public void WithParameters_should_infer_property_names_from_message_template_when_possible()
+        public void WithParameters_should_infer_property_names_from_message_template_on_perfect_match()
         {
             SetMessageTemplate("..{prop1}..{prop2}..{prop3}");
 
@@ -152,6 +152,32 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
             eventAfter?.Properties?["prop1"].Should().Be("value");
             eventAfter?.Properties?["prop2"].Should().BeNull();
             eventAfter?.Properties?["prop3"].Should().Be(123);
+        }
+
+        [Test]
+        public void WithParameters_should_infer_property_names_from_message_template_even_when_provided_with_less_parameters_than_expected()
+        {
+            SetMessageTemplate("..{prop1}..{prop2}..{prop3}");
+
+            eventAfter = eventBefore.WithParameters(new object[] { "value", 123 });
+
+            eventAfter.Properties.Should().HaveCount(4);
+            eventAfter?.Properties?["prop1"].Should().Be("value");
+            eventAfter?.Properties?["prop2"].Should().Be(123);
+        }
+
+        [Test]
+        public void WithParameters_should_infer_property_names_from_message_template_even_when_provided_with_more_parameters_than_expected()
+        {
+            SetMessageTemplate("..{prop1}..{prop2}..{prop3}");
+
+            eventAfter = eventBefore.WithParameters(new object[] { 1, 2, 3, 4});
+
+            eventAfter.Properties.Should().HaveCount(6);
+            eventAfter?.Properties?["prop1"].Should().Be(1);
+            eventAfter?.Properties?["prop2"].Should().Be(2);
+            eventAfter?.Properties?["prop3"].Should().Be(3);
+            eventAfter?.Properties?["3"].Should().Be(4);
         }
 
         private void SetMessageTemplate(string template)

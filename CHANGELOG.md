@@ -1,3 +1,7 @@
+## 0.1.5 (08.02.2019):
+
+ILog extensions are now more forgiving to parameters count mismatch: provided params are now matched to names from template even when no exact match is found.
+
 ## 0.1.4 (01.02.2019):
 
 Added `ILog.SelectEvents(Predicate<LogEvent>)` and `ILog.DropEvents(Predicate<LogEvent>)` extension methods.
