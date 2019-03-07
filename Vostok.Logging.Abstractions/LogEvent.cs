@@ -78,9 +78,7 @@ namespace Vostok.Logging.Abstractions
         /// </summary>
         [Pure]
         public LogEvent WithProperty<T>([NotNull] string key, [CanBeNull] T value)
-        {
-            return WithProperty(key, value, true);
-        }
+            => WithProperty(key, value, true);
 
         /// <summary>
         /// <para>Returns a copy of the log event with property <paramref name="key"/> set to <paramref name="value"/>. </para>
@@ -88,9 +86,7 @@ namespace Vostok.Logging.Abstractions
         /// </summary>
         [Pure]
         public LogEvent WithPropertyIfAbsent<T>([NotNull] string key, [CanBeNull] T value)
-        {
-            return WithProperty(key, value, false);
-        }
+            => WithProperty(key, value, false);
 
         /// <summary>
         /// Returns a copy of the log event with property <paramref name="key"/> removed.
@@ -109,6 +105,34 @@ namespace Vostok.Logging.Abstractions
             return new LogEvent(Level, Timestamp, MessageTemplate, newProperties, Exception);
         }
 
+        /// <summary>
+        /// Returns a copy of the log event with given <paramref name="messageTemplate"/>.
+        /// </summary>
+        [Pure]
+        public LogEvent WithMessageTemplate([CanBeNull] string messageTemplate)
+            => new LogEvent(Level, Timestamp, messageTemplate, properties, Exception);
+
+        /// <summary>
+        /// Returns a copy of the log event with given <paramref name="messageTemplate"/>.
+        /// </summary>
+        [Pure]
+        public LogEvent WithException([CanBeNull] Exception exception)
+            => new LogEvent(Level, Timestamp, MessageTemplate, properties, exception);
+
+        /// <summary>
+        /// Returns a copy of the log event with given <paramref name="level"/>.
+        /// </summary>
+        [Pure]
+        public LogEvent WithLevel(LogLevel level)
+            => new LogEvent(level, Timestamp, MessageTemplate, properties, Exception);
+
+        /// <summary>
+        /// Returns a copy of the log event with given <paramref name="timestamp"/>.
+        /// </summary>
+        [Pure]
+        public LogEvent WithTimestamp(DateTimeOffset timestamp)
+            => new LogEvent(Level, timestamp, MessageTemplate, properties, Exception);
+
         internal LogEvent WithProperty<T>([NotNull] string key, [CanBeNull] T value, bool allowOverwrite)
         {
             if (key == null)
@@ -126,8 +150,6 @@ namespace Vostok.Logging.Abstractions
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static ImmutableArrayDictionary<string, object> CreateProperties()
-        {
-            return new ImmutableArrayDictionary<string, object>(StringComparer.Ordinal);
-        }
+            => new ImmutableArrayDictionary<string, object>(StringComparer.Ordinal);
     }
 }
