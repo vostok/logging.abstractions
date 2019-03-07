@@ -20,5 +20,11 @@ namespace Vostok.Logging.Abstractions
         /// <para>Represented by <see cref="OperationContextValue"/>.</para>
         /// </summary>
         public const string OperationContext = "OperationContext";
+
+        /// <summary>
+        /// <para>Property that denotes current distributed tracing context.</para>
+        /// <para>Respresented by anything of user's choice.</para>
+        /// </summary>
+        public const string TraceContext = "TraceContext";
     }
 }
