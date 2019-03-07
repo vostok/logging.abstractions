@@ -26,6 +26,10 @@
     <RepositoryUrl>https://github.com/vostok/logging.abstractions</RepositoryUrl>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702;1591</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Update="Extensions\LogExtensions.cs">
       <DesignTime>True</DesignTime>
