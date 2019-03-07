@@ -121,8 +121,8 @@ namespace Vostok.Logging.Abstractions.Helpers
 
             var formatDelimiter = template.IndexOf(Colon, offset, length);
 
-            name = formatDelimiter < offset 
-                ? template.Substring(offset, length) 
+            name = formatDelimiter < offset
+                ? template.Substring(offset, length)
                 : template.Substring(offset, formatDelimiter - offset);
 
             return IsValidName(name);

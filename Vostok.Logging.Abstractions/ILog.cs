@@ -29,7 +29,7 @@ namespace Vostok.Logging.Abstractions
         ///     <item><description>It is tied to the returned instance of <see cref="ILog"/>.</description></item>
         ///     <item><description>It is hierarchical: chained <see cref="ForContext"/> calls produce an ordered sequence of contexts.</description></item>
         /// </list>
-        /// <para>It is generally expected that implementations would enrich incoming <see cref="LogEvent"/>s with <see cref="WellKnownProperties.SourceContext"/> property containing this context. <see cref="Vostok.Logging.Abstractions.Wrappers.SourceContextWrapper"/> helps with this.</para>
+        /// <para>It is generally expected that implementations would enrich incoming <see cref="LogEvent"/>s with <see cref="WellKnownProperties.SourceContext"/> property containing this context. <see cref="Wrappers.SourceContextWrapper"/> helps with this.</para>
         /// </summary>
         [NotNull]
         ILog ForContext([NotNull] string context);

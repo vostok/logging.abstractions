@@ -4,7 +4,7 @@ using Vostok.Commons.Time;
 
 namespace Vostok.Logging.Abstractions
 {
-	[PublicAPI]
+    [PublicAPI]
     public static class LogExtensions
     {
         #region Debug
@@ -556,6 +556,5 @@ namespace Vostok.Logging.Abstractions
         }
 
         #endregion
-
     }
 }

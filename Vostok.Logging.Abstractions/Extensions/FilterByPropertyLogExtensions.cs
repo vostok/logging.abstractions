@@ -67,9 +67,9 @@ namespace Vostok.Logging.Abstractions
             {
                 var properties = @event?.Properties;
 
-                var criterionMatches = 
-                    properties != null && 
-                    properties.TryGetValue(key, out var value) && 
+                var criterionMatches =
+                    properties != null &&
+                    properties.TryGetValue(key, out var value) &&
                     value is T typedValue &&
                     criterion(typedValue);
 
