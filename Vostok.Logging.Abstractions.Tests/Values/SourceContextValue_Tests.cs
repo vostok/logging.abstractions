@@ -24,7 +24,7 @@ namespace Vostok.Logging.Abstractions.Tests.Values
         public void ToString_with_multiple_contexts_should_join_them()
         {
             new SourceContextValue(new [] {"foo", "bar", "baz"}).ToString()
-                .Should().Be("foo --> bar --> baz");
+                .Should().Be("foo -> bar -> baz");
         }
 
         [Test]

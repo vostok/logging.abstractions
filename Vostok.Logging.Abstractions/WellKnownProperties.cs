@@ -15,6 +15,10 @@ namespace Vostok.Logging.Abstractions
         /// </summary>
         public const string SourceContext = "SourceContext";
 
-        public const string ContextualPrefix = "ContextualPrefix";
+        /// <summary>
+        /// <para>Property that denotes current logical operation context related to code execution flow, such as currently handled query.</para>
+        /// <para>Represented by <see cref="OperationContextValue"/>.</para>
+        /// </summary>
+        public const string OperationContext = "OperationContext";
     }
 }

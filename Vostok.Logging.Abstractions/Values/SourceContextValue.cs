@@ -21,7 +21,7 @@ namespace Vostok.Logging.Abstractions.Values
         }
 
         public override string ToString() =>
-            stringRepresentation ?? (stringRepresentation = string.Join(" --> ", contexts));
+            stringRepresentation ?? (stringRepresentation = string.Join(" -> ", contexts));
 
         public static SourceContextValue operator+([CanBeNull] SourceContextValue left, [CanBeNull] string right)
         {
@@ -31,10 +31,9 @@ namespace Vostok.Logging.Abstractions.Values
             if (left == null)
                 return new SourceContextValue(right);
 
-            var currentContexts = left?.contexts;
-            var newContexts = AppendToContexts(currentContexts, right);
+            var newContexts = AppendToContexts(left.contexts, right);
 
-            return ReferenceEquals(currentContexts, newContexts) ? left : new SourceContextValue(newContexts);
+            return ReferenceEquals(left.contexts, newContexts) ? left : new SourceContextValue(newContexts);
         }
 
         public static SourceContextValue operator+([CanBeNull] SourceContextValue left, [CanBeNull] SourceContextValue right)
