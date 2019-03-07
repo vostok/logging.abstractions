@@ -22,9 +22,14 @@ namespace Vostok.Logging.Abstractions
         bool IsEnabledFor(LogLevel level);
 
         /// <summary>
-        /// <para>Returns a copy of the log operating in the given source <paramref name="context" />. Handling of these context strings is implementation-specific.</para>
-        /// <para>Source context is not hierarchical: every <see cref="ForContext"/> call discards any previous context.</para>
-        /// <para>If you are implementing a log and don't need this method, just return <c>this</c> in the implementation.</para>
+        /// <para>Returns a copy of the log operating in the given source <paramref name="context" />.</para>
+        /// <para>The nature of this context is described by following statements:</para>
+        /// <list type="bullet">
+        ///     <item><description>It is meant to denote the source of logging events, such as a class.</description></item>
+        ///     <item><description>It is tied to the returned instance of <see cref="ILog"/>.</description></item>
+        ///     <item><description>It is hierarchical: chained <see cref="ForContext"/> calls produce an ordered sequence of contexts.</description></item>
+        /// </list>
+        /// <para>It is generally expected that implementations would enrich incoming <see cref="LogEvent"/>s with <see cref="WellKnownProperties.SourceContext"/> property containing this context. <see cref="Vostok.Logging.Abstractions.Wrappers.SourceContextWrapper"/> helps with this.</para>
         /// </summary>
         [NotNull]
         ILog ForContext([NotNull] string context);
