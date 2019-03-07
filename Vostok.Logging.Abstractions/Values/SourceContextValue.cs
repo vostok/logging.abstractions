@@ -1,4 +1,6 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using System.Linq;
+using JetBrains.Annotations;
 
 namespace Vostok.Logging.Abstractions.Values
 {
@@ -6,7 +8,7 @@ namespace Vostok.Logging.Abstractions.Values
     /// Represents the value of <see cref="WellKnownProperties.SourceContext"/> property.
     /// </summary>
     [PublicAPI]
-    public class SourceContextValue : HierarchicalContextValue
+    public class SourceContextValue : HierarchicalContextValue, IEquatable<SourceContextValue>
     {
         private volatile string stringRepresentation;
 
@@ -46,5 +48,18 @@ namespace Vostok.Logging.Abstractions.Values
 
             return new SourceContextValue(MergeContexts(left.contexts, right.contexts));
         }
+
+        #region Equality
+
+        public bool Equals(SourceContextValue other) 
+            => ReferenceEquals(this, other) || other != null && contexts.SequenceEqual(other.contexts);
+
+        public override bool Equals(object other)
+            => Equals(other as SourceContextValue);
+
+        public override int GetHashCode()
+            => contexts.Aggregate(contexts.Length, (current, value) => current * 397 ^ value.GetHashCode());
+
+        #endregion
     }
 }

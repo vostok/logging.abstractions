@@ -55,5 +55,18 @@ namespace Vostok.Logging.Abstractions.Values
 
             return builder.ToString();
         }
+
+        #region Equality
+
+        public bool Equals(OperationContextValue other)
+            => ReferenceEquals(this, other) || other != null && contexts.SequenceEqual(other.contexts);
+
+        public override bool Equals(object other)
+            => Equals(other as OperationContextValue);
+
+        public override int GetHashCode()
+            => contexts.Aggregate(contexts.Length, (current, value) => current * 397 ^ value.GetHashCode());
+
+        #endregion
     }
 }
