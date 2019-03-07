@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using Vostok.Logging.Abstractions.Values;
 
 namespace Vostok.Logging.Abstractions
 {
@@ -8,6 +9,10 @@ namespace Vostok.Logging.Abstractions
     [PublicAPI]
     public static class WellKnownProperties
     {
+        /// <summary>
+        /// <para>Property that denotes logging events source, such as a class in code base.</para>
+        /// <para>Represented by <see cref="SourceContextValue"/>.</para>
+        /// </summary>
         public const string SourceContext = "SourceContext";
 
         public const string ContextualPrefix = "ContextualPrefix";
