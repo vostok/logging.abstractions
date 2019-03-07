@@ -1,5 +1,6 @@
 ﻿using System;
 using JetBrains.Annotations;
+using Vostok.Logging.Abstractions.Values;
 
 namespace Vostok.Logging.Abstractions.Wrappers
 {
@@ -11,21 +12,26 @@ namespace Vostok.Logging.Abstractions.Wrappers
     [PublicAPI]
     public class SourceContextWrapper : ILog
     {
-        public SourceContextWrapper([NotNull] ILog log, [NotNull] string context)
+        public SourceContextWrapper([NotNull] ILog log, [NotNull] SourceContextValue context)
         {
             BaseLog = log ?? throw new ArgumentNullException(nameof(log));
             Context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+
+        public SourceContextWrapper([NotNull] ILog log, [NotNull] string context)
+            : this(log, new SourceContextValue(context))
+        {
         }
 
         [NotNull]
         public ILog BaseLog { get; }
 
         [NotNull]
-        public string Context { get; }
+        public SourceContextValue Context { get; }
 
         public void Log(LogEvent @event)
         {
-            @event = @event?.WithProperty(WellKnownProperties.SourceContext, Context, true);
+            @event = @event?.WithProperty(WellKnownProperties.SourceContext, Context + GetSourceContext(@event), true);
 
             BaseLog.Log(@event);
         }
@@ -40,7 +46,7 @@ namespace Vostok.Logging.Abstractions.Wrappers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            return new SourceContextWrapper(UnwrapBaseLog(), context);
+            return new SourceContextWrapper(UnwrapBaseLog(), Context + context);
         }
 
         private ILog UnwrapBaseLog()
@@ -53,6 +59,15 @@ namespace Vostok.Logging.Abstractions.Wrappers
             }
 
             return result;
+        }
+
+        [CanBeNull]
+        private SourceContextValue GetSourceContext([CanBeNull] LogEvent @event)
+        {
+            if (@event?.Properties == null)
+                return null;
+
+            return @event.Properties.TryGetValue(WellKnownProperties.SourceContext, out var value) ? value as SourceContextValue : null;
         }
     }
 }

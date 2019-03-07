@@ -3,7 +3,10 @@ using System.Linq;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
+using Vostok.Logging.Abstractions.Values;
 using Vostok.Logging.Abstractions.Wrappers;
+
+// ReSharper disable PossibleNullReferenceException
 
 namespace Vostok.Logging.Abstractions.Tests.Wrappers
 {
@@ -27,7 +30,7 @@ namespace Vostok.Logging.Abstractions.Tests.Wrappers
 
             observedEvent = null;
 
-            wrapper = new SourceContextWrapper(baseLog, "ctx-value");
+            wrapper = new SourceContextWrapper(baseLog, "foo");
         }
 
         [Test]
@@ -46,7 +49,9 @@ namespace Vostok.Logging.Abstractions.Tests.Wrappers
             baseLog.Received(1).Log(Arg.Any<LogEvent>());
 
             observedEvent.Properties.Should().HaveCount(3);
-            observedEvent.Properties?[WellKnownProperties.SourceContext].Should().Be("ctx-value");
+
+            observedEvent.Properties[WellKnownProperties.SourceContext]
+                .Should().BeOfType<SourceContextValue>().Which.Should().Equal("foo");
         }
 
         [Test]
@@ -55,17 +60,30 @@ namespace Vostok.Logging.Abstractions.Tests.Wrappers
             foreach (var level in Enum.GetValues(typeof(LogLevel)).Cast<LogLevel>())
             {
                 baseLog.IsEnabledFor(level).Returns(true);
-
+        
                 wrapper.IsEnabledFor(level).Should().BeTrue();
-
+        
                 baseLog.IsEnabledFor(level).Returns(false);
-
+        
                 wrapper.IsEnabledFor(level).Should().BeFalse();
             }
         }
-
+        
         [Test]
         public void ForContext_should_not_produce_wrapper_chains()
+        {
+            wrapper = wrapper
+                .ForContext("1")
+                .ForContext("2")
+                .ForContext("3");
+        
+            var result = wrapper.Should().BeOfType<SourceContextWrapper>().Which;
+        
+            result.BaseLog.Should().BeSameAs(baseLog);
+        }
+
+        [Test]
+        public void ForContext_should_concatenate_contexts()
         {
             wrapper = wrapper
                 .ForContext("1")
@@ -74,24 +92,18 @@ namespace Vostok.Logging.Abstractions.Tests.Wrappers
 
             var result = wrapper.Should().BeOfType<SourceContextWrapper>().Which;
 
-            result.BaseLog.Should().BeSameAs(baseLog);
-
-            result.Context.Should().Be("3");
+            result.Context.Should().Equal("foo", "1", "2", "3");
         }
 
         [Test]
-        public void ForContext_should_unwrap_chains_of_source_context_wrappers()
+        public void Should_correctly_handle_existing_source_context_in_event()
         {
-            wrapper = new SourceContextWrapper(wrapper, "1");
-            wrapper = new SourceContextWrapper(wrapper, "2");
-            wrapper = new SourceContextWrapper(wrapper, "3");
-            wrapper = wrapper.ForContext("4");
+            originalEvent = originalEvent.WithProperty(WellKnownProperties.SourceContext, new SourceContextValue("bar"));
 
-            var result = wrapper.Should().BeOfType<SourceContextWrapper>().Which;
+            wrapper.Log(originalEvent);
 
-            result.BaseLog.Should().BeSameAs(baseLog);
-
-            result.Context.Should().Be("4");
+            observedEvent.Properties[WellKnownProperties.SourceContext]
+                .Should().BeOfType<SourceContextValue>().Which.Should().Equal("foo", "bar");
         }
     }
 }
