@@ -5,3 +5,8 @@
 
 
 This library is a facade with core logging interfaces and models ([ILog](Vostok.Logging.Abstractions/ILog.cs), [LogEvent](Vostok.Logging.Abstractions/LogEvent.cs), [LogLevel](Vostok.Logging.Abstractions/LogLevel.cs)) and a set of useful [extensions](Vostok.Logging.Abstractions/Extensions).
+
+
+**Build guide**: https://github.com/vostok/devtools/blob/master/library-dev-conventions/how-to-build-a-library.md
+
+**User documentation**: https://vostok.gitbook.io/logging/
