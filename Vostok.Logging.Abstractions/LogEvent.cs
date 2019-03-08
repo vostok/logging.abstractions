@@ -113,7 +113,7 @@ namespace Vostok.Logging.Abstractions
             => new LogEvent(Level, Timestamp, messageTemplate, properties, Exception);
 
         /// <summary>
-        /// Returns a copy of the log event with given <paramref name="messageTemplate"/>.
+        /// Returns a copy of the log event with given <paramref name="exception"/>.
         /// </summary>
         [Pure]
         public LogEvent WithException([CanBeNull] Exception exception)
