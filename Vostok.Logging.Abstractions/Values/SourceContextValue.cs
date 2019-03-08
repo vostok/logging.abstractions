@@ -23,7 +23,7 @@ namespace Vostok.Logging.Abstractions.Values
         }
 
         public override string ToString() =>
-            stringRepresentation ?? (stringRepresentation = string.Join(" -> ", contexts));
+            stringRepresentation ?? (stringRepresentation = "[" + string.Join(" => ", contexts) + "]");
 
         public static SourceContextValue operator+([CanBeNull] SourceContextValue left, [CanBeNull] string right)
         {

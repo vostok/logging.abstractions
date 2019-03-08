@@ -17,14 +17,14 @@ namespace Vostok.Logging.Abstractions.Tests.Values
         [Test]
         public void ToString_with_just_one_context_should_return_it()
         {
-            new SourceContextValue("foo").ToString().Should().Be("foo");
+            new SourceContextValue("foo").ToString().Should().Be("[foo]");
         }
 
         [Test]
         public void ToString_with_multiple_contexts_should_join_them()
         {
             new SourceContextValue(new [] {"foo", "bar", "baz"}).ToString()
-                .Should().Be("foo -> bar -> baz");
+                .Should().Be("[foo => bar => baz]");
         }
 
         [Test]
