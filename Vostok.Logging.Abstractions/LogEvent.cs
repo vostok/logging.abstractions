@@ -47,7 +47,8 @@ namespace Vostok.Logging.Abstractions
         /// <para>The template of the log message containing placeholders to be filled with values from <see cref="Properties"/>.</para>
         /// <para>For example, the template "foo{0} {key}" and properties { '0': 'bar', 'key': 'baz' } produce the following output: "foobar baz".</para>
         /// <para>Use double curly braces to escape curly braces in text: "{{key}}", { 'key': 'value' } --> "{{key}}".</para>
-        /// <para>Any mismatched braces or nonexistent keys are kept as-is: "key1} {key2}", { 'key1': 'value' } --> "key1} {key2}".</para>
+        /// <para>Any mismatched braces are kept as-is: "key1}", { 'key1': 'value' } --> "key1}".</para>
+        /// <para>Any nonexistent keys are rendered as empty strings: "{key1}", { } --> "".</para>
         /// <para>Can be null for events containing only <see cref="Exception"/>.</para>
         /// </summary>
         [CanBeNull]
