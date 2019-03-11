@@ -23,6 +23,7 @@
     <PackageProjectUrl>https://github.com/vostok/logging.abstractions</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/vostok/logging.abstractions/blob/master/LICENSE</PackageLicenseUrl>
     <PackageTags>vostok vostok.logging</PackageTags>
+    <PackageReleaseNotes>https://github.com/vostok/logging.abstractions/blob/master/CHANGELOG.md</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/vostok/logging.abstractions</RepositoryUrl>
   </PropertyGroup>
 
