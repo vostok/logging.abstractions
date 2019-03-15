@@ -1,3 +1,7 @@
+## 1.0.1 (15.03.2019)
+
+* Added log levels transformation extension: `log.WithLevelsTransformation(...)`
+
 ## 1.0.0 (11.03.2019):
 
 * Breaking change: source context is now hierarchical. Chained ForContext() calls are expected to accumulate a sequence of contexts instead of overriding current value.
