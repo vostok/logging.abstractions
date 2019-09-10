@@ -23,7 +23,7 @@ namespace Vostok.Logging.Abstractions
 
         /// <summary>
         /// <para>Property that denotes current distributed tracing context.</para>
-        /// <para>Respresented by anything of user's choice.</para>
+        /// <para>Represented by anything of user's choice.</para>
         /// </summary>
         public const string TraceContext = "TraceContext";
     }
