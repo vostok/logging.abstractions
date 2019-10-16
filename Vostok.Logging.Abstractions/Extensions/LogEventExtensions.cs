@@ -7,7 +7,8 @@ using Vostok.Logging.Abstractions.Helpers;
 
 namespace Vostok.Logging.Abstractions
 {
-    internal static class LogEventExtensions
+    [PublicAPI]
+    public static class LogEventExtensions
     {
         [Pure]
         public static LogEvent WithObjectProperties<T>(this LogEvent @event, T @object, bool allowOverwrite = true, bool allowNullValues = true)

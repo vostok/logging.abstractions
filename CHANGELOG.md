@@ -1,3 +1,7 @@
+## 1.0.3 (16.10.2019):
+
+`LogEventExtensions` (`WithObjectProperties` and `WithParameters`) are public now.
+
 ## 1.0.2 (23.09.2019)
 
 Fixed lowerCamelCase `WellKnownProperties`.
