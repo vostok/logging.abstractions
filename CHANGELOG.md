@@ -1,10 +1,17 @@
+## 1.0.3 (16.10.2019)
+
+Added log extensions with log level in argument
+
+
 ## 1.0.2 (23.09.2019)
 
 Fixed lowerCamelCase `WellKnownProperties`.
 
+
 ## 1.0.1 (15.03.2019)
 
 * Added log levels transformation extension: `log.WithLevelsTransformation(...)`
+
 
 ## 1.0.0 (11.03.2019):
 

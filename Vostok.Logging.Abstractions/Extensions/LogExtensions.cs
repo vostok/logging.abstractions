@@ -4,9 +4,102 @@ using Vostok.Commons.Time;
 
 namespace Vostok.Logging.Abstractions
 {
-    [PublicAPI]
+	[PublicAPI]
     public static class LogExtensions
     {
+        #region Log
+
+        /// <summary>
+        /// Logs the given <paramref name="message"/> on the <paramref name="logLevel"/> level without any additional properties.
+        /// </summary>
+        public static void Log(this ILog log, LogLevel logLevel, [CanBeNull] string message)
+        {
+            if (!log.IsEnabledFor(logLevel))
+                return;
+
+            log.Log(new LogEvent(logLevel, PreciseDateTime.Now, message));
+        }
+
+        /// <summary>
+        /// Logs the given <paramref name="exception"/> on the <paramref name="logLevel"/> level without a message or any additional properties.
+        /// </summary>
+        public static void Log(this ILog log, LogLevel logLevel, [CanBeNull] Exception exception)
+        {
+            if (!log.IsEnabledFor(logLevel))
+                return;
+
+            log.Log(new LogEvent(logLevel, PreciseDateTime.Now, null, exception));
+        }
+
+        /// <summary>
+        /// Logs the given <paramref name="message"/> and <paramref name="exception"/> on the <paramref name="logLevel"/> level without any additional properties.
+        /// </summary>
+        public static void Log(this ILog log, LogLevel logLevel, [CanBeNull] Exception exception, [CanBeNull] string message)
+        {
+            if (!log.IsEnabledFor(logLevel))
+                return;
+
+            log.Log(new LogEvent(logLevel, PreciseDateTime.Now, message, exception));
+        }
+
+        /// <summary>
+        /// Logs the given <paramref name="messageTemplate"/> on the <paramref name="logLevel"/> level with given <paramref name="properties" />. The <paramref name="messageTemplate"/> can contain placeholders for <paramref name="properties"/>, see <see cref="LogEvent.MessageTemplate"/> for details.
+        /// </summary>
+        public static void Log<T>(this ILog log, LogLevel logLevel, [CanBeNull] string messageTemplate, [CanBeNull] T properties)
+        {
+            if (!log.IsEnabledFor(logLevel))
+                return;
+
+            if (!typeof(T).IsConstructedGenericType)
+            {
+                log.Log(logLevel, messageTemplate, (object)properties);
+                return;
+            }
+
+            log.Log(new LogEvent(logLevel, PreciseDateTime.Now, messageTemplate).WithObjectProperties(properties));
+        }
+
+        /// <summary>
+        /// Logs the given <paramref name="messageTemplate"/> on the <paramref name="logLevel"/> level with given <paramref name="parameters" />. The <paramref name="messageTemplate"/> can contain placeholders for <paramref name="parameters"/>, see <see cref="LogEvent.MessageTemplate"/> for details.
+        /// </summary>
+        public static void Log(this ILog log, LogLevel logLevel, [CanBeNull] string messageTemplate, [CanBeNull] params object[] parameters)
+        {
+            if (!log.IsEnabledFor(logLevel))
+                return;
+
+            log.Log(new LogEvent(logLevel, PreciseDateTime.Now, messageTemplate).WithParameters(parameters));
+        }
+
+        /// <summary>
+        /// Logs the given <paramref name="messageTemplate"/> and <paramref name="exception"/> on the <paramref name="logLevel"/> level with given <paramref name="properties" />. The <paramref name="messageTemplate"/> can contain placeholders for <paramref name="properties"/>, see <see cref="LogEvent.MessageTemplate"/> for details.
+        /// </summary>
+        public static void Log<T>(this ILog log, LogLevel logLevel, [CanBeNull] Exception exception, [CanBeNull] string messageTemplate, [CanBeNull] T properties)
+        {
+            if (!log.IsEnabledFor(logLevel))
+                return;
+
+            if (!typeof(T).IsConstructedGenericType)
+            {
+                log.Log(logLevel, exception, messageTemplate, (object)properties);
+                return;
+            }
+
+            log.Log(new LogEvent(logLevel, PreciseDateTime.Now, messageTemplate, exception).WithObjectProperties(properties));
+        }
+
+        /// <summary>
+        /// Logs the given <paramref name="messageTemplate"/> and <paramref name="exception"/> on the <paramref name="logLevel"/> level with given <paramref name="parameters" />. The <paramref name="messageTemplate"/> can contain placeholders for <paramref name="parameters"/>, see <see cref="LogEvent.MessageTemplate"/> for details.
+        /// </summary>
+        public static void Log(this ILog log, LogLevel logLevel, [CanBeNull] Exception exception, [CanBeNull] string messageTemplate, [CanBeNull] params object[] parameters)
+        {
+            if (!log.IsEnabledFor(logLevel))
+                return;
+
+            log.Log(new LogEvent(logLevel, PreciseDateTime.Now, messageTemplate, exception).WithParameters(parameters));
+        }
+        
+        #endregion
+            
         #region Debug
 
         /// <summary>
@@ -556,5 +649,6 @@ namespace Vostok.Logging.Abstractions
         }
 
         #endregion
+
     }
 }
