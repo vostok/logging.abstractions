@@ -1,52 +1,73 @@
+using System;
 using System.Linq;
 using JetBrains.Annotations;
 using Vostok.Logging.Abstractions.Values;
 
 namespace Vostok.Logging.Abstractions
 {
-     public static class FilterBySourceContextLogExtensions
+    [PublicAPI]
+    public static class FilterBySourceContextLogExtensions
     {
-        public static ILog WithEventsSelectedBySourceContext(this ILog log, string context)
+        /// <summary>
+        /// <para>Returns a wrapper log that only logs events made by log with given <paramref name="context"/> passed to <see cref="ILog.ForContext(string)"/></para>
+        /// </summary>
+        [Pure]
+        public static ILog WithEventsSelectedBySourceContext([NotNull] this ILog log, [NotNull] string context)
         {
             return new SourceContextFilterLog(log, context, true);
         }
+        
+        /// <summary>
+        /// <para>Returns a wrapper log that only logs events made by log with context equal to the name of <typeparamref name="T"/> passed to <see cref="ILog.ForContext(string)"/></para>
+        /// </summary>
+        [Pure]
+        public static ILog WithEventsSelectedBySourceContext<T>([NotNull] this ILog log)
+        {
+            return WithEventsSelectedBySourceContext(log, typeof(T).Name);
+        }
 
-        public static ILog WithEventsDroppedBySourceContext(this ILog log, string context)
+        /// <summary>
+        /// <para>Returns a wrapper log that drops events made by log with given <paramref name="context"/> passed to <see cref="ILog.ForContext(string)"/></para>
+        /// </summary>
+        [Pure]
+        public static ILog WithEventsDroppedBySourceContext([NotNull] this ILog log, [NotNull] string context)
         {
             return new SourceContextFilterLog(log, context, false);
         }
-
+        
+        /// <summary>
+        /// <para>Returns a wrapper log that drops events made by log with context equal to the name of <typeparamref name="T"/> passed to <see cref="ILog.ForContext(string)"/></para>
+        /// </summary>
+        [Pure]
+        public static ILog WithEventsDroppedBySourceContext<T>([NotNull] this ILog log)
+        {
+            return WithEventsDroppedBySourceContext(log, typeof(T).Name);
+        }
+        
         public class SourceContextFilterLog : ILog
         {
             private readonly ILog baseLog;
             private readonly string contextFilterValue;
             private readonly bool filterAllowsEvent;
+            private bool logEnabled;
 
-            public SourceContextFilterLog([NotNull] ILog baseLog,
-                                          [CanBeNull] SourceContextValue sourceContextValue,
-                                          [NotNull] string contextFilterValue,
-                                          bool filterAllowsEvent)
+            public SourceContextFilterLog(ILog baseLog, string contextFilterValue, bool filterAllowsEvent)
             {
-                this.baseLog = baseLog;
-                this.contextFilterValue = contextFilterValue;
+                this.baseLog = baseLog ?? throw new ArgumentNullException(nameof(baseLog));
+                this.contextFilterValue = contextFilterValue ?? throw new ArgumentNullException(nameof(contextFilterValue));
                 this.filterAllowsEvent = filterAllowsEvent;
-                SourceContext = sourceContextValue;
+                logEnabled = !filterAllowsEvent;
             }
 
-            public SourceContextFilterLog([NotNull] ILog baseLog,
-                                          [NotNull] string contextFilterValue,
-                                          bool filterAllowsEvent)
-                : this(baseLog, null, contextFilterValue, filterAllowsEvent)
+            private SourceContextFilterLog(ILog baseLog, string contextFilterValue, bool filterAllowsEvent, bool logEnabled)
+                : this(baseLog, contextFilterValue, filterAllowsEvent)
             {
+                this.logEnabled = logEnabled;
             }
-
-            [CanBeNull]
-            public SourceContextValue SourceContext { get; }
 
             public void Log(LogEvent @event)
             {
-                var matchFilter = SourceContext?.Contains(contextFilterValue) ?? false;
-                if (matchFilter == filterAllowsEvent)
+                if (logEnabled)
                 {
                     baseLog.Log(@event);
                 }
@@ -57,8 +78,16 @@ namespace Vostok.Logging.Abstractions
             public ILog ForContext(string context)
             {
                 var baseLogForContext = baseLog.ForContext(context);
-                var newSourceContext = SourceContext + new SourceContextValue(context);
-                return new SourceContextFilterLog(baseLogForContext, newSourceContext, contextFilterValue, filterAllowsEvent);
+
+                if (context == contextFilterValue)
+                {
+                    var newLogEnabled = filterAllowsEvent;
+                    return new SourceContextFilterLog(baseLogForContext, contextFilterValue, filterAllowsEvent, newLogEnabled);
+                }
+
+                return ReferenceEquals(baseLogForContext, baseLog)
+                    ? this
+                    : new SourceContextFilterLog(baseLogForContext, contextFilterValue, filterAllowsEvent, logEnabled);
             }
         }
     }
