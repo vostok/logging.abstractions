@@ -1,7 +1,5 @@
 using System;
-using System.Linq;
 using JetBrains.Annotations;
-using Vostok.Logging.Abstractions.Values;
 
 namespace Vostok.Logging.Abstractions
 {
@@ -16,7 +14,7 @@ namespace Vostok.Logging.Abstractions
         {
             return new SourceContextFilterLog(log, context, true);
         }
-        
+
         /// <summary>
         /// <para>Returns a wrapper log that only logs events made by log with context equal to the name of <typeparamref name="T"/> passed to <see cref="ILog.ForContext(string)"/></para>
         /// </summary>
@@ -34,7 +32,7 @@ namespace Vostok.Logging.Abstractions
         {
             return new SourceContextFilterLog(log, context, false);
         }
-        
+
         /// <summary>
         /// <para>Returns a wrapper log that drops events made by log with context equal to the name of <typeparamref name="T"/> passed to <see cref="ILog.ForContext(string)"/></para>
         /// </summary>
@@ -43,8 +41,8 @@ namespace Vostok.Logging.Abstractions
         {
             return WithEventsDroppedBySourceContext(log, typeof(T).Name);
         }
-        
-        public class SourceContextFilterLog : ILog
+
+        private class SourceContextFilterLog : ILog
         {
             private readonly ILog baseLog;
             private readonly string contextFilterValue;

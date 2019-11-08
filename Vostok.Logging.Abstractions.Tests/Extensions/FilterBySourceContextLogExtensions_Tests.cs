@@ -1,8 +1,6 @@
 using System;
-using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
-using Vostok.Logging.Abstractions;
 
 namespace Vostok.Logging.Abstractions.Tests.Extensions
 {
@@ -71,6 +69,36 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
             filterLog.ForContext(differentContext).ForContext("AnotherDifferentContext").Log(@event);
 
             baseLog.Received(3).Log(@event);
+        }
+
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(5)]
+        public void WithEventsSelectedBySourceContext_should_return_a_log_that_pass_context_value_down(int contextsCount)
+        {
+            var filterLog = baseLog.WithEventsSelectedBySourceContext(context);
+
+            TestForContextPassing(contextsCount, filterLog);
+        }
+
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(5)]
+        public void WithEventsDroppedBySourceContext_should_return_a_log_that_pass_context_value_down(int contextsCount)
+        {
+            var filterLog = baseLog.WithEventsDroppedBySourceContext(context);
+
+            TestForContextPassing(contextsCount, filterLog);
+        }
+
+        private void TestForContextPassing(int contextsCount, ILog filterLog)
+        {
+            for (var i = 0; i < contextsCount; i++)
+            {
+                filterLog = filterLog.ForContext(i.ToString());
+
+                baseLog.Received(1).ForContext(i.ToString());
+            }
         }
     }
 }
