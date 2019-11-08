@@ -1,3 +1,7 @@
+## 1.0.4 (08.11.2019):
+
+Added `WithEventsSelectedBySourceContext` and `WithEventsDroppedBySourceContext` extensions.
+
 ## 1.0.3 (16.10.2019):
 
 `LogEventExtensions` (`WithObjectProperties` and `WithParameters`) are public now.
