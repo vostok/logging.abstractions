@@ -26,7 +26,7 @@ namespace Vostok.Logging.Abstractions
         /// <summary>
         /// Creates a new log event with specified <paramref name="level"/>, <paramref name="timestamp"/>, <paramref name="messageTemplate"/>, <paramref name="properties"/> and <paramref name="exception"/> .
         /// </summary>
-        internal LogEvent(LogLevel level, DateTimeOffset timestamp, [CanBeNull] string messageTemplate, [CanBeNull] IReadOnlyDictionary<string, object> properties, [CanBeNull] Exception exception)
+        public LogEvent(LogLevel level, DateTimeOffset timestamp, [CanBeNull] string messageTemplate, [CanBeNull] IReadOnlyDictionary<string, object> properties, [CanBeNull] Exception exception)
         {
             Level = level;
             Timestamp = timestamp;
