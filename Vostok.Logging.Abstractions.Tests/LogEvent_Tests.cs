@@ -142,5 +142,20 @@ namespace Vostok.Logging.Abstractions.Tests
 
             newEvent.Should().BeSameAs(@event);
         }
+
+        [Test]
+        public void Property_methods_should_play_well_with_external_initial_properties()
+        {
+            var @event = new LogEvent(LogLevel.Info, DateTimeOffset.Now, "message", new Dictionary<string, object>
+            {
+                ["A"] = 1,
+                ["B"] = 2,
+            }, null);
+
+            @event = @event.WithProperty("B", 10);
+            @event = @event.WithProperty("C", 3);
+            @event = @event.WithoutProperty("A");
+            @event.Properties.Should().BeEquivalentTo(new Dictionary<string, object> { { "B", 10 }, { "C", 3 } });
+        }
     }
 }

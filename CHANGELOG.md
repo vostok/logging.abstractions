@@ -1,3 +1,7 @@
+## 1.0.5 (19.01.2020):
+
+LogEvent: added a public constructor with properties.
+
 ## 1.0.4 (08.11.2019):
 
 Added `WithEventsSelectedBySourceContext` and `WithEventsDroppedBySourceContext` extensions.

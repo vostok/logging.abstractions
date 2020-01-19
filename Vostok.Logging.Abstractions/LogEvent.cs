@@ -13,7 +13,7 @@ namespace Vostok.Logging.Abstractions
     public sealed class LogEvent
     {
         [CanBeNull]
-        private readonly ImmutableArrayDictionary<string, object> properties;
+        private readonly IReadOnlyDictionary<string, object> properties;
 
         /// <summary>
         /// Creates a new log event with specified <paramref name="level"/>, <paramref name="timestamp"/>, <paramref name="messageTemplate"/>, <paramref name="exception"/> and empty properties.
@@ -23,7 +23,10 @@ namespace Vostok.Logging.Abstractions
         {
         }
 
-        internal LogEvent(LogLevel level, DateTimeOffset timestamp, string messageTemplate, ImmutableArrayDictionary<string, object> properties, Exception exception)
+        /// <summary>
+        /// Creates a new log event with specified <paramref name="level"/>, <paramref name="timestamp"/>, <paramref name="messageTemplate"/>, <paramref name="properties"/> and <paramref name="exception"/> .
+        /// </summary>
+        internal LogEvent(LogLevel level, DateTimeOffset timestamp, [CanBeNull] string messageTemplate, [CanBeNull] IReadOnlyDictionary<string, object> properties, [CanBeNull] Exception exception)
         {
             Level = level;
             Timestamp = timestamp;
@@ -98,8 +101,7 @@ namespace Vostok.Logging.Abstractions
             if (key == null)
                 throw new ArgumentNullException(nameof(key));
 
-            var newProperties = properties?.Remove(key);
-
+            var newProperties = ToImmutableDictionary(properties)?.Remove(key);
             if (ReferenceEquals(newProperties, properties))
                 return this;
 
@@ -139,10 +141,7 @@ namespace Vostok.Logging.Abstractions
             if (key == null)
                 throw new ArgumentNullException(nameof(key));
 
-            var newProperties = properties == null
-                ? CreateProperties().Set(key, value)
-                : properties.Set(key, value, allowOverwrite);
-
+            var newProperties = (ToImmutableDictionary(properties) ?? CreateProperties()).Set(key, value, allowOverwrite);
             if (ReferenceEquals(newProperties, properties))
                 return this;
 
@@ -152,5 +151,10 @@ namespace Vostok.Logging.Abstractions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static ImmutableArrayDictionary<string, object> CreateProperties()
             => new ImmutableArrayDictionary<string, object>(StringComparer.Ordinal);
+
+        [CanBeNull]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static ImmutableArrayDictionary<string, object> ToImmutableDictionary([CanBeNull] IReadOnlyDictionary<string, object> properties)
+            => properties == null ? null : properties as ImmutableArrayDictionary<string, object> ?? new ImmutableArrayDictionary<string, object>(properties);
     }
 }
