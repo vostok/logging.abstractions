@@ -60,7 +60,7 @@ namespace Vostok.Logging.Abstractions
                     baseLog.Log(@event);
             }
 
-            public bool IsEnabledFor(LogLevel level) => baseLog.IsEnabledFor(level);
+            public bool IsEnabledFor(LogLevel level) => logEnabled && baseLog.IsEnabledFor(level);
 
             public ILog ForContext(string context)
             {
