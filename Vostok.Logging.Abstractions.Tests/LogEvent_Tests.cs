@@ -142,5 +142,41 @@ namespace Vostok.Logging.Abstractions.Tests
 
             newEvent.Should().BeSameAs(@event);
         }
+
+        [Test]
+        public void WithProperty_should_interact_correctly_with_externally_provided_properties_dictionary()
+        {
+            var @event = new LogEvent(LogLevel.Info, DateTimeOffset.Now, "message", new Dictionary<string, object>
+            {
+                ["a"] = 1,
+                ["b"] = 1
+            }, null);
+
+            var newEvent = @event
+                .WithProperty("c", 3)
+                .WithProperty("b", 2, true);
+
+            newEvent.Properties.Should().BeEquivalentTo(new Dictionary<string, object> { { "a", 1 }, { "b", 2 }, { "c", 3} });
+
+            @event.Properties.Should().HaveCount(2);
+        }
+
+        [Test]
+        public void WithoutProperty_should_interact_correctly_with_externally_provided_properties_dictionary()
+        {
+            var @event = new LogEvent(LogLevel.Info, DateTimeOffset.Now, "message", new Dictionary<string, object>
+            {
+                ["a"] = 1,
+                ["b"] = 1
+            }, null);
+
+            var newEvent = @event
+                .WithoutProperty("c")
+                .WithoutProperty("a");
+
+            newEvent.Properties.Should().BeEquivalentTo(new Dictionary<string, object> { { "b", 1 } });
+
+            @event.Properties.Should().HaveCount(2);
+        }
     }
 }

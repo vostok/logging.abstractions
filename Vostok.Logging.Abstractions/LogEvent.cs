@@ -12,9 +12,6 @@ namespace Vostok.Logging.Abstractions
     [PublicAPI]
     public sealed class LogEvent
     {
-        [CanBeNull]
-        private readonly ImmutableArrayDictionary<string, object> properties;
-
         /// <summary>
         /// Creates a new log event with specified <paramref name="level"/>, <paramref name="timestamp"/>, <paramref name="messageTemplate"/>, <paramref name="exception"/> and empty properties.
         /// </summary>
@@ -23,14 +20,16 @@ namespace Vostok.Logging.Abstractions
         {
         }
 
-        internal LogEvent(LogLevel level, DateTimeOffset timestamp, string messageTemplate, ImmutableArrayDictionary<string, object> properties, Exception exception)
+        /// <summary>
+        /// Creates a new log event with specified <paramref name="level"/>, <paramref name="timestamp"/>, <paramref name="messageTemplate"/>, <paramref name="properties"/> and <paramref name="exception"/>.
+        /// </summary>
+        public LogEvent(LogLevel level, DateTimeOffset timestamp, [CanBeNull] string messageTemplate, [CanBeNull] IReadOnlyDictionary<string, object> properties, [CanBeNull] Exception exception)
         {
             Level = level;
             Timestamp = timestamp;
             MessageTemplate = messageTemplate;
+            Properties = properties;
             Exception = exception;
-
-            this.properties = properties;
         }
 
         /// <summary>
@@ -65,7 +64,7 @@ namespace Vostok.Logging.Abstractions
         /// <para>Can be null if there is no properties.</para>
         /// </summary>
         [CanBeNull]
-        public IReadOnlyDictionary<string, object> Properties => properties;
+        public IReadOnlyDictionary<string, object> Properties { get; }
 
         /// <summary>
         /// The error associated with this log event. Can be null if there is no error.
@@ -98,9 +97,9 @@ namespace Vostok.Logging.Abstractions
             if (key == null)
                 throw new ArgumentNullException(nameof(key));
 
-            var newProperties = properties?.Remove(key);
+            var newProperties = PreparePropertiesForMutation()?.Remove(key);
 
-            if (ReferenceEquals(newProperties, properties))
+            if (ReferenceEquals(newProperties, Properties))
                 return this;
 
             return new LogEvent(Level, Timestamp, MessageTemplate, newProperties, Exception);
@@ -111,42 +110,49 @@ namespace Vostok.Logging.Abstractions
         /// </summary>
         [Pure]
         public LogEvent WithMessageTemplate([CanBeNull] string messageTemplate)
-            => new LogEvent(Level, Timestamp, messageTemplate, properties, Exception);
+            => new LogEvent(Level, Timestamp, messageTemplate, Properties, Exception);
 
         /// <summary>
         /// Returns a copy of the log event with given <paramref name="exception"/>.
         /// </summary>
         [Pure]
         public LogEvent WithException([CanBeNull] Exception exception)
-            => new LogEvent(Level, Timestamp, MessageTemplate, properties, exception);
+            => new LogEvent(Level, Timestamp, MessageTemplate, Properties, exception);
 
         /// <summary>
         /// Returns a copy of the log event with given <paramref name="level"/>.
         /// </summary>
         [Pure]
         public LogEvent WithLevel(LogLevel level)
-            => new LogEvent(level, Timestamp, MessageTemplate, properties, Exception);
+            => new LogEvent(level, Timestamp, MessageTemplate, Properties, Exception);
 
         /// <summary>
         /// Returns a copy of the log event with given <paramref name="timestamp"/>.
         /// </summary>
         [Pure]
         public LogEvent WithTimestamp(DateTimeOffset timestamp)
-            => new LogEvent(Level, timestamp, MessageTemplate, properties, Exception);
+            => new LogEvent(Level, timestamp, MessageTemplate, Properties, Exception);
 
         internal LogEvent WithProperty<T>([NotNull] string key, [CanBeNull] T value, bool allowOverwrite)
         {
             if (key == null)
                 throw new ArgumentNullException(nameof(key));
 
-            var newProperties = properties == null
-                ? CreateProperties().Set(key, value)
-                : properties.Set(key, value, allowOverwrite);
+            var newProperties = (PreparePropertiesForMutation() ?? CreateProperties()).Set(key, value, allowOverwrite);
 
-            if (ReferenceEquals(newProperties, properties))
+            if (ReferenceEquals(newProperties, Properties))
                 return this;
 
             return new LogEvent(Level, Timestamp, MessageTemplate, newProperties, Exception);
+        }
+
+        [CanBeNull, MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private ImmutableArrayDictionary<string, object> PreparePropertiesForMutation()
+        {
+            if (Properties == null)
+                return null;
+
+            return Properties as ImmutableArrayDictionary<string, object> ?? new ImmutableArrayDictionary<string, object>(Properties, StringComparer.Ordinal);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
