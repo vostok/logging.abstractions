@@ -1,3 +1,8 @@
+## 1.0.7 (23.01.2019):
+
+* Added `WithMinimumLevelForSourceContext` extension.
+* Added a public constructor with properties dictionary to `LogEvent`.
+
 ## 1.0.4 (08.11.2019):
 
 Added `WithEventsSelectedBySourceContext` and `WithEventsDroppedBySourceContext` extensions.
