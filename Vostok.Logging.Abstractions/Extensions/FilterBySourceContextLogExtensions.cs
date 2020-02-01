@@ -80,7 +80,7 @@ namespace Vostok.Logging.Abstractions
             {
                 var baseLogForContext = baseLog.ForContext(context);
 
-                if (context == contextFilterValue)
+                if (context.StartsWith(contextFilterValue, StringComparison.OrdinalIgnoreCase))
                 {
                     var newLogEnabled = filterAllowsEvent;
                     return new SourceContextFilterLog(baseLogForContext, contextFilterValue, filterAllowsEvent, newLogEnabled);
@@ -123,7 +123,7 @@ namespace Vostok.Logging.Abstractions
             {
                 var baseLogForContext = baseLog.ForContext(context);
 
-                if (context == contextFilterValue)
+                if (context.StartsWith(contextFilterValue, StringComparison.OrdinalIgnoreCase))
                     return new SourceContextLevelFilterLog(baseLogForContext, contextFilterValue, minimumContextLevel, minimumContextLevel);
 
                 return ReferenceEquals(baseLogForContext, baseLog)

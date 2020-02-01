@@ -9,11 +9,12 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
     [TestFixture]
     public class FilterBySourceContextLogExtensions_Tests
     {
-        private ILog baseLog;
+        private const string Context = "TestContext";
+        private const string ContextPrefix = "test";
+        private const string DifferentContext = "DifferentContext";
 
+        private ILog baseLog;
         private LogEvent @event;
-        private string context;
-        private string differentContext;
 
         [SetUp]
         public void TestSetup()
@@ -23,75 +24,79 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
             baseLog.IsEnabledFor(Arg.Any<LogLevel>()).Returns(true);
 
             @event = new LogEvent(LogLevel.Info, DateTimeOffset.Now, null);
-            context = "TestContext";
-            differentContext = "DifferentContext";
         }
 
-        [Test]
-        public void WithEventsSelectedBySourceContext_should_return_a_log_that_selects_events_with_context()
+        [TestCase(Context)]
+        [TestCase(ContextPrefix)]
+        public void WithEventsSelectedBySourceContext_should_return_a_log_that_selects_events_with_context(string filterValue)
         {
-            var filterLog = baseLog.WithEventsSelectedBySourceContext(context);
+            var filterLog = baseLog.WithEventsSelectedBySourceContext(filterValue);
 
-            filterLog.ForContext(context).Log(@event);
-            filterLog.ForContext(context).ForContext(differentContext).Log(@event);
-            filterLog.ForContext(differentContext).ForContext(context).ForContext(differentContext).Log(@event);
+            filterLog.ForContext(Context).Log(@event);
+            filterLog.ForContext(Context).ForContext(DifferentContext).Log(@event);
+            filterLog.ForContext(DifferentContext).ForContext(Context).ForContext(DifferentContext).Log(@event);
 
             baseLog.Received(3).Log(@event);
         }
 
-        [Test]
-        public void WithEventsSelectedBySourceContext_should_return_a_log_that_drops_events_without_context()
+        [TestCase(Context)]
+        [TestCase(ContextPrefix)]
+        public void WithEventsSelectedBySourceContext_should_return_a_log_that_drops_events_without_context(string filterValue)
         {
-            var filterLog = baseLog.WithEventsSelectedBySourceContext(context);
+            var filterLog = baseLog.WithEventsSelectedBySourceContext(filterValue);
 
             filterLog.Log(@event);
-            filterLog.ForContext(differentContext).Log(@event);
+            filterLog.ForContext(DifferentContext).Log(@event);
 
             baseLog.Received(0).Log(@event);
         }
 
-        [Test]
-        public void WithEventsDroppedBySourceContext_should_return_a_log_that_drops_events_with_context()
+        [TestCase(Context)]
+        [TestCase(ContextPrefix)]
+        public void WithEventsDroppedBySourceContext_should_return_a_log_that_drops_events_with_context(string filterValue)
         {
-            var filterLog = baseLog.WithEventsDroppedBySourceContext(context);
+            var filterLog = baseLog.WithEventsDroppedBySourceContext(filterValue);
 
-            filterLog.ForContext(context).Log(@event);
-            filterLog.ForContext(context).ForContext(differentContext).Log(@event);
-            filterLog.ForContext(differentContext).ForContext(context).Log(@event);
+            filterLog.ForContext(Context).Log(@event);
+            filterLog.ForContext(Context).ForContext(DifferentContext).Log(@event);
+            filterLog.ForContext(DifferentContext).ForContext(Context).Log(@event);
 
             baseLog.Received(0).Log(@event);
         }
 
-        [Test]
-        public void WithEventsDroppedBySourceContext_should_return_a_log_that_selects_events_without_context()
+        [TestCase(Context)]
+        [TestCase(ContextPrefix)]
+        public void WithEventsDroppedBySourceContext_should_return_a_log_that_selects_events_without_context(string filterValue)
         {
-            var filterLog = baseLog.WithEventsDroppedBySourceContext(context);
+            var filterLog = baseLog.WithEventsDroppedBySourceContext(filterValue);
 
             filterLog.Log(@event);
-            filterLog.ForContext(differentContext).Log(@event);
-            filterLog.ForContext(differentContext).ForContext("AnotherDifferentContext").Log(@event);
+            filterLog.ForContext(DifferentContext).Log(@event);
+            filterLog.ForContext(DifferentContext).ForContext("AnotherDifferentContext").Log(@event);
 
             baseLog.Received(3).Log(@event);
         }
 
-        [Test]
-        public void WithMinimumLevelForSourceContext_should_return_a_log_that_logs_all_events_with_different_contexts()
+        [TestCase(Context)]
+        [TestCase(ContextPrefix)]
+        public void WithMinimumLevelForSourceContext_should_return_a_log_that_logs_all_events_with_different_contexts(string filterValue)
         {
-            var filterLog = baseLog.WithMinimumLevelForSourceContext(context, LogLevel.Warn).ForContext(differentContext);
+            var filterLog = baseLog.WithMinimumLevelForSourceContext(filterValue, LogLevel.Warn).ForContext(DifferentContext);
 
             ShouldBeEnabledFor(filterLog, GetAllLevels());
         }
 
-        [Test]
-        public void WithMinimumLevelForSourceContext_should_return_a_log_that_logs_all_events_with_given_contexts_and_permitted_levels()
+        [TestCase(Context)]
+        [TestCase(ContextPrefix)]
+        public void WithMinimumLevelForSourceContext_should_return_a_log_that_logs_all_events_with_given_contexts_and_permitted_levels(string filterValue)
         {
-            var filterLog1 = baseLog.WithMinimumLevelForSourceContext(context, LogLevel.Warn)
-                .ForContext(context);
+            var filterLog1 = baseLog.WithMinimumLevelForSourceContext(filterValue, LogLevel.Warn)
+                .ForContext(Context);
 
-            var filterLog2 = baseLog.WithMinimumLevelForSourceContext(context, LogLevel.Warn)
-                .ForContext(differentContext)
-                .ForContext(context)
-                .ForContext(differentContext);
+            var filterLog2 = baseLog.WithMinimumLevelForSourceContext(filterValue, LogLevel.Warn)
+                .ForContext(DifferentContext)
+                .ForContext(Context)
+                .ForContext(DifferentContext);
 
             ShouldBeEnabledFor(filterLog1, LogLevel.Warn, LogLevel.Error, LogLevel.Fatal);
             ShouldBeEnabledFor(filterLog2, LogLevel.Warn, LogLevel.Error, LogLevel.Fatal);
@@ -99,6 +104,9 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
             ShouldBeDisabledFor(filterLog1, LogLevel.Debug, LogLevel.Info);
             ShouldBeDisabledFor(filterLog2, LogLevel.Debug, LogLevel.Info);
         }
+
+        private static LogLevel[] GetAllLevels()
+            => Enum.GetValues(typeof(LogLevel)).Cast<LogLevel>().ToArray();
 
         private void ShouldBeEnabledFor(ILog filterLog, params LogLevel[] levels)
         {
@@ -127,8 +135,5 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
                 baseLog.ReceivedCalls().Should().BeEmpty();
             }
         }
-
-        private static LogLevel[] GetAllLevels()
-            => Enum.GetValues(typeof(LogLevel)).Cast<LogLevel>().ToArray();
     }
 }
