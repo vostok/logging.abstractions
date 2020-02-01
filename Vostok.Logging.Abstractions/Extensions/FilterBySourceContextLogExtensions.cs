@@ -8,6 +8,7 @@ namespace Vostok.Logging.Abstractions
     {
         /// <summary>
         /// <para>Returns a wrapper log that only logs events made by log with given <paramref name="context"/> passed to <see cref="ILog.ForContext(string)"/></para>
+        /// <para>Provided context value is treated as a case-insensitive prefix.</para>
         /// </summary>
         [Pure]
         public static ILog WithEventsSelectedBySourceContext([NotNull] this ILog log, [NotNull] string context) =>
@@ -22,6 +23,7 @@ namespace Vostok.Logging.Abstractions
 
         /// <summary>
         /// <para>Returns a wrapper log that drops events made by log with given <paramref name="context"/> passed to <see cref="ILog.ForContext(string)"/></para>
+        /// <para>Provided context value is treated as a case-insensitive prefix.</para>
         /// </summary>
         [Pure]
         public static ILog WithEventsDroppedBySourceContext([NotNull] this ILog log, [NotNull] string context) =>
@@ -36,6 +38,7 @@ namespace Vostok.Logging.Abstractions
 
         /// <summary>
         /// <para>Returns a wrapper log that drops events with level lesser than <paramref name="minLevel"/> made by log with given <paramref name="context"/> passed to <see cref="ILog.ForContext(string)"/></para>
+        /// <para>Provided context value is treated as a case-insensitive prefix.</para>
         /// </summary>
         [Pure]
         public static ILog WithMinimumLevelForSourceContext([NotNull] this ILog log, [NotNull] string context, LogLevel minLevel)
