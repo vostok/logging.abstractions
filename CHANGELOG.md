@@ -1,4 +1,9 @@
-## 1.0.7 (23.01.2019):
+## 1.0.8 (01.02.2020):
+
+* Source context filtering extensions now treat supplied context values as case-insensitive prefixes.
+* Added `EnrichBySourceContext` extension.
+
+## 1.0.7 (23.01.2020):
 
 * Added `WithMinimumLevelForSourceContext` extension.
 * Added a public constructor with properties dictionary to `LogEvent`.
