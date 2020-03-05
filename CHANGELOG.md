@@ -1,3 +1,7 @@
+## 1.0.9 (05.03.2020):
+
+Fixed issue with `Guid?` properties logging.
+
 ## 1.0.8 (01.02.2020):
 
 * Source context filtering extensions now treat supplied context values as case-insensitive prefixes.
