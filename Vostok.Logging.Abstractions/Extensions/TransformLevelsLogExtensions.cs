@@ -7,12 +7,24 @@ namespace Vostok.Logging.Abstractions
     [PublicAPI]
     public static class TransformLevelsLogExtensions
     {
+        private static IReadOnlyDictionary<LogLevel, LogLevel> errorToWarn = new Dictionary<LogLevel, LogLevel>
+        {
+            [LogLevel.Error] = LogLevel.Warn
+        };
+
         /// <summary>
         /// Returns a wrapper log that transforms log levels of incoming log events according to provided mapping.
         /// </summary>
         [Pure]
         public static ILog WithLevelsTransformation([NotNull] this ILog log, [NotNull] IReadOnlyDictionary<LogLevel, LogLevel> mapping)
             => new TransformLevelsLog(log, mapping);
+
+        /// <summary>
+        /// Returns a wrapper log that transforms error level of incoming log events to warning level.
+        /// </summary>
+        [Pure]
+        public static ILog WithErrorsTransformedToWarns([NotNull] this ILog log)
+            => log.WithLevelsTransformation(errorToWarn);
 
         private class TransformLevelsLog : ILog
         {
