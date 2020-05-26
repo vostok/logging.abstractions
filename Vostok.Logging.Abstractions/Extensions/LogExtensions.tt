@@ -3,6 +3,7 @@
 using System;
 using JetBrains.Annotations;
 using Vostok.Commons.Time;
+using Vostok.Logging.Abstractions.Helpers;
 
 namespace Vostok.Logging.Abstractions
 {
@@ -56,7 +57,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.<#=level #>))
                 return;
 
-            if (!typeof(T).IsConstructedGenericType)
+            if (!TypesHelper.IsAnonymousType(typeof(T)))
             {
                 log.<#=level #>(messageTemplate, (object)properties);
                 return;
@@ -84,7 +85,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.<#=level #>))
                 return;
 
-            if (!typeof(T).IsConstructedGenericType)
+            if (!TypesHelper.IsAnonymousType(typeof(T)))
             {
                 log.<#=level #>(exception, messageTemplate, (object)properties);
                 return;

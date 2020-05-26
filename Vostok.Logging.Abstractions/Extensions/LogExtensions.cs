@@ -5,7 +5,7 @@ using Vostok.Logging.Abstractions.Helpers;
 
 namespace Vostok.Logging.Abstractions
 {
-    [PublicAPI]
+	[PublicAPI]
     public static class LogExtensions
     {
         #region Debug
@@ -51,7 +51,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Debug))
                 return;
 
-            if (!TypesHelper.IsConstructedGenericType(typeof(T)))
+            if (!TypesHelper.IsAnonymousType(typeof(T)))
             {
                 log.Debug(messageTemplate, (object)properties);
                 return;
@@ -79,7 +79,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Debug))
                 return;
 
-            if (!TypesHelper.IsConstructedGenericType(typeof(T)))
+            if (!TypesHelper.IsAnonymousType(typeof(T)))
             {
                 log.Debug(exception, messageTemplate, (object)properties);
                 return;
@@ -161,7 +161,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Info))
                 return;
 
-            if (!TypesHelper.IsConstructedGenericType(typeof(T)))
+            if (!TypesHelper.IsAnonymousType(typeof(T)))
             {
                 log.Info(messageTemplate, (object)properties);
                 return;
@@ -189,7 +189,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Info))
                 return;
 
-            if (!TypesHelper.IsConstructedGenericType(typeof(T)))
+            if (!TypesHelper.IsAnonymousType(typeof(T)))
             {
                 log.Info(exception, messageTemplate, (object)properties);
                 return;
@@ -271,7 +271,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Warn))
                 return;
 
-            if (!TypesHelper.IsConstructedGenericType(typeof(T)))
+            if (!TypesHelper.IsAnonymousType(typeof(T)))
             {
                 log.Warn(messageTemplate, (object)properties);
                 return;
@@ -299,7 +299,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Warn))
                 return;
 
-            if (!TypesHelper.IsConstructedGenericType(typeof(T)))
+            if (!TypesHelper.IsAnonymousType(typeof(T)))
             {
                 log.Warn(exception, messageTemplate, (object)properties);
                 return;
@@ -381,7 +381,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Error))
                 return;
 
-            if (!TypesHelper.IsConstructedGenericType(typeof(T)))
+            if (!TypesHelper.IsAnonymousType(typeof(T)))
             {
                 log.Error(messageTemplate, (object)properties);
                 return;
@@ -409,7 +409,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Error))
                 return;
 
-            if (!TypesHelper.IsConstructedGenericType(typeof(T)))
+            if (!TypesHelper.IsAnonymousType(typeof(T)))
             {
                 log.Error(exception, messageTemplate, (object)properties);
                 return;
@@ -491,7 +491,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Fatal))
                 return;
 
-            if (!TypesHelper.IsConstructedGenericType(typeof(T)))
+            if (!TypesHelper.IsAnonymousType(typeof(T)))
             {
                 log.Fatal(messageTemplate, (object)properties);
                 return;
@@ -519,7 +519,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Fatal))
                 return;
 
-            if (!TypesHelper.IsConstructedGenericType(typeof(T)))
+            if (!TypesHelper.IsAnonymousType(typeof(T)))
             {
                 log.Fatal(exception, messageTemplate, (object)properties);
                 return;
@@ -557,5 +557,6 @@ namespace Vostok.Logging.Abstractions
         }
 
         #endregion
+
     }
 }

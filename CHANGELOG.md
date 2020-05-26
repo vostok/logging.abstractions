@@ -1,3 +1,7 @@
+## 1.0.10 (26.05.2020):
+
+Fixed https://github.com/vostok/logging.abstractions/issues/11
+
 ## 1.0.9 (05.03.2020):
 
 Fixed issue with `Guid?` properties logging.
