@@ -1,3 +1,7 @@
+## 1.0.11 (26.05.2020):
+
+Added `WithErrorsTransformedToWarns` extension.
+
 ## 1.0.10 (26.05.2020):
 
 Fixed https://github.com/vostok/logging.abstractions/issues/11
