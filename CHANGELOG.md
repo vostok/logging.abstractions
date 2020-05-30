@@ -1,3 +1,7 @@
+## 1.0.12 (30.05.2020):
+
+Minor fix in detection of anonymous types.
+
 ## 1.0.11 (26.05.2020):
 
 Added `WithErrorsTransformedToWarns` extension.

@@ -7,7 +7,7 @@ namespace Vostok.Logging.Abstractions.Helpers
         public static bool IsAnonymousType(Type type)
             => type.IsConstructedGenericType &&
                Nullable.GetUnderlyingType(type) == null &&
-               type.Name.StartsWith("<>") &&
+               type.Name.Contains("<>") &&
                type.Name.Contains("AnonymousType");
     }
 }
