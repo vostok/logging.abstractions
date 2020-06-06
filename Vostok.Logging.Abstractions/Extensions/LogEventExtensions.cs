@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
@@ -16,7 +17,11 @@ namespace Vostok.Logging.Abstractions
             if (@object == null)
                 return @event;
 
-            foreach (var (name, value) in ObjectPropertiesExtractor.ExtractProperties(@object))
+            var properties = @object is IReadOnlyDictionary<string, object> dictionary
+                ? dictionary.Select(pair => (pair.Key, pair.Value))
+                : ObjectPropertiesExtractor.ExtractProperties(@object);
+
+            foreach (var (name, value) in properties)
             {
                 if (!allowNullValues && value == null)
                     continue;

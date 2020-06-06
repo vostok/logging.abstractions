@@ -57,7 +57,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.<#=level #>))
                 return;
 
-            if (!TypesHelper.IsAnonymousType(typeof(T)))
+            if (!DeconstructionHelper.ShouldDeconstruct(messageTemplate, properties))
             {
                 log.<#=level #>(messageTemplate, (object)properties);
                 return;
@@ -85,7 +85,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.<#=level #>))
                 return;
 
-            if (!TypesHelper.IsAnonymousType(typeof(T)))
+            if (!DeconstructionHelper.ShouldDeconstruct(messageTemplate, properties))
             {
                 log.<#=level #>(exception, messageTemplate, (object)properties);
                 return;
