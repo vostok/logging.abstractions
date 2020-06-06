@@ -12,6 +12,7 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
         private const string Context = "TestContext";
         private const string ContextPrefix = "test";
         private const string DifferentContext = "DifferentContext";
+        private const string DifferentContextPrefix = "different";
 
         private ILog baseLog;
         private LogEvent @event;
@@ -97,6 +98,42 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
                 .ForContext(DifferentContext)
                 .ForContext(Context)
                 .ForContext(DifferentContext);
+
+            ShouldBeEnabledFor(filterLog1, LogLevel.Warn, LogLevel.Error, LogLevel.Fatal);
+            ShouldBeEnabledFor(filterLog2, LogLevel.Warn, LogLevel.Error, LogLevel.Fatal);
+
+            ShouldBeDisabledFor(filterLog1, LogLevel.Debug, LogLevel.Info);
+            ShouldBeDisabledFor(filterLog2, LogLevel.Debug, LogLevel.Info);
+        }
+
+        [TestCase(Context, DifferentContext)]
+        [TestCase(ContextPrefix, DifferentContextPrefix)]
+        public void WithMinimumLevelForSourceContexts_should_return_a_log_that_logs_all_events_with_different_contexts(string filterValue1, string filterValue2)
+        {
+            var filterLog1 = baseLog.WithMinimumLevelForSourceContexts(LogLevel.Warn, filterValue1, filterValue2)
+                                    .ForContext(DifferentContext);
+
+            var filterLog2 = baseLog.WithMinimumLevelForSourceContexts(LogLevel.Warn, filterValue1, filterValue2)
+                                    .ForContext(Context);
+
+            ShouldBeEnabledFor(filterLog1, GetAllLevels());
+            ShouldBeEnabledFor(filterLog2, GetAllLevels());
+        }
+
+        [TestCase(Context, DifferentContext)]
+        [TestCase(ContextPrefix, DifferentContextPrefix)]
+        public void WithMinimumLevelForSourceContexts_should_return_a_log_that_logs_all_events_with_given_contexts_and_permitted_levels(string filterValue1, string filterValue2)
+        {
+            var filterLog1 = baseLog.WithMinimumLevelForSourceContexts(LogLevel.Warn, filterValue1, filterValue2)
+                                    .ForContext(Context)
+                                    .ForContext(DifferentContext);
+
+            var filterLog2 = baseLog.WithMinimumLevelForSourceContexts(LogLevel.Warn, filterValue1, filterValue2)
+                                    .ForContext("SomeCtx1")
+                                    .ForContext(DifferentContext)
+                                    .ForContext("SomeCtx2")
+                                    .ForContext(Context)
+                                    .ForContext("SomeCtx3");
 
             ShouldBeEnabledFor(filterLog1, LogLevel.Warn, LogLevel.Error, LogLevel.Fatal);
             ShouldBeEnabledFor(filterLog2, LogLevel.Warn, LogLevel.Error, LogLevel.Fatal);
