@@ -1,3 +1,7 @@
+## 1.0.13 (06.06.2020):
+
+Implemented https://github.com/vostok/logging.abstractions/issues/10
+
 ## 1.0.12 (30.05.2020):
 
 Minor fix in detection of anonymous types.
