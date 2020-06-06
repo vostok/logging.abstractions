@@ -1,3 +1,16 @@
+## 1.0.14 (06.06.2020):
+
+Fixed https://github.com/vostok/logging.abstractions/issues/13.
+
+The rules for deconstruction of the single argument are now as follows (in the order of priority):
+
+- Always deconstruct IReadonlyDictionary<string, object>
+- Do not deconstruct any other collections
+- Do not deconstruct types with custom ToString() implementation
+- Always deconstruct anonymous types
+- Always deconstruct when message template has more than one property
+- Do not deconstruct anything else
+
 ## 1.0.13 (06.06.2020):
 
 Implemented https://github.com/vostok/logging.abstractions/issues/10

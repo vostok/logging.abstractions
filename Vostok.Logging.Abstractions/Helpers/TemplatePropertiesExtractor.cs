@@ -9,7 +9,7 @@ namespace Vostok.Logging.Abstractions.Helpers
 {
     internal static class TemplatePropertiesExtractor
     {
-        private const int CacheCapacity = 1000;
+        private const int CacheCapacity = 10000;
 
         private const char OpeningBrace = '{';
         private const char ClosingBrace = '}';

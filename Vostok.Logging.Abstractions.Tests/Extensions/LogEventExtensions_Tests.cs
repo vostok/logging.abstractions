@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
 using Vostok.Commons.Collections;
@@ -31,6 +32,22 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
         public void WithObjectProperties_should_enrich_event_with_named_properties_from_anonymous_constructed_object()
         {
             eventAfter = eventBefore.WithObjectProperties(new { C = "value", D = null as object, E = 123 });
+
+            eventAfter.Properties.Should().HaveCount(5);
+            eventAfter?.Properties?["C"].Should().Be("value");
+            eventAfter?.Properties?["D"].Should().BeNull();
+            eventAfter?.Properties?["E"].Should().Be(123);
+        }
+
+        [Test]
+        public void WithObjectProperties_should_enrich_event_with_named_properties_from_a_dictionary()
+        {
+            eventAfter = eventBefore.WithObjectProperties(new Dictionary<string, object>
+            {
+                ["C"] = "value",
+                ["D"] = null,
+                ["E"] = 123
+            });
 
             eventAfter.Properties.Should().HaveCount(5);
             eventAfter?.Properties?["C"].Should().Be("value");

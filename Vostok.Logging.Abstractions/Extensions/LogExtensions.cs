@@ -51,7 +51,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Debug))
                 return;
 
-            if (!TypesHelper.IsAnonymousType(typeof(T)))
+            if (!DeconstructionHelper.ShouldDeconstruct(messageTemplate, properties))
             {
                 log.Debug(messageTemplate, (object)properties);
                 return;
@@ -79,7 +79,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Debug))
                 return;
 
-            if (!TypesHelper.IsAnonymousType(typeof(T)))
+            if (!DeconstructionHelper.ShouldDeconstruct(messageTemplate, properties))
             {
                 log.Debug(exception, messageTemplate, (object)properties);
                 return;
@@ -161,7 +161,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Info))
                 return;
 
-            if (!TypesHelper.IsAnonymousType(typeof(T)))
+            if (!DeconstructionHelper.ShouldDeconstruct(messageTemplate, properties))
             {
                 log.Info(messageTemplate, (object)properties);
                 return;
@@ -189,7 +189,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Info))
                 return;
 
-            if (!TypesHelper.IsAnonymousType(typeof(T)))
+            if (!DeconstructionHelper.ShouldDeconstruct(messageTemplate, properties))
             {
                 log.Info(exception, messageTemplate, (object)properties);
                 return;
@@ -271,7 +271,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Warn))
                 return;
 
-            if (!TypesHelper.IsAnonymousType(typeof(T)))
+            if (!DeconstructionHelper.ShouldDeconstruct(messageTemplate, properties))
             {
                 log.Warn(messageTemplate, (object)properties);
                 return;
@@ -299,7 +299,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Warn))
                 return;
 
-            if (!TypesHelper.IsAnonymousType(typeof(T)))
+            if (!DeconstructionHelper.ShouldDeconstruct(messageTemplate, properties))
             {
                 log.Warn(exception, messageTemplate, (object)properties);
                 return;
@@ -381,7 +381,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Error))
                 return;
 
-            if (!TypesHelper.IsAnonymousType(typeof(T)))
+            if (!DeconstructionHelper.ShouldDeconstruct(messageTemplate, properties))
             {
                 log.Error(messageTemplate, (object)properties);
                 return;
@@ -409,7 +409,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Error))
                 return;
 
-            if (!TypesHelper.IsAnonymousType(typeof(T)))
+            if (!DeconstructionHelper.ShouldDeconstruct(messageTemplate, properties))
             {
                 log.Error(exception, messageTemplate, (object)properties);
                 return;
@@ -491,7 +491,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Fatal))
                 return;
 
-            if (!TypesHelper.IsAnonymousType(typeof(T)))
+            if (!DeconstructionHelper.ShouldDeconstruct(messageTemplate, properties))
             {
                 log.Fatal(messageTemplate, (object)properties);
                 return;
@@ -519,7 +519,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Fatal))
                 return;
 
-            if (!TypesHelper.IsAnonymousType(typeof(T)))
+            if (!DeconstructionHelper.ShouldDeconstruct(messageTemplate, properties))
             {
                 log.Fatal(exception, messageTemplate, (object)properties);
                 return;
