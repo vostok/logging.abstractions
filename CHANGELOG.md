@@ -1,3 +1,7 @@
+## 1.0.15 (13.06.2020):
+
+Bugfix in DeconstructionHelper: anonymous types may have a custom ToString() implementation.
+
 ## 1.0.14 (06.06.2020):
 
 Fixed https://github.com/vostok/logging.abstractions/issues/13.
