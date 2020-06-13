@@ -18,11 +18,11 @@ namespace Vostok.Logging.Abstractions.Helpers
             if (properties is IEnumerable)
                 return false;
 
-            if (ToStringDetector.HasCustomToString(properties.GetType()))
-                return false;
-
             if (TypesHelper.IsAnonymousType(properties.GetType()))
                 return true;
+
+            if (ToStringDetector.HasCustomToString(properties.GetType()))
+                return false;
 
             if (TemplatePropertiesExtractor.ExtractPropertyNames(messageTemplate).Length > 1)
                 return true;
