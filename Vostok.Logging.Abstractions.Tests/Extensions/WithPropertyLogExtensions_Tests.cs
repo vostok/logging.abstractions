@@ -109,6 +109,30 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
         }
 
         [Test]
+        public void WithProperty_should_allow_to_overwrite_value_from_base_wrapper()
+        {
+            enrichedLog = baseLog
+                .WithProperty("name3", 1, true)
+                .WithProperty("name3", 2, true);
+
+            enrichedLog.Log(originalEvent);
+
+            observedEvent.Properties?["name3"].Should().Be(2);
+        }
+
+        [Test]
+        public void WithProperty_with_dynamic_value_should_allow_to_overwrite_value_from_base_wrapper()
+        {
+            enrichedLog = baseLog
+                .WithProperty("name3", () => 1, true)
+                .WithProperty("name3", () => 2, true);
+
+            enrichedLog.Log(originalEvent);
+
+            observedEvent.Properties?["name3"].Should().Be(2);
+        }
+
+        [Test]
         public void WithProperties_should_return_a_log_that_adds_given_properties_to_log_events()
         {
             enrichedLog = baseLog.WithProperties(new Dictionary<string, object>
@@ -267,6 +291,40 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
         }
 
         [Test]
+        public void WithProperties_should_allow_to_overwrite_value_from_base_wrapper()
+        {
+            enrichedLog = baseLog
+                .WithProperties(new Dictionary<string, object>
+                {
+                    ["name3"] = 1,
+                    ["name4"] = 1,
+                }, true)
+                .WithProperties(new Dictionary<string, object>
+                {
+                    ["name3"] = 2,
+                    ["name4"] = 2,
+                }, true);
+
+            enrichedLog.Log(originalEvent);
+
+            observedEvent.Properties?["name3"].Should().Be(2);
+            observedEvent.Properties?["name4"].Should().Be(2);
+        }
+
+        [Test]
+        public void WithProperties_with_dynamic_value_should_allow_to_overwrite_value_from_base_wrapper()
+        {
+            enrichedLog = baseLog
+                .WithProperties(() => new[] {("name3", 1 as object), ("name4", 1)}, true)
+                .WithProperties(() => new[] {("name3", 2 as object), ("name4", 2)}, true);
+
+            enrichedLog.Log(originalEvent);
+
+            observedEvent.Properties?["name3"].Should().Be(2);
+            observedEvent.Properties?["name4"].Should().Be(2);
+        }
+
+        [Test]
         public void WithObjectProperties_should_return_a_log_that_adds_given_properties_to_log_events()
         {
             enrichedLog = baseLog.WithObjectProperties(new {name3 = "value3", name4 = "value4"});
@@ -388,6 +446,32 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
             observedEvent.Properties.Should().HaveCount(4);
             observedEvent.Properties?["name3"].Should().Be(1);
             observedEvent.Properties?["name4"].Should().BeNull();
+        }
+
+        [Test]
+        public void WithObjectProperties_should_allow_to_overwrite_value_from_base_wrapper()
+        {
+            enrichedLog = baseLog
+                .WithObjectProperties(new {name3 = 1, name4 = 1}, true)
+                .WithObjectProperties(new {name3 = 2, name4 = 2}, true);
+
+            enrichedLog.Log(originalEvent);
+
+            observedEvent.Properties?["name3"].Should().Be(2);
+            observedEvent.Properties?["name4"].Should().Be(2);
+        }
+
+        [Test]
+        public void WithObjectProperties_with_dynamic_value_should_allow_to_overwrite_value_from_base_wrapper()
+        {
+            enrichedLog = baseLog
+                .WithObjectProperties(() => new { name3 = 1, name4 = 1 }, true)
+                .WithObjectProperties(() => new { name3 = 2, name4 = 2 }, true);
+
+            enrichedLog.Log(originalEvent);
+
+            observedEvent.Properties?["name3"].Should().Be(2);
+            observedEvent.Properties?["name4"].Should().Be(2);
         }
     }
 }

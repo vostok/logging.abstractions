@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
-using Vostok.Commons.Formatting;
 using Vostok.Logging.Abstractions.Helpers;
 
 namespace Vostok.Logging.Abstractions
@@ -13,62 +11,41 @@ namespace Vostok.Logging.Abstractions
     {
         [Pure]
         public static LogEvent WithObjectProperties<T>(this LogEvent @event, T @object, bool allowOverwrite = true, bool allowNullValues = true)
-        {
-            if (@object == null)
-                return @event;
-
-            var properties = @object is IReadOnlyDictionary<string, object> dictionary
-                ? dictionary.Select(pair => (pair.Key, pair.Value))
-                : ObjectPropertiesExtractor.ExtractProperties(@object);
-
-            foreach (var (name, value) in properties)
-            {
-                if (!allowNullValues && value == null)
-                    continue;
-
-                @event = @event.WithProperty(name, value, allowOverwrite);
-            }
-
-            return @event;
-        }
+            => @event.MutateProperties(eventProperties => eventProperties.WithObjectProperties(@object, allowOverwrite, allowNullValues));
 
         [Pure]
         public static LogEvent WithParameters(this LogEvent @event, object[] parameters)
         {
-            if (parameters == null)
+            if (parameters == null || parameters.Length == 0)
                 return @event;
 
-            var templatePropertyNames = TemplatePropertiesExtractor.ExtractPropertyNames(@event.MessageTemplate);
-
-            if (ShouldInferNamesForPositionalParameters(parameters, templatePropertyNames))
-            {
-                // (iloktionov): Name positional parameters with corresponding placeholder names from template:
-                for (var i = 0; i < Math.Min(parameters.Length, templatePropertyNames.Length); i++)
+            return @event.MutateProperties(
+                properties =>
                 {
-                    @event = @event.WithProperty(templatePropertyNames[i], parameters[i]);
-                }
+                    var templatePropertyNames = TemplatePropertiesExtractor.ExtractPropertyNames(@event.MessageTemplate);
 
-                if (parameters.Length > templatePropertyNames.Length)
-                {
-                    for (var i = templatePropertyNames.Length; i < parameters.Length; i++)
+                    if (ShouldInferNamesForPositionalParameters(templatePropertyNames))
                     {
-                        @event = @event.WithProperty(i.ToString(), parameters[i]);
-                    }
-                }
-            }
-            else
-            {
-                // (iloktionov): Name positional parameters with their indices:
-                for (var i = 0; i < parameters.Length; i++)
-                {
-                    @event = @event.WithProperty(i.ToString(), parameters[i]);
-                }
-            }
+                        // (iloktionov): Name positional parameters with corresponding placeholder names from template:
+                        for (var i = 0; i < Math.Min(parameters.Length, templatePropertyNames.Length); i++)
+                            properties = properties.Set(templatePropertyNames[i], parameters[i]);
 
-            return @event;
+                        if (parameters.Length > templatePropertyNames.Length)
+                            for (var i = templatePropertyNames.Length; i < parameters.Length; i++)
+                                properties = properties.Set(i.ToString(), parameters[i]);
+                    }
+                    else
+                    {
+                        // (iloktionov): Name positional parameters with their indices:
+                        for (var i = 0; i < parameters.Length; i++)
+                            properties = properties.Set(i.ToString(), parameters[i]);
+                    }
+
+                    return properties;
+                });
         }
 
-        private static bool ShouldInferNamesForPositionalParameters(object[] parameters, string[] propertyNames)
+        private static bool ShouldInferNamesForPositionalParameters(string[] propertyNames)
         {
             if (propertyNames.Length == 0)
                 return false;
