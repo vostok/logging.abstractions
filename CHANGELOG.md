@@ -1,3 +1,8 @@
+## 1.0.16 (25.06.2020):
+
+- Moderate performance improvements (up to 30% more single-threaded throughput);
+- Outer WithProperty decorators are now able to overwrite properties defined by inner ones.
+
 ## 1.0.15 (13.06.2020):
 
 Bugfix in DeconstructionHelper: anonymous types may have a custom ToString() implementation.
