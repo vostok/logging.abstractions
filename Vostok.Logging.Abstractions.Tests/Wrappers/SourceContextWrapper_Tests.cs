@@ -96,6 +96,22 @@ namespace Vostok.Logging.Abstractions.Tests.Wrappers
         }
 
         [Test]
+        public void ForContext_should_concatenate_contexts_even_with_intermediate_wrappers()
+        {
+            wrapper = wrapper
+                .ForContext("1")
+                .WithProperty("p1", 1)
+                .ForContext("2")
+                .WithProperty("p2", 2)
+                .ForContext("3");
+
+            wrapper.Log(originalEvent);
+
+            observedEvent.Properties[WellKnownProperties.SourceContext]
+                .Should().BeOfType<SourceContextValue>().Which.Should().Equal("foo", "1", "2", "3");
+        }
+
+        [Test]
         public void Should_correctly_handle_existing_source_context_in_event()
         {
             originalEvent = originalEvent.WithProperty(WellKnownProperties.SourceContext, new SourceContextValue("bar"));

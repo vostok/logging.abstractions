@@ -146,6 +146,17 @@ namespace Vostok.Logging.Abstractions
             return new LogEvent(Level, Timestamp, MessageTemplate, newProperties, Exception);
         }
 
+        internal LogEvent MutateProperties(Func<ImmutableArrayDictionary<string, object>, ImmutableArrayDictionary<string, object>> mutation)
+        {
+            var originalProperties = PreparePropertiesForMutation() ?? CreateProperties();
+            var mutatedProperties = mutation(originalProperties);
+
+            if (ReferenceEquals(originalProperties, mutatedProperties))
+                return this;
+
+            return new LogEvent(Level, Timestamp, MessageTemplate, mutatedProperties, Exception);
+        }
+
         [CanBeNull, MethodImpl(MethodImplOptions.AggressiveInlining)]
         private ImmutableArrayDictionary<string, object> PreparePropertiesForMutation()
         {

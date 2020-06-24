@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using JetBrains.Annotations;
+using PropertiesMutator = System.Func<Vostok.Commons.Collections.ImmutableArrayDictionary<string, object>, Vostok.Commons.Collections.ImmutableArrayDictionary<string, object>>;
 
 // ReSharper disable once CheckNamespace
 namespace Vostok.Logging.Abstractions
@@ -15,9 +15,7 @@ namespace Vostok.Logging.Abstractions
         /// </summary>
         [Pure]
         public static ILog WithProperty<T>(this ILog log, string key, T value, bool allowOverwrite = false)
-        {
-            return new WithPropertyLog<T>(log, key, () => value, allowOverwrite, true);
-        }
+            => WithMutatedProperties(log, eventProperties => eventProperties.Set(key, value, allowOverwrite));
 
         /// <summary>
         /// <para>Returns a wrapper log that adds a dynamic property with given <paramref name="key"/> and <paramref name="value"/> provider to each <see cref="LogEvent"/> before logging.</para>
@@ -27,7 +25,16 @@ namespace Vostok.Logging.Abstractions
         [Pure]
         public static ILog WithProperty<T>(this ILog log, string key, Func<T> value, bool allowOverwrite = false, bool allowNullValues = false)
         {
-            return new WithPropertyLog<T>(log, key, value, allowOverwrite, allowNullValues);
+            return WithMutatedProperties(log,
+                eventProperties =>
+                {
+                    var currentValue = value();
+
+                    if (allowNullValues || currentValue != null)
+                        return eventProperties.Set(key, currentValue, allowOverwrite);
+
+                    return eventProperties;
+                });
         }
 
         /// <summary>
@@ -38,7 +45,22 @@ namespace Vostok.Logging.Abstractions
         [Pure]
         public static ILog WithProperties(this ILog log, IReadOnlyDictionary<string, object> properties, bool allowOverwrite = false, bool allowNullValues = false)
         {
-            return new WithPropertiesLog(log, () => properties?.Select(pair => (pair.Key, pair.Value)), allowOverwrite, allowNullValues);
+            return WithMutatedProperties(log,
+                eventProperties =>
+                {
+                    if (properties == null || properties.Count == 0)
+                        return eventProperties;
+
+                    foreach (var pair in properties)
+                    {
+                        if (!allowNullValues && pair.Value == null)
+                            continue;
+
+                        eventProperties = eventProperties.Set(pair.Key, pair.Value, allowOverwrite);
+                    }
+
+                    return eventProperties;
+                });
         }
 
         /// <summary>
@@ -49,7 +71,26 @@ namespace Vostok.Logging.Abstractions
         [Pure]
         public static ILog WithProperties(this ILog log, Func<IEnumerable<(string, object)>> properties, bool allowOverwrite = false, bool allowNullValues = false)
         {
-            return new WithPropertiesLog(log, properties, allowOverwrite, allowNullValues);
+            if (properties == null)
+                return log;
+            
+            return WithMutatedProperties(log,
+                eventProperties =>
+                {
+                    var sequence = properties();
+                    if (sequence == null)
+                        return eventProperties;
+
+                    foreach (var (key, value) in sequence)
+                    {
+                        if (!allowNullValues && value == null)
+                            continue;
+
+                        eventProperties = eventProperties.Set(key, value, allowOverwrite);
+                    }
+
+                    return eventProperties;
+                });
         }
 
         /// <summary>
@@ -60,9 +101,7 @@ namespace Vostok.Logging.Abstractions
         /// </summary>
         [Pure]
         public static ILog WithObjectProperties<T>(this ILog log, T @object, bool allowOverwrite = false, bool allowNullValues = false)
-        {
-            return new WithObjectPropertiesLog<T>(log, () => @object, allowOverwrite, allowNullValues);
-        }
+            => WithMutatedProperties(log, eventProperties => eventProperties.WithObjectProperties(@object, allowOverwrite, allowNullValues));
 
         /// <summary>
         /// <para>Returns a wrapper log that adds all properties of the object returned by given <paramref name="@object"/> delegate to each <see cref="LogEvent"/> before logging.</para>
@@ -72,34 +111,47 @@ namespace Vostok.Logging.Abstractions
         /// </summary>
         [Pure]
         public static ILog WithObjectProperties<T>(this ILog log, Func<T> @object, bool allowOverwrite = false, bool allowNullValues = false)
+            => WithMutatedProperties(log, eventProperties => eventProperties.WithObjectProperties(@object(), allowOverwrite, allowNullValues));
+
+        private static ILog WithMutatedProperties(this ILog log, PropertiesMutator mutator)
         {
-            return new WithObjectPropertiesLog<T>(log, @object, allowOverwrite, allowNullValues);
+            if (log is WithMutatedPropertiesLog arbitraryPropertiesLog)
+                return arbitraryPropertiesLog.WithMutator(mutator);
+
+            return new WithMutatedPropertiesLog(log, new[] { mutator });
         }
 
-        private class WithPropertyLog<T> : ILog
+        private class WithMutatedPropertiesLog : ILog
         {
             private readonly ILog baseLog;
-            private readonly string key;
-            private readonly Func<T> value;
-            private readonly bool allowOverwrite;
-            private readonly bool allowNullValues;
+            private readonly IReadOnlyList<PropertiesMutator> mutators;
 
-            public WithPropertyLog(ILog baseLog, string key, Func<T> value, bool allowOverwrite, bool allowNullValues)
+            public WithMutatedPropertiesLog(ILog baseLog, IReadOnlyList<PropertiesMutator> mutators)
             {
                 this.baseLog = baseLog ?? throw new ArgumentNullException(nameof(baseLog));
-                this.key = key ?? throw new ArgumentNullException(nameof(key));
-                this.value = value;
-                this.allowOverwrite = allowOverwrite;
-                this.allowNullValues = allowNullValues;
+                this.mutators = mutators ?? throw new ArgumentNullException(nameof(mutators));
+            }
+
+            public WithMutatedPropertiesLog WithMutator(PropertiesMutator mutator)
+            {
+                var newMutators = new List<PropertiesMutator>(mutators.Count + 1);
+                
+                newMutators.AddRange(mutators);
+                newMutators.Add(mutator);
+
+                return new WithMutatedPropertiesLog(baseLog, newMutators);
             }
 
             public void Log(LogEvent @event)
             {
-                var valueObject = value();
-                if (valueObject != null || allowNullValues)
-                {
-                    @event = @event?.WithProperty(key, valueObject, allowOverwrite);
-                }
+                @event = @event?.MutateProperties(
+                    properties =>
+                    {
+                        foreach (var mutator in mutators)
+                            properties = mutator(properties);
+
+                        return properties;
+                    });
 
                 baseLog.Log(@event);
             }
@@ -112,83 +164,7 @@ namespace Vostok.Logging.Abstractions
             public ILog ForContext(string context)
             {
                 var baseLogForContext = baseLog.ForContext(context);
-                return ReferenceEquals(baseLogForContext, baseLog) ? this : new WithPropertyLog<T>(baseLogForContext, key, value, allowOverwrite, allowNullValues);
-            }
-        }
-
-        private class WithPropertiesLog : ILog
-        {
-            private readonly ILog baseLog;
-            private readonly Func<IEnumerable<(string, object)>> propertiesProvider;
-            private readonly bool allowOverwrite;
-            private readonly bool allowNullValues;
-
-            public WithPropertiesLog(ILog baseLog, Func<IEnumerable<(string, object)>> propertiesProvider, bool allowOverwrite, bool allowNullValues)
-            {
-                this.baseLog = baseLog ?? throw new ArgumentNullException(nameof(baseLog));
-                this.propertiesProvider = propertiesProvider ?? throw new ArgumentNullException(nameof(propertiesProvider));
-                this.allowOverwrite = allowOverwrite;
-                this.allowNullValues = allowNullValues;
-            }
-
-            public void Log(LogEvent @event)
-            {
-                foreach (var (key, value) in propertiesProvider() ?? Enumerable.Empty<(string, object)>())
-                {
-                    if (!allowNullValues && value == null)
-                        continue;
-
-                    @event = @event?.WithProperty(key, value, allowOverwrite);
-                }
-
-                baseLog.Log(@event);
-            }
-
-            public bool IsEnabledFor(LogLevel level)
-            {
-                return baseLog.IsEnabledFor(level);
-            }
-
-            public ILog ForContext(string context)
-            {
-                var baseLogForContext = baseLog.ForContext(context);
-                return ReferenceEquals(baseLogForContext, baseLog) ? this : new WithPropertiesLog(baseLogForContext, propertiesProvider, allowOverwrite, allowNullValues);
-            }
-        }
-
-        private class WithObjectPropertiesLog<T> : ILog
-        {
-            private readonly ILog baseLog;
-            private readonly Func<T> objectProvider;
-            private readonly bool allowOverwrite;
-            private readonly bool allowNullValues;
-
-            public WithObjectPropertiesLog(ILog baseLog, Func<T> objectProvider, bool allowOverwrite, bool allowNullValues)
-            {
-                this.baseLog = baseLog ?? throw new ArgumentNullException(nameof(baseLog));
-                this.objectProvider = objectProvider ?? throw new ArgumentNullException(nameof(objectProvider));
-                this.allowOverwrite = allowOverwrite;
-                this.allowNullValues = allowNullValues;
-            }
-
-            public void Log(LogEvent @event)
-            {
-                var propertiesObject = objectProvider();
-                if (propertiesObject != null)
-                    @event = @event?.WithObjectProperties(propertiesObject, allowOverwrite, allowNullValues);
-
-                baseLog.Log(@event);
-            }
-
-            public bool IsEnabledFor(LogLevel level)
-            {
-                return baseLog.IsEnabledFor(level);
-            }
-
-            public ILog ForContext(string context)
-            {
-                var baseLogForContext = baseLog.ForContext(context);
-                return ReferenceEquals(baseLogForContext, baseLog) ? this : new WithObjectPropertiesLog<T>(baseLogForContext, objectProvider, allowOverwrite, allowNullValues);
+                return ReferenceEquals(baseLogForContext, baseLog) ? this : new WithMutatedPropertiesLog(baseLogForContext, mutators);
             }
         }
     }
