@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using JetBrains.Annotations;
 
 namespace Vostok.Logging.Abstractions
@@ -25,7 +24,11 @@ namespace Vostok.Logging.Abstractions
 
         public bool IsEnabledFor(LogLevel level)
         {
-            return baseLogs.Any(x => x.IsEnabledFor(level));
+            foreach (var log in baseLogs)
+                if (log.IsEnabledFor(level))
+                    return true;
+
+            return false;
         }
 
         public ILog ForContext(string context)
