@@ -109,32 +109,24 @@ namespace Vostok.Logging.Abstractions
             private readonly ILog baseLog;
             private readonly string[] contextFilterValues;
             private readonly LogLevel minimumContextLevel;
-            private readonly LogLevel minimumEffectiveLevel;
 
             public SourceContextLevelFilterLog(ILog baseLog, string[] contextFilterValues, LogLevel minimumContextLevel)
-                : this(baseLog, contextFilterValues, minimumContextLevel, LogLevel.Debug)
-            {
-            }
-
-            private SourceContextLevelFilterLog(ILog baseLog, string[] contextFilterValues, LogLevel minimumContextLevel, LogLevel minimumEffectiveLevel)
             {
                 this.baseLog = baseLog;
                 this.contextFilterValues = contextFilterValues;
                 this.minimumContextLevel = minimumContextLevel;
-                this.minimumEffectiveLevel = minimumEffectiveLevel;
             }
 
             public void Log(LogEvent @event)
             {
-                if (@event?.Level < minimumEffectiveLevel)
+                if (@event?.Level < minimumContextLevel && @event.HasMatchingSourceContexts(contextFilterValues))
                     return;
 
-                if (@event?.Level >= minimumContextLevel || !@event.HasMatchingSourceContexts(contextFilterValues))
-                    baseLog.Log(@event);
+                baseLog.Log(@event);
             }
 
             public bool IsEnabledFor(LogLevel level)
-                => level >= minimumEffectiveLevel && baseLog.IsEnabledFor(level);
+                => baseLog.IsEnabledFor(level);
 
             public ILog ForContext(string context) =>
                 new SourceContextWrapper(this, context);

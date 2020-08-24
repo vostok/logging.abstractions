@@ -51,7 +51,7 @@ namespace Vostok.Logging.Abstractions
             if (contexts.Length == 0)
                 return false;
 
-            if (@event.Properties == null)
+            if (@event?.Properties == null)
                 return false;
 
             if (!@event.Properties.TryGetValue(WellKnownProperties.SourceContext, out var sourceContextValue))
