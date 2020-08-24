@@ -37,7 +37,7 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
             filterLog.ForContext(Context).ForContext(DifferentContext).Log(@event);
             filterLog.ForContext(DifferentContext).ForContext(Context).ForContext(DifferentContext).Log(@event);
 
-            baseLog.Received(3).Log(@event);
+            baseLog.Received(3).Log(Arg.Any<LogEvent>());
         }
 
         [TestCase(Context)]
@@ -75,7 +75,7 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
             filterLog.ForContext(DifferentContext).Log(@event);
             filterLog.ForContext(DifferentContext).ForContext("AnotherDifferentContext").Log(@event);
 
-            baseLog.Received(3).Log(@event);
+            baseLog.Received(3).Log(Arg.Any<LogEvent>());
         }
 
         [TestCase(Context)]
