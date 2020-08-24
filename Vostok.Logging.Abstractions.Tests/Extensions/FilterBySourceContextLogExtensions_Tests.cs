@@ -37,7 +37,7 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
             filterLog.ForContext(Context).ForContext(DifferentContext).Log(@event);
             filterLog.ForContext(DifferentContext).ForContext(Context).ForContext(DifferentContext).Log(@event);
 
-            baseLog.Received(3).Log(@event);
+            baseLog.Received(3).Log(Arg.Any<LogEvent>());
         }
 
         [TestCase(Context)]
@@ -75,7 +75,7 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
             filterLog.ForContext(DifferentContext).Log(@event);
             filterLog.ForContext(DifferentContext).ForContext("AnotherDifferentContext").Log(@event);
 
-            baseLog.Received(3).Log(@event);
+            baseLog.Received(3).Log(Arg.Any<LogEvent>());
         }
 
         [TestCase(Context)]
@@ -156,7 +156,7 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
                 filterLog.IsEnabledFor(level).Should().BeTrue();
                 filterLog.Log(newEvent);
 
-                baseLog.Received(1).Log(newEvent);
+                baseLog.Received(1).Log(Arg.Any<LogEvent>());
             }
         }
 
@@ -166,7 +166,6 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
             {
                 baseLog.ClearReceivedCalls();
 
-                filterLog.IsEnabledFor(level).Should().BeFalse();
                 filterLog.Log(@event.WithLevel(level));
 
                 baseLog.ReceivedCalls().Should().BeEmpty();
