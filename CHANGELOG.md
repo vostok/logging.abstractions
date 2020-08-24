@@ -1,3 +1,7 @@
+## 1.0.18 (24.08.2020):
+
+Filters by source contexts now use `SourceContextWrapper`.
+
 ## 1.0.17 (25.06.2020):
 
 - Moderate performance improvements (up to 30% more single-threaded throughput);
