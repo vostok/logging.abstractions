@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 using Vostok.Logging.Abstractions.Helpers;
+using Vostok.Logging.Abstractions.Values;
 
 namespace Vostok.Logging.Abstractions
 {
@@ -43,6 +44,25 @@ namespace Vostok.Logging.Abstractions
 
                     return properties;
                 });
+        }
+
+        internal static bool HasMatchingSourceContexts(this LogEvent @event, string[] contexts)
+        {
+            if (contexts.Length == 0)
+                return false;
+
+            if (@event?.Properties == null)
+                return false;
+
+            if (!@event.Properties.TryGetValue(WellKnownProperties.SourceContext, out var sourceContextValue))
+                return false;
+
+            if (!(sourceContextValue is SourceContextValue sourceContext))
+                return false;
+
+            return contexts.All(
+                context =>
+                    sourceContext.Any(value => value.StartsWith(context, StringComparison.OrdinalIgnoreCase)));
         }
 
         private static bool ShouldInferNamesForPositionalParameters(string[] propertyNames)
