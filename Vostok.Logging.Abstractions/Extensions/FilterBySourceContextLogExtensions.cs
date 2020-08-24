@@ -1,6 +1,6 @@
 using System;
-using System.Linq;
 using JetBrains.Annotations;
+using Vostok.Logging.Abstractions.Wrappers;
 
 namespace Vostok.Logging.Abstractions
 {
@@ -57,7 +57,7 @@ namespace Vostok.Logging.Abstractions
         /// <para>Provided context value is treated as a case-insensitive prefix.</para>
         /// </summary>
         [Pure]
-        public static ILog WithMinimumLevelForSourceContexts([NotNull] this ILog log, LogLevel minLevel, [NotNull, ItemNotNull] params string[] contexts)
+        public static ILog WithMinimumLevelForSourceContexts([NotNull] this ILog log, LogLevel minLevel, [NotNull] [ItemNotNull] params string[] contexts)
             => new SourceContextLevelFilterLog(log, contexts, minLevel);
 
         private class SourceContextFilterLog : ILog
@@ -112,7 +112,9 @@ namespace Vostok.Logging.Abstractions
             private readonly LogLevel minimumEffectiveLevel;
 
             public SourceContextLevelFilterLog(ILog baseLog, string[] contextFilterValues, LogLevel minimumContextLevel)
-                : this(baseLog, contextFilterValues, minimumContextLevel, LogLevel.Debug) { }
+                : this(baseLog, contextFilterValues, minimumContextLevel, LogLevel.Debug)
+            {
+            }
 
             private SourceContextLevelFilterLog(ILog baseLog, string[] contextFilterValues, LogLevel minimumContextLevel, LogLevel minimumEffectiveLevel)
             {
@@ -124,27 +126,18 @@ namespace Vostok.Logging.Abstractions
 
             public void Log(LogEvent @event)
             {
-                if (@event?.Level >= minimumEffectiveLevel)
+                if (@event?.Level < minimumEffectiveLevel)
+                    return;
+
+                if (@event?.Level >= minimumContextLevel || !@event.HasMatchingSourceContexts(contextFilterValues))
                     baseLog.Log(@event);
             }
 
-            public bool IsEnabledFor(LogLevel level) 
+            public bool IsEnabledFor(LogLevel level)
                 => level >= minimumEffectiveLevel && baseLog.IsEnabledFor(level);
 
-            public ILog ForContext(string context)
-            {
-                var baseLogForContext = baseLog.ForContext(context);
-                var contextFilterValuesWithoutGivenContext = contextFilterValues.Where(x => !context.StartsWith(x, StringComparison.OrdinalIgnoreCase)).ToArray();
-                if (!contextFilterValuesWithoutGivenContext.Any())
-                    return new SourceContextLevelFilterLog(baseLogForContext, contextFilterValues, minimumContextLevel, minimumContextLevel);
-
-                if (contextFilterValuesWithoutGivenContext.Length < contextFilterValues.Length)
-                    return new SourceContextLevelFilterLog(baseLogForContext, contextFilterValuesWithoutGivenContext, minimumContextLevel, minimumEffectiveLevel);
-
-                return ReferenceEquals(baseLogForContext, baseLog)
-                           ? this
-                           : new SourceContextLevelFilterLog(baseLogForContext, contextFilterValues, minimumContextLevel, minimumEffectiveLevel);
-            }
+            public ILog ForContext(string context) =>
+                new SourceContextWrapper(this, context);
         }
     }
 }
