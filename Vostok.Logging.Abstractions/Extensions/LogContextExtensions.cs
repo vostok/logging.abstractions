@@ -22,16 +22,13 @@ namespace Vostok.Logging.Abstractions
         [Pure]
         public static ILog ForContext<T>([NotNull] this ILog log)
         {
-            return log.ForContext(Holder<T>.ShortTypeName);
+            return log.ForContext<T>(useFullTypeName: false);
         }
 
         [Pure]
         public static ILog ForContext<T>([NotNull] this ILog log, bool useFullTypeName)
         {
-            if (useFullTypeName)
-                return log.ForContext(typeof(T).FullName);
-
-            return log.ForContext<T>();
+            return log.ForContext(useFullTypeName ? typeof(T).FullName : Holder<T>.ShortTypeName);
         }
 
         private static string GetShortTypeName(Type type)
