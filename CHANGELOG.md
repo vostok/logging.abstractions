@@ -1,3 +1,7 @@
+## 1.0.19 (30.12.2020):
+
+ForContext now offers nice formatting for generic type names.
+
 ## 1.0.18 (24.08.2020):
 
 Filters by source contexts now use `SourceContextWrapper`.
