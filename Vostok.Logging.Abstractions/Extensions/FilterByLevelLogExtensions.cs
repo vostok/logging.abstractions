@@ -13,7 +13,16 @@ namespace Vostok.Logging.Abstractions
         [Pure]
         public static ILog WithMinimumLevel([NotNull] this ILog log, LogLevel minLevel)
         {
-            return new FilterByLevelLog(log, minLevel);
+            return log.WithMinimumLevel(log, () => minLevel);
+        }
+
+        /// <summary>
+        /// Returns a wrapper log that ignores <see cref="LogEvent"/>s with log level less than <paramref name="minLevelProvider"/> return value.
+        /// </summary>
+        [Pure]
+        public static ILog WithMinimumLevel([NotNull] this ILog log, ILog levelProvider, Func<LogLevel> minLevelProvider)
+        {
+            return new FilterByLevelLog(log, minLevelProvider);
         }
 
         /// <summary>
@@ -28,30 +37,30 @@ namespace Vostok.Logging.Abstractions
         private class FilterByLevelLog : ILog
         {
             private readonly ILog baseLog;
-            private readonly LogLevel minLevel;
+            private readonly Func<LogLevel> minLevelProvider;
 
-            public FilterByLevelLog(ILog baseLog, LogLevel minLevel)
+            public FilterByLevelLog(ILog baseLog, Func<LogLevel> minLevelProvider)
             {
                 this.baseLog = baseLog ?? throw new ArgumentNullException(nameof(baseLog));
-                this.minLevel = minLevel;
+                this.minLevelProvider = minLevelProvider;
             }
 
             public void Log(LogEvent @event)
             {
-                if (@event?.Level >= minLevel)
+                if (@event?.Level >= minLevelProvider())
                     baseLog.Log(@event);
             }
 
             public bool IsEnabledFor(LogLevel level)
             {
-                return level >= minLevel && baseLog.IsEnabledFor(level);
+                return level >= minLevelProvider() && baseLog.IsEnabledFor(level);
             }
 
             public ILog ForContext(string context)
             {
                 var baseLogForContext = baseLog.ForContext(context);
 
-                return ReferenceEquals(baseLogForContext, baseLog) ? this : new FilterByLevelLog(baseLogForContext, minLevel);
+                return ReferenceEquals(baseLogForContext, baseLog) ? this : new FilterByLevelLog(baseLogForContext, minLevelProvider);
             }
         }
 
