@@ -13,14 +13,14 @@ namespace Vostok.Logging.Abstractions
         [Pure]
         public static ILog WithMinimumLevel([NotNull] this ILog log, LogLevel minLevel)
         {
-            return log.WithMinimumLevel(log, () => minLevel);
+            return log.WithMinimumLevel(() => minLevel);
         }
 
         /// <summary>
         /// Returns a wrapper log that ignores <see cref="LogEvent"/>s with log level less than <paramref name="minLevelProvider"/> return value.
         /// </summary>
         [Pure]
-        public static ILog WithMinimumLevel([NotNull] this ILog log, ILog levelProvider, Func<LogLevel> minLevelProvider)
+        public static ILog WithMinimumLevel([NotNull] this ILog log, Func<LogLevel> minLevelProvider)
         {
             return new FilterByLevelLog(log, minLevelProvider);
         }
