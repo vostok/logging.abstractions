@@ -1,3 +1,7 @@
+## 1.0.20 (20.02.2021):
+
+WithMinimumLevel can take minLevelProvider of type Func<LogLevel> now.
+
 ## 1.0.19 (30.12.2020):
 
 ForContext now offers nice formatting for generic type names.
