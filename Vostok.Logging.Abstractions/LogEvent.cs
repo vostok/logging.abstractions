@@ -6,6 +6,12 @@ using Vostok.Commons.Collections;
 
 namespace Vostok.Logging.Abstractions
 {
+    [PublicAPI]
+    public static class LogEventGlobalOptions
+    {
+        public static int InitialPropertiesCapacity = 0;
+    }
+
     /// <summary>
     /// A single event to be logged. Consists of a timestamp, a log message, a saved exception and user-defined properties.
     /// </summary>
@@ -168,6 +174,8 @@ namespace Vostok.Logging.Abstractions
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static ImmutableArrayDictionary<string, object> CreateProperties()
-            => new ImmutableArrayDictionary<string, object>(StringComparer.Ordinal);
+            => LogEventGlobalOptions.InitialPropertiesCapacity > 0
+                ? new ImmutableArrayDictionary<string, object>(LogEventGlobalOptions.InitialPropertiesCapacity, StringComparer.Ordinal)
+                : new ImmutableArrayDictionary<string, object>(StringComparer.Ordinal);
     }
 }

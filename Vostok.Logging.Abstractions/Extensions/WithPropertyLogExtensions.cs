@@ -64,6 +64,28 @@ namespace Vostok.Logging.Abstractions
         }
 
         /// <summary>
+        /// <para>Returns a wrapper log that adds all of the given properties to each <see cref="LogEvent"/> before logging.</para>
+        /// <para>By default, existing properties are not overwritten. This can be changed via <paramref name="allowOverwrite"/> parameter.</para>
+        /// <para>By default, <c>null</c> values are not added to events. This can be changed via <paramref name="allowNullValues"/> parameter.</para>
+        /// </summary>
+        [Pure]
+        public static ILog WithPropertiesFast(this ILog log, (string key, object value)[] properties, bool allowOverwrite = false, bool allowNullValues = false)
+        {
+            var cleanProperties = ObtainCleanProperties(properties, allowNullValues);
+
+            return WithMutatedProperties(log,
+                eventProperties =>
+                {
+                    if (properties == null || properties.Length == 0)
+                        return eventProperties;
+
+                    eventProperties = eventProperties.SetRange(cleanProperties, allowOverwrite);
+
+                    return eventProperties;
+                });
+        }
+
+        /// <summary>
         /// <para>Returns a wrapper log that adds all of the properties returned by given delegate to each <see cref="LogEvent"/> before logging.</para>
         /// <para>By default, existing properties are not overwritten. This can be changed via <paramref name="allowOverwrite"/> parameter.</para>
         /// <para>By default, <c>null</c> values are not added to events. This can be changed via <paramref name="allowNullValues"/> parameter.</para>
@@ -73,7 +95,7 @@ namespace Vostok.Logging.Abstractions
         {
             if (properties == null)
                 return log;
-            
+
             return WithMutatedProperties(log,
                 eventProperties =>
                 {
@@ -113,12 +135,44 @@ namespace Vostok.Logging.Abstractions
         public static ILog WithObjectProperties<T>(this ILog log, Func<T> @object, bool allowOverwrite = false, bool allowNullValues = false)
             => WithMutatedProperties(log, eventProperties => eventProperties.WithObjectProperties(@object(), allowOverwrite, allowNullValues));
 
+        private static (string key, object value)[] ObtainCleanProperties((string key, object value)[] properties, bool allowNullValues)
+        {
+            var cleanProperties = properties;
+            if (!allowNullValues)
+            {
+                var nullsCount = 0;
+                for (var i = 0; i < properties.Length; i++)
+                {
+                    if (properties[i].value == null)
+                    {
+                        nullsCount++;
+                    }
+                }
+
+                if (nullsCount > 0)
+                {
+                    cleanProperties = new (string key, object value)[properties.Length - nullsCount];
+                    var index = 0;
+                    for (var i = 0; i < properties.Length; i++)
+                    {
+                        var property = properties[i];
+                        if (property.value == null)
+                            continue;
+                        cleanProperties[index] = property;
+                        index++;
+                    }
+                }
+            }
+
+            return cleanProperties;
+        }
+
         private static ILog WithMutatedProperties(this ILog log, PropertiesMutator mutator)
         {
             if (log is WithMutatedPropertiesLog arbitraryPropertiesLog)
                 return arbitraryPropertiesLog.WithMutator(mutator);
 
-            return new WithMutatedPropertiesLog(log, new[] { mutator });
+            return new WithMutatedPropertiesLog(log, new[] {mutator});
         }
 
         private class WithMutatedPropertiesLog : ILog
@@ -135,7 +189,7 @@ namespace Vostok.Logging.Abstractions
             public WithMutatedPropertiesLog WithMutator(PropertiesMutator mutator)
             {
                 var newMutators = new List<PropertiesMutator>(mutators.Count + 1);
-                
+
                 newMutators.AddRange(mutators);
                 newMutators.Add(mutator);
 
