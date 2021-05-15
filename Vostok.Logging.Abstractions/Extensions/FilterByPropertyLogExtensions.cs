@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using Vostok.Commons.Collections;
+using Vostok.Logging.Abstractions.CommonsCopy;
 
 namespace Vostok.Logging.Abstractions
 {

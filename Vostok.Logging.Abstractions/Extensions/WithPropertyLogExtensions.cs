@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using PropertiesMutator = System.Func<Vostok.Commons.Collections.ImmutableArrayDictionary<string, object>, Vostok.Commons.Collections.ImmutableArrayDictionary<string, object>>;
+using PropertiesMutator = System.Func<Vostok.Logging.Abstractions.CommonsCopy.ImmutableArrayDictionary<string, object>, Vostok.Logging.Abstractions.CommonsCopy.ImmutableArrayDictionary<string, object>>;
 
 // ReSharper disable once CheckNamespace
 namespace Vostok.Logging.Abstractions
