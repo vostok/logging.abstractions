@@ -12,7 +12,7 @@ namespace Vostok.Logging.Abstractions
     {
         [Pure]
         public static LogEvent WithObjectProperties<T>(this LogEvent @event, T @object, bool allowOverwrite = true, bool allowNullValues = true)
-            => @event.MutateProperties(eventProperties => eventProperties.WithObjectProperties(@object, allowOverwrite, allowNullValues));
+            => @event.MutateProperties(eventProperties => eventProperties.WithObjectPropertiesSetRage(@object, allowOverwrite, allowNullValues));
 
         [Pure]
         public static LogEvent WithParameters(this LogEvent @event, object[] parameters)
@@ -25,22 +25,25 @@ namespace Vostok.Logging.Abstractions
                 {
                     var templatePropertyNames = TemplatePropertiesExtractor.ExtractPropertyNames(@event.MessageTemplate);
 
+                    var pairsToSet = new (string, object)[parameters.Length];
                     if (ShouldInferNamesForPositionalParameters(templatePropertyNames))
                     {
                         // (iloktionov): Name positional parameters with corresponding placeholder names from template:
                         for (var i = 0; i < Math.Min(parameters.Length, templatePropertyNames.Length); i++)
-                            properties = properties.Set(templatePropertyNames[i], parameters[i]);
+                            pairsToSet[i] = (templatePropertyNames[i], parameters[i]);
 
                         if (parameters.Length > templatePropertyNames.Length)
                             for (var i = templatePropertyNames.Length; i < parameters.Length; i++)
-                                properties = properties.Set(i.ToString(), parameters[i]);
+                                pairsToSet[i] = (i.ToString(), parameters[i]);
                     }
                     else
                     {
                         // (iloktionov): Name positional parameters with their indices:
                         for (var i = 0; i < parameters.Length; i++)
-                            properties = properties.Set(i.ToString(), parameters[i]);
+                            pairsToSet[i] = (i.ToString(), parameters[i]);
                     }
+
+                    properties.SetRangeUnsafe(pairsToSet);
 
                     return properties;
                 });
