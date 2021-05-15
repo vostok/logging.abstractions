@@ -43,7 +43,7 @@ namespace Vostok.Logging.Abstractions
                             pairsToSet[i] = (i.ToString(), parameters[i]);
                     }
 
-                    properties.SetRangeUnsafe(pairsToSet);
+                    properties = properties.SetRangeUnsafe(pairsToSet);
 
                     return properties;
                 });
