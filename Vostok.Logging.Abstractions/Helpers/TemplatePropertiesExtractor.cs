@@ -16,6 +16,7 @@ namespace Vostok.Logging.Abstractions.Helpers
         private const char Underscore = '_';
         private const char Whitespace = ' ';
         private const char Colon = ':';
+        private const char Dot = '.';
 
         private static readonly RecyclingBoundedCache<string, string[]> Cache
             = new RecyclingBoundedCache<string, string[]>(CacheCapacity, StringComparer.Ordinal);
@@ -150,7 +151,7 @@ namespace Vostok.Logging.Abstractions.Helpers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool IsValidInName(char c)
         {
-            return char.IsLetterOrDigit(c) || c == Underscore;
+            return char.IsLetterOrDigit(c) || c == Underscore || c == Dot;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

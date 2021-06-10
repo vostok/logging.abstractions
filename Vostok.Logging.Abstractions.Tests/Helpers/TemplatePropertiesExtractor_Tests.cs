@@ -19,6 +19,7 @@ namespace Vostok.Logging.Abstractions.Tests.Helpers
         [TestCase("{1}", "1")]
         [TestCase("{_prop}", "_prop")]
         [TestCase("{_PROP}", "_PROP")]
+        [TestCase("{.prop}", ".prop")]
 
         [TestCase("{prop:format}", "prop")]
         [TestCase("{0:format}", "0")]
