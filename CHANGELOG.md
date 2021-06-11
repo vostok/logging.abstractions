@@ -1,3 +1,7 @@
+## 1.0.21 (11.06.2021):
+
+Allow dot character in property names.
+
 ## 1.0.20 (20.02.2021):
 
 WithMinimumLevel can take minLevelProvider of type Func<LogLevel> now.
