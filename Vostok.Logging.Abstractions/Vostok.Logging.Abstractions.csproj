@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\..\vostok.devtools\library-common-props\Main-Project.props" />
   <Import Project="..\..\vostok.devtools\git-commit-to-assembly-title\Vostok.Tools.GitCommit2AssemblyTitle.props" />
@@ -42,5 +42,5 @@
     <Compile Include="..\..\vostok.commons.formatting\Vostok.Commons.Formatting\ToStringDetector.cs" Link="Commons\ToStringDetector.cs" />
     <Compile Include="..\..\vostok.commons.time\Vostok.Commons.Time\PreciseDateTime.cs" Link="Commons\PreciseDateTime.cs" />
   </ItemGroup>
-  <Import Project="..\..\vostok.commons.formatting\ObjectPropertiesExtractor.props" />
+  <Import Project="..\..\vostok.commons.formatting\ObjectPropertiesExtractor.props" Condition="Exists('..\..\vostok.commons.formatting\ObjectPropertiesExtractor.props')" />
 </Project>
