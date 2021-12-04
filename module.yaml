@@ -15,6 +15,10 @@ notests *default:
     - vostok.commons.time/src
 
 full-build > notests:
+  deps:
+    - -vostok.devtools
+    - vostok.devtools@with-net6.0
+
   build:
     target: Vostok.Logging.Abstractions.sln
     configuration: Release
