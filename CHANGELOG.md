@@ -1,3 +1,7 @@
+## 1.0.22 (06-12-2021):
+
+Added `net6.0` target.
+
 ## 1.0.21 (11.06.2021):
 
 Allow dot character in property names.
