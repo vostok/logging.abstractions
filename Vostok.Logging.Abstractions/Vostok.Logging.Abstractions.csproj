@@ -7,7 +7,7 @@
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <VersionPrefix>1.0.23</VersionPrefix>
+    <VersionPrefix>1.0.24</VersionPrefix>
   </PropertyGroup>
   <PropertyGroup>
     <Title>Vostok.Logging.Abstractions</Title>
