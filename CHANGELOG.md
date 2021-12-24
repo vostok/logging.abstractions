@@ -1,3 +1,7 @@
+## 1.0.24 (24-12-2021):
+
+Added `WithTransformation` extention.
+
 ## 1.0.23 (06-12-2021):
 
 Added `net6.0` target.
