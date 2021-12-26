@@ -133,6 +133,14 @@ namespace Vostok.Logging.Abstractions
         public LogEvent WithTimestamp(DateTimeOffset timestamp)
             => new LogEvent(Level, timestamp, MessageTemplate, Properties, Exception);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static ImmutableArrayDictionary<string, object> CreateProperties()
+            => new ImmutableArrayDictionary<string, object>(StringComparer.Ordinal);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static ImmutableArrayDictionary<string, object> CreateProperties(int capacity)
+            => new ImmutableArrayDictionary<string, object>(capacity, StringComparer.Ordinal);
+
         internal LogEvent WithProperty<T>([NotNull] string key, [CanBeNull] T value, bool allowOverwrite)
         {
             if (key == null)
@@ -165,9 +173,5 @@ namespace Vostok.Logging.Abstractions
 
             return Properties as ImmutableArrayDictionary<string, object> ?? new ImmutableArrayDictionary<string, object>(Properties, StringComparer.Ordinal);
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static ImmutableArrayDictionary<string, object> CreateProperties()
-            => new ImmutableArrayDictionary<string, object>(StringComparer.Ordinal);
     }
 }
