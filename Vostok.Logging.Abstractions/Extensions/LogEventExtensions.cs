@@ -24,11 +24,7 @@ namespace Vostok.Logging.Abstractions
                 return @event;
 
             return @event.MutateProperties(
-                properties =>
-                {
-                    var templatePropertyNames = TemplatePropertiesExtractor.ExtractPropertyNames(@event.MessageTemplate);
-                    return FillImmutableArrayDictionaryWithProperties(templatePropertyNames, parameters, properties);
-                });
+                properties => FillImmutableArrayDictionaryWithProperties(@event.MessageTemplate, parameters, properties));
         }
 
         [Pure]
@@ -37,11 +33,9 @@ namespace Vostok.Logging.Abstractions
             if (parameters == null || parameters.Length == 0)
                 return null;
 
-            var properties = parameters.Length > 4 ? LogEvent.CreateProperties(parameters.Length) : LogEvent.CreateProperties();
+            var properties = LogEvent.CreateProperties(Math.Max(4, parameters.Length));
 
-            var templatePropertyNames = TemplatePropertiesExtractor.ExtractPropertyNames(messageTemplate);
-
-            return FillImmutableArrayDictionaryWithProperties(templatePropertyNames, parameters, properties);
+            return FillImmutableArrayDictionaryWithProperties(messageTemplate, parameters, properties);
         }
 
         internal static bool HasMatchingSourceContexts(this LogEvent @event, string[] contexts)
@@ -63,8 +57,10 @@ namespace Vostok.Logging.Abstractions
                     sourceContext.Any(value => value.StartsWith(context, StringComparison.OrdinalIgnoreCase)));
         }
 
-        private static ImmutableArrayDictionary<string, object> FillImmutableArrayDictionaryWithProperties(string[] templatePropertyNames, object[] parameters, ImmutableArrayDictionary<string, object> properties)
+        private static ImmutableArrayDictionary<string, object> FillImmutableArrayDictionaryWithProperties(string messageTemplate, object[] parameters, ImmutableArrayDictionary<string, object> properties)
         {
+            var templatePropertyNames = TemplatePropertiesExtractor.ExtractPropertyNames(messageTemplate);
+
             if (ShouldInferNamesForPositionalParameters(templatePropertyNames))
             {
                 // (iloktionov): Name positional parameters with corresponding placeholder names from template:
