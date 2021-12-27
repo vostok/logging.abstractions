@@ -68,7 +68,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Debug))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Debug, PreciseDateTime.Now, messageTemplate).WithParameters(parameters));
+            log.Log(new LogEvent(LogLevel.Debug, PreciseDateTime.Now, messageTemplate, LogEventExtensions.GenerateInitialParameters(messageTemplate, parameters), null));
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Debug))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Debug, PreciseDateTime.Now, messageTemplate, exception).WithParameters(parameters));
+            log.Log(new LogEvent(LogLevel.Debug, PreciseDateTime.Now, messageTemplate, LogEventExtensions.GenerateInitialParameters(messageTemplate, parameters), exception));
         }
 
         [Obsolete("Use the Debug(ILog, Exception, string) overload instead.")]
@@ -178,7 +178,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Info))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Info, PreciseDateTime.Now, messageTemplate).WithParameters(parameters));
+            log.Log(new LogEvent(LogLevel.Info, PreciseDateTime.Now, messageTemplate, LogEventExtensions.GenerateInitialParameters(messageTemplate, parameters), null));
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Info))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Info, PreciseDateTime.Now, messageTemplate, exception).WithParameters(parameters));
+            log.Log(new LogEvent(LogLevel.Info, PreciseDateTime.Now, messageTemplate, LogEventExtensions.GenerateInitialParameters(messageTemplate, parameters), exception));
         }
 
         [Obsolete("Use the Info(ILog, Exception, string) overload instead.")]
@@ -288,7 +288,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Warn))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Warn, PreciseDateTime.Now, messageTemplate).WithParameters(parameters));
+            log.Log(new LogEvent(LogLevel.Warn, PreciseDateTime.Now, messageTemplate, LogEventExtensions.GenerateInitialParameters(messageTemplate, parameters), null));
         }
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Warn))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Warn, PreciseDateTime.Now, messageTemplate, exception).WithParameters(parameters));
+            log.Log(new LogEvent(LogLevel.Warn, PreciseDateTime.Now, messageTemplate, LogEventExtensions.GenerateInitialParameters(messageTemplate, parameters), exception));
         }
 
         [Obsolete("Use the Warn(ILog, Exception, string) overload instead.")]
@@ -398,7 +398,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Error))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Error, PreciseDateTime.Now, messageTemplate).WithParameters(parameters));
+            log.Log(new LogEvent(LogLevel.Error, PreciseDateTime.Now, messageTemplate, LogEventExtensions.GenerateInitialParameters(messageTemplate, parameters), null));
         }
 
         /// <summary>
@@ -426,7 +426,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Error))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Error, PreciseDateTime.Now, messageTemplate, exception).WithParameters(parameters));
+            log.Log(new LogEvent(LogLevel.Error, PreciseDateTime.Now, messageTemplate, LogEventExtensions.GenerateInitialParameters(messageTemplate, parameters), exception));
         }
 
         [Obsolete("Use the Error(ILog, Exception, string) overload instead.")]
@@ -508,7 +508,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Fatal))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Fatal, PreciseDateTime.Now, messageTemplate).WithParameters(parameters));
+            log.Log(new LogEvent(LogLevel.Fatal, PreciseDateTime.Now, messageTemplate, LogEventExtensions.GenerateInitialParameters(messageTemplate, parameters), null));
         }
 
         /// <summary>
@@ -536,7 +536,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Fatal))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Fatal, PreciseDateTime.Now, messageTemplate, exception).WithParameters(parameters));
+            log.Log(new LogEvent(LogLevel.Fatal, PreciseDateTime.Now, messageTemplate, LogEventExtensions.GenerateInitialParameters(messageTemplate, parameters), exception));
         }
 
         [Obsolete("Use the Fatal(ILog, Exception, string) overload instead.")]
