@@ -11,9 +11,8 @@ namespace Vostok.Logging.Abstractions.Interpolated
     [InterpolatedStringHandler]
     public ref struct InterpolatedStringHandler
     {
-        public InterpolatedStringHandler(int literalLength, int formattedCount, ILog log, out bool isEnabled, IFormatProvider formatProvider = null)
+        public InterpolatedStringHandler(int literalLength, int formattedCount, ILog log, out bool isEnabled)
         {
-            // todo (kungurtsev, 30.12.2021): copy-paste handler for each LogLevel?
             IsEnabled = isEnabled = log.IsEnabledFor(LogLevel.Info);
             if (!isEnabled)
                 return;
@@ -63,7 +62,7 @@ namespace Vostok.Logging.Abstractions.Interpolated
         internal StringBuilder MessageTemplate { get; } = null!;
         internal ImmutableArrayDictionary<string, object> Properties { get; private set; } = null!;
         
-        private DefaultInterpolatedStringHandler CreateDefaultHandler() =>
+        private static DefaultInterpolatedStringHandler CreateDefaultHandler() =>
             new DefaultInterpolatedStringHandler(0, 1, CultureInfo.InvariantCulture);
     }
 }

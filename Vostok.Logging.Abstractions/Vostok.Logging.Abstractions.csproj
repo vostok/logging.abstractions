@@ -28,12 +28,26 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>LogExtensions.tt</DependentUpon>
     </Compile>
+    <Compile Update="Extensions\LogExtensions_Interpolated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LogExtensions_Interpolated.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Extensions\LogExtensions_Interpolated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LogExtensions_Interpolated.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Update="Extensions\LogExtensions.tt">
+    <None Update="Extensions\LogExtensions_Interpolated.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>LogExtensions.cs</LastGenOutput>
+      <LastGenOutput>LogExtensions_Interpolated.cs</LastGenOutput>
     </None>
+    <None Update="Extensions\LogExtensions_Interpolated.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>LogExtensions_Interpolated.tt</LastGenOutput>
+    </None>    
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\vostok.commons.collections\Vostok.Commons.Collections\ImmutableArrayDictionary.cs" Link="Commons\ImmutableArrayDictionary.cs" />
