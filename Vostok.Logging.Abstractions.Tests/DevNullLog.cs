@@ -2,11 +2,11 @@
 {
     internal class DevNullLog : ILog
     {
-        private LogEvent lastEvent;
+        public LogEvent LastEvent;
 
         public void Log(LogEvent @event)
         {
-            lastEvent = @event;
+            LastEvent = @event;
         }
 
         public bool IsEnabledFor(LogLevel level) => true;

@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 using Vostok.Commons.Time;
 using Vostok.Logging.Abstractions.Helpers;
+using Vostok.Logging.Abstractions.Interpolated;
 
 namespace Vostok.Logging.Abstractions
 {

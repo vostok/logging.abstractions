@@ -1,7 +1,9 @@
-﻿using BenchmarkDotNet.Attributes;
+﻿using System;
+using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Running;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace Vostok.Logging.Abstractions.Tests.Extensions
@@ -9,7 +11,14 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
     [Explicit]
     public class LogExtensions_Benchmarks
     {
-        private ILog log;
+        private DevNullLog log;
+        private SilentLog silentLog;
+        
+        private int one = 125;
+        private string two = "qqq";
+        private string three = "qwerty";
+        private int four = 42;
+        private int five = 43;
 
         [Test]
         public void RunBenchmark()
@@ -20,28 +29,108 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
                     .WithOption(ConfigOptions.DisableOptimizationsValidator, true));
         }
 
+        [Test]
+        public void Should_log_same_events()
+        {
+            Check(WithTwoParameters, WithTwoParameters_Interpolated);
+            Check(WithFourParameters, WithFourParameters_Interpolated);
+            Check(WithFiveParameters, WithFiveParameters_Interpolated);
+
+            void Check(Action log1, Action log2)
+            {
+                log = new DevNullLog();
+                log1();
+                var event1 = log.LastEvent;
+                log2();
+                var event2 = log.LastEvent;
+                
+                event1.Should().BeEquivalentTo(event2, config => config.Excluding(e => e.Timestamp));
+            }
+        }
+
         [GlobalSetup]
         public void SetUp()
         {
             log = new DevNullLog();
+            silentLog = new SilentLog();
         }
 
         [Benchmark(Baseline = true)]
         public void WithTwoParameters()
         {
-            log.Info("xxx = {one} yyy = {two}.", "125", "qqq");
+            log.Info("xxx = {one} yyy = {two}.", one, two);
+        }
+        
+        [Benchmark]
+        public void WithTwoParameters_Interpolated()
+        {
+            log.Info($"xxx = {one} yyy = {two}.");
+        }
+        
+        [Benchmark]
+        public void Silent_WithTwoParameters()
+        {
+            silentLog.Info("xxx = {one} yyy = {two}.", one, two);
+        }
+        
+        [Benchmark]
+        public void Silent_WithTwoParameters_Interpolated()
+        {
+            silentLog.Info($"xxx = {one} yyy = {two}.");
         }
 
         [Benchmark]
         public void WithFourParameters()
         {
-            log.Info("xxx = {one} yyy = {two}, zzzz = {three}, wwwwwww = {four}.", "125", "qqq", "qwerty", "42");
+            log.Info("xxx = {one} yyy = {two}, zzzz = {three}, wwwwwww = {four}.", one, two, three, four);
+        }
+        
+        [Benchmark]
+        public void WithFourParameters_Interpolated()
+        {
+            log.Info($"xxx = {one} yyy = {two}, zzzz = {three}, wwwwwww = {four}.");
+        }
+        
+        [Benchmark]
+        public void Silent_WithFourParameters()
+        {
+            silentLog.Info("xxx = {one} yyy = {two}, zzzz = {three}, wwwwwww = {four}.", one, two, three, four);
+        }
+        
+        [Benchmark]
+        public void Silent_WithFourParameters_Interpolated()
+        {
+            silentLog.Info($"xxx = {one} yyy = {two}, zzzz = {three}, wwwwwww = {four}.");
         }
 
         [Benchmark]
         public void WithFiveParameters()
         {
-            log.Info("xxx = {one} yyy = {two}, zzzz = {three}, wwwwwww = {four} ({five}).", "125", "qqq", "qwerty", "42", "43");
+            log.Info("xxx = {one} yyy = {two}, zzzz = {three}, wwwwwww = {four} ({five}).", one, two, three, four, five);
+        }
+        
+        [Benchmark]
+        public void WithFiveParameters_Interpolated()
+        {
+            log.Info($"xxx = {one} yyy = {two}, zzzz = {three}, wwwwwww = {four} ({five}).");
+        }
+        
+        [Benchmark]
+        public void Silent_WithFiveParameters()
+        {
+            silentLog.Info("xxx = {one} yyy = {two}, zzzz = {three}, wwwwwww = {four} ({five}).", one, two, three, four, five);
+        }
+        
+        [Benchmark]
+        public void Silent_WithFiveParameters_Interpolated()
+        {
+            silentLog.Info($"xxx = {one} yyy = {two}, zzzz = {three}, wwwwwww = {four} ({five}).");
+        }
+        
+        [Benchmark]
+        public void Silent_WithFiveParameters_Interpolated_Formatted()
+        {
+            silentLog.Info($"xxx = {one:D5} yyy = {two,4}, zzzz = {three,-1}, wwwwwww = {four:x8} ({five:10,P}).");
         }
 
         /*
