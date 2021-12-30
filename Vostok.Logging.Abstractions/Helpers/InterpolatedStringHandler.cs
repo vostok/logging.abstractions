@@ -1,7 +1,6 @@
 ﻿#if NET6_0
 
 using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Vostok.Commons.Collections;
@@ -17,6 +16,7 @@ namespace Vostok.Logging.Abstractions.Helpers
 
         public InterpolatedStringHandler(int literalLength, int formattedCount, ILog log, out bool isEnabled)
         {
+            // todo (kungurtsev, 30.12.2021): copy-paste handler for each LogLevel?
             IsEnabled = isEnabled = log.IsEnabledFor(LogLevel.Info);
             if (!isEnabled)
                 return;
