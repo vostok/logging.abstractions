@@ -1,3 +1,7 @@
+## 1.0.26 (30-12-2021):
+
+WithMutatedPropertiesLog minor optimization
+
 ## 1.0.25 (27-12-2021):
 
 Speed up Info\Error\etc extensions by ~10-20 percent.
