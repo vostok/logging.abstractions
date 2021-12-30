@@ -1,0 +1,114 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".cs" #>
+#if NET6_0
+using System;
+using System.Globalization;
+using System.Runtime.CompilerServices;
+using System.Text;
+using JetBrains.Annotations;
+using Vostok.Commons.Collections;
+using Vostok.Commons.Time;
+
+// ReSharper disable MethodOverloadWithOptionalParameter
+
+namespace Vostok.Logging.Abstractions
+{
+    [PublicAPI]
+    public static class LogExtensions_Interpolated
+    {
+<#
+    foreach (var level in new[] {"Debug", "Info", "Warn", "Error", "Fatal"})
+    {
+#>
+        #region <#= level #>
+
+        /// <summary>
+        /// Logs the given <paramref name="message"/> as interpolated string on the <see cref="LogLevel.<#= level #>"/> level.
+        /// </summary>
+        public static void <#= level #>(this ILog log, [InterpolatedStringHandlerArgument("log")] ref <#= level #>StringHandler message)
+        {
+            if (!message.IsEnabled)
+                return;
+
+            log.Log(new LogEvent(LogLevel.<#= level #>, PreciseDateTime.Now, message.MessageTemplate.ToString(), message.Properties, null));
+        }
+
+        /// <summary>
+        /// Logs the given <paramref name="exception"/> on the <see cref="LogLevel.<#= level #>"/> level with the given <paramref name="message"/> as interpolated string.
+        /// </summary>
+        public static void <#= level #>(this ILog log, [CanBeNull] Exception exception, [InterpolatedStringHandlerArgument("log")] ref <#= level #>StringHandler message)
+        {
+            if (!message.IsEnabled)
+                return;
+
+            log.Log(new LogEvent(LogLevel.<#= level #>, PreciseDateTime.Now, message.MessageTemplate.ToString(), message.Properties, exception));
+        }
+
+        [PublicAPI]
+        [InterpolatedStringHandler]
+        public ref struct <#= level #>StringHandler
+        {
+            public <#= level #>StringHandler(int literalLength, int formattedCount, ILog log, out bool isEnabled)
+            {
+                IsEnabled = isEnabled = log.IsEnabledFor(LogLevel.<#= level #>);
+                if (!isEnabled)
+                    return;
+
+                MessageTemplate = new StringBuilder(literalLength);
+
+                if (formattedCount > 0)
+                    Properties = LogEvent.CreateProperties(Math.Max(4, formattedCount));
+            }
+
+            public void AppendLiteral(string value)
+            {
+                MessageTemplate.Append(value);
+            }
+
+            public void AppendFormatted<T>(T value, int alignment, [CallerArgumentExpression("value")] string name = "")
+            {
+                var defaultHandler = CreateDefaultHandler();
+                defaultHandler.AppendFormatted(value, alignment);
+                AppendFormatted((object)defaultHandler.ToStringAndClear(), name);
+            }
+
+            public void AppendFormatted<T>(T value, string format, [CallerArgumentExpression("value")] string name = "")
+            {
+                var defaultHandler = CreateDefaultHandler();
+                defaultHandler.AppendFormatted(value, format);
+                AppendFormatted((object)defaultHandler.ToStringAndClear(), name);
+            }
+
+            public void AppendFormatted<T>(T value, int alignment, string format, [CallerArgumentExpression("value")] string name = "")
+            {
+                var defaultHandler = CreateDefaultHandler();
+                defaultHandler.AppendFormatted(value, alignment, format);
+                AppendFormatted((object)defaultHandler.ToStringAndClear(), name);
+            }
+
+            public void AppendFormatted(object value, [CallerArgumentExpression("value")] string name = "")
+            {
+                MessageTemplate.Append('{');
+                MessageTemplate.Append(name);
+                MessageTemplate.Append('}');
+
+                Properties = Properties.Set(name, value);
+            }
+
+            internal bool IsEnabled { get; }
+            internal StringBuilder MessageTemplate { get; } = null!;
+            internal ImmutableArrayDictionary<string, object> Properties { get; private set; } = null!;
+
+            private static DefaultInterpolatedStringHandler CreateDefaultHandler() =>
+                new DefaultInterpolatedStringHandler(0, 1, CultureInfo.InvariantCulture);
+        }
+
+        #endregion
+
+<#
+    }
+#>
+    }
+}
+
+#endif
