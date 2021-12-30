@@ -44,20 +44,6 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
             log.Info("xxx = {one} yyy = {two}, zzzz = {three}, wwwwwww = {four} ({five}).", "125", "qqq", "qwerty", "42", "43");
         }
 
-        private class DevNullLog : ILog
-        {
-            private LogEvent lastEvent;
-
-            public void Log(LogEvent @event)
-            {
-                lastEvent = @event;
-            }
-
-            public bool IsEnabledFor(LogLevel level) => true;
-
-            public ILog ForContext(string context) => this;
-        }
-
         /*
         // * Summary*
 

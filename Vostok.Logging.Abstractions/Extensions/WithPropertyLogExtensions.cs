@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using Vostok.Commons.Collections;
 using PropertiesMutator = System.Func<Vostok.Commons.Collections.ImmutableArrayDictionary<string, object>, Vostok.Commons.Collections.ImmutableArrayDictionary<string, object>>;
 
 // ReSharper disable once CheckNamespace
@@ -125,11 +126,13 @@ namespace Vostok.Logging.Abstractions
         {
             private readonly ILog baseLog;
             private readonly IReadOnlyList<PropertiesMutator> mutators;
+            private PropertiesMutator mutation;
 
             public WithMutatedPropertiesLog(ILog baseLog, IReadOnlyList<PropertiesMutator> mutators)
             {
                 this.baseLog = baseLog ?? throw new ArgumentNullException(nameof(baseLog));
                 this.mutators = mutators ?? throw new ArgumentNullException(nameof(mutators));
+                mutation = Mutation;
             }
 
             public WithMutatedPropertiesLog WithMutator(PropertiesMutator mutator)
@@ -144,14 +147,7 @@ namespace Vostok.Logging.Abstractions
 
             public void Log(LogEvent @event)
             {
-                @event = @event?.MutateProperties(
-                    properties =>
-                    {
-                        foreach (var mutator in mutators)
-                            properties = mutator(properties);
-
-                        return properties;
-                    });
+                @event = @event?.MutateProperties(mutation);
 
                 baseLog.Log(@event);
             }
@@ -165,6 +161,17 @@ namespace Vostok.Logging.Abstractions
             {
                 var baseLogForContext = baseLog.ForContext(context);
                 return ReferenceEquals(baseLogForContext, baseLog) ? this : new WithMutatedPropertiesLog(baseLogForContext, mutators);
+            }
+
+            private ImmutableArrayDictionary<string, object> Mutation(ImmutableArrayDictionary<string, object> properties)
+            {
+                for (var index = 0; index < mutators.Count; index++)
+                {
+                    var mutator = mutators[index];
+                    properties = mutator(properties);
+                }
+
+                return properties;
             }
         }
     }
