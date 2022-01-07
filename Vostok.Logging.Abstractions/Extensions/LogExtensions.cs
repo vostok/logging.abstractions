@@ -57,7 +57,7 @@ namespace Vostok.Logging.Abstractions
                 return;
             }
 
-            log.Log(new LogEvent(LogLevel.Debug, PreciseDateTime.Now, messageTemplate).WithObjectProperties(properties));
+            log.Log(new LogEvent(LogLevel.Debug, PreciseDateTime.Now, messageTemplate, LogPropertiesExtensions.GenerateInitialObjectProperties(properties, true), null));
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Vostok.Logging.Abstractions
                 return;
             }
 
-            log.Log(new LogEvent(LogLevel.Debug, PreciseDateTime.Now, messageTemplate, exception).WithObjectProperties(properties));
+            log.Log(new LogEvent(LogLevel.Debug, PreciseDateTime.Now, messageTemplate, LogPropertiesExtensions.GenerateInitialObjectProperties(properties, true), exception));
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace Vostok.Logging.Abstractions
                 return;
             }
 
-            log.Log(new LogEvent(LogLevel.Info, PreciseDateTime.Now, messageTemplate).WithObjectProperties(properties));
+            log.Log(new LogEvent(LogLevel.Info, PreciseDateTime.Now, messageTemplate, LogPropertiesExtensions.GenerateInitialObjectProperties(properties, true), null));
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace Vostok.Logging.Abstractions
                 return;
             }
 
-            log.Log(new LogEvent(LogLevel.Info, PreciseDateTime.Now, messageTemplate, exception).WithObjectProperties(properties));
+            log.Log(new LogEvent(LogLevel.Info, PreciseDateTime.Now, messageTemplate, LogPropertiesExtensions.GenerateInitialObjectProperties(properties, true), exception));
         }
 
         /// <summary>
@@ -277,7 +277,7 @@ namespace Vostok.Logging.Abstractions
                 return;
             }
 
-            log.Log(new LogEvent(LogLevel.Warn, PreciseDateTime.Now, messageTemplate).WithObjectProperties(properties));
+            log.Log(new LogEvent(LogLevel.Warn, PreciseDateTime.Now, messageTemplate, LogPropertiesExtensions.GenerateInitialObjectProperties(properties, true), null));
         }
 
         /// <summary>
@@ -305,7 +305,7 @@ namespace Vostok.Logging.Abstractions
                 return;
             }
 
-            log.Log(new LogEvent(LogLevel.Warn, PreciseDateTime.Now, messageTemplate, exception).WithObjectProperties(properties));
+            log.Log(new LogEvent(LogLevel.Warn, PreciseDateTime.Now, messageTemplate, LogPropertiesExtensions.GenerateInitialObjectProperties(properties, true), exception));
         }
 
         /// <summary>
@@ -387,7 +387,7 @@ namespace Vostok.Logging.Abstractions
                 return;
             }
 
-            log.Log(new LogEvent(LogLevel.Error, PreciseDateTime.Now, messageTemplate).WithObjectProperties(properties));
+            log.Log(new LogEvent(LogLevel.Error, PreciseDateTime.Now, messageTemplate, LogPropertiesExtensions.GenerateInitialObjectProperties(properties, true), null));
         }
 
         /// <summary>
@@ -415,7 +415,7 @@ namespace Vostok.Logging.Abstractions
                 return;
             }
 
-            log.Log(new LogEvent(LogLevel.Error, PreciseDateTime.Now, messageTemplate, exception).WithObjectProperties(properties));
+            log.Log(new LogEvent(LogLevel.Error, PreciseDateTime.Now, messageTemplate, LogPropertiesExtensions.GenerateInitialObjectProperties(properties, true), exception));
         }
 
         /// <summary>
@@ -497,7 +497,7 @@ namespace Vostok.Logging.Abstractions
                 return;
             }
 
-            log.Log(new LogEvent(LogLevel.Fatal, PreciseDateTime.Now, messageTemplate).WithObjectProperties(properties));
+            log.Log(new LogEvent(LogLevel.Fatal, PreciseDateTime.Now, messageTemplate, LogPropertiesExtensions.GenerateInitialObjectProperties(properties, true), null));
         }
 
         /// <summary>
@@ -525,7 +525,7 @@ namespace Vostok.Logging.Abstractions
                 return;
             }
 
-            log.Log(new LogEvent(LogLevel.Fatal, PreciseDateTime.Now, messageTemplate, exception).WithObjectProperties(properties));
+            log.Log(new LogEvent(LogLevel.Fatal, PreciseDateTime.Now, messageTemplate, LogPropertiesExtensions.GenerateInitialObjectProperties(properties, true), exception));
         }
 
         /// <summary>

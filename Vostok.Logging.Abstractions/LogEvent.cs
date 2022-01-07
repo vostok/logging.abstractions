@@ -138,6 +138,14 @@ namespace Vostok.Logging.Abstractions
             => new ImmutableArrayDictionary<string, object>(StringComparer.Ordinal);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static ImmutableArrayDictionary<string, object> CreatePropertiesFromSource(IReadOnlyDictionary<string, object> source)
+            => new ImmutableArrayDictionary<string, object>(source, StringComparer.Ordinal);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static ImmutableArrayDictionary<string, object> CreatePropertiesFromSource(int capacity, int count, IEnumerable<(string, object)> source)
+            => new ImmutableArrayDictionary<string, object>(capacity, count, source, StringComparer.Ordinal);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static ImmutableArrayDictionary<string, object> CreateProperties(int capacity)
             => new ImmutableArrayDictionary<string, object>(capacity, StringComparer.Ordinal);
 
