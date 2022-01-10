@@ -438,7 +438,6 @@ namespace Vostok.Logging.Abstractions
         }
 
         #endregion
-
     }
 }
 
