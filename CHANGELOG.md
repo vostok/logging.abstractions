@@ -1,3 +1,7 @@
+## 1.0.27 (10-01-2021):
+
+Added interpolated string handlers.
+
 ## 1.0.26 (30-12-2021):
 
 WithMutatedPropertiesLog minor optimization

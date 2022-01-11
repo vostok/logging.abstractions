@@ -5,7 +5,7 @@ using Vostok.Logging.Abstractions.Helpers;
 
 namespace Vostok.Logging.Abstractions
 {
-	[PublicAPI]
+    [PublicAPI]
     public static class LogExtensions
     {
         #region Debug

@@ -30,7 +30,7 @@ namespace Vostok.Logging.Abstractions.Tests.Values
         [Test]
         public void Plus_operator_for_string_should_handle_null_left_value()
         {
-            (null as SourceContextValue + "foo")
+            ((null as SourceContextValue) + "foo")
                 .Should().Equal("foo");
         }
 
