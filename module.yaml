@@ -22,3 +22,5 @@ full-build > notests:
   build:
     target: Vostok.Logging.Abstractions.sln
     configuration: Release
+    tool:
+      name: dotnet
