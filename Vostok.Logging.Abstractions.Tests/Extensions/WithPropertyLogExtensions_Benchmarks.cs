@@ -4,7 +4,7 @@ using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Running;
 using NUnit.Framework;
 
-namespace Vostok.Logging.Abstractions.Tests
+namespace Vostok.Logging.Abstractions.Tests.Extensions
 {
     [Explicit]
     public class WithPropertyLogExtensions_Benchmarks
@@ -20,15 +20,12 @@ namespace Vostok.Logging.Abstractions.Tests
                     .WithOption(ConfigOptions.DisableOptimizationsValidator, true));
         }
 
-        //For example, tracing module add two properties.
-        [Params(2)]
-        public int PropertiesCount = 2;
-
         [GlobalSetup]
         public void SetUp()
         {
             log = new DevNullLog();
-            for (int i = 0; i < PropertiesCount; i++)
+            //For example, tracing module add two properties.
+            for (int i = 0; i < 2; i++)
             {
                 var i1 = i;
                 log = log.WithProperty(i.ToString(), () => i1.ToString());
@@ -49,11 +46,11 @@ namespace Vostok.Logging.Abstractions.Tests
         .NET SDK=6.0.101
           [Host]     : .NET 6.0.1 (6.0.121.56705), X64 RyuJIT
           DefaultJob : .NET 6.0.1 (6.0.121.56705), X64 RyuJIT
-        
-        
-        |                     Method | PropertiesCount |     Mean |   Error |  StdDev |  Gen 0 | Gen 1 | Gen 2 | Allocated |
-        |--------------------------- |---------------- |---------:|--------:|--------:|-------:|------:|------:|----------:|
-        | LogWithPropertiesOnBaseLog |               2 | 266.7 ns | 2.97 ns | 2.63 ns | 0.0877 |     - |     - |     368 B |
+
+
+        |                     Method |     Mean |   Error |  StdDev |  Gen 0 | Gen 1 | Gen 2 | Allocated |
+        |--------------------------- |---------:|--------:|--------:|-------:|------:|------:|----------:|
+        | LogWithPropertiesOnBaseLog | 266.7 ns | 2.97 ns | 2.63 ns | 0.0877 |     - |     - |     368 B |
 
         */
     }

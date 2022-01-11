@@ -11,6 +11,10 @@ namespace Vostok.Logging.Abstractions
     [PublicAPI]
     public static class LogEventExtensions
     {
+        private static readonly SetToProperties Set = SetImplementation;
+
+        private static readonly SetToProperties SetUnsafe = SetUnsafeImplementation;
+
         private static readonly Func<string, bool> IsPositionalNameCachedFunction = IsPositionalName;
 
         [Pure]
@@ -24,7 +28,7 @@ namespace Vostok.Logging.Abstractions
                 return @event;
 
             return @event.MutateProperties(
-                properties => FillImmutableArrayDictionaryWithProperties(@event.MessageTemplate, parameters, properties));
+                properties => FillImmutableArrayDictionaryWithProperties(@event.MessageTemplate, parameters, properties, Set));
         }
 
         [Pure]
@@ -35,7 +39,7 @@ namespace Vostok.Logging.Abstractions
 
             var properties = LogEvent.CreateProperties(Math.Max(4, parameters.Length));
 
-            return FillImmutableArrayDictionaryWithProperties(messageTemplate, parameters, properties);
+            return FillImmutableArrayDictionaryWithProperties(messageTemplate, parameters, properties, SetUnsafe);
         }
 
         internal static bool HasMatchingSourceContexts(this LogEvent @event, string[] contexts)
@@ -57,7 +61,20 @@ namespace Vostok.Logging.Abstractions
                     sourceContext.Any(value => value.StartsWith(context, StringComparison.OrdinalIgnoreCase)));
         }
 
-        private static ImmutableArrayDictionary<string, object> FillImmutableArrayDictionaryWithProperties(string messageTemplate, object[] parameters, ImmutableArrayDictionary<string, object> properties)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static ImmutableArrayDictionary<string, object> SetImplementation(ImmutableArrayDictionary<string, object> properties, string key, object value)
+        {
+            return properties.Set(key, value);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static ImmutableArrayDictionary<string, object> SetUnsafeImplementation(ImmutableArrayDictionary<string, object> properties, string key, object value)
+        {
+            properties.SetUnsafe(key, value, true);
+            return properties;
+        }
+
+        private static ImmutableArrayDictionary<string, object> FillImmutableArrayDictionaryWithProperties(string messageTemplate, object[] parameters, ImmutableArrayDictionary<string, object> properties, SetToProperties set)
         {
             var templatePropertyNames = TemplatePropertiesExtractor.ExtractPropertyNames(messageTemplate);
 
@@ -65,17 +82,17 @@ namespace Vostok.Logging.Abstractions
             {
                 // (iloktionov): Name positional parameters with corresponding placeholder names from template:
                 for (var i = 0; i < Math.Min(parameters.Length, templatePropertyNames.Length); i++)
-                    properties = properties.Set(templatePropertyNames[i], parameters[i]);
+                    properties = set(properties, templatePropertyNames[i], parameters[i]);
 
                 if (parameters.Length > templatePropertyNames.Length)
                     for (var i = templatePropertyNames.Length; i < parameters.Length; i++)
-                        properties = properties.Set(i.ToString(), parameters[i]);
+                        properties = set(properties, i.ToString(), parameters[i]);
             }
             else
             {
                 // (iloktionov): Name positional parameters with their indices:
                 for (var i = 0; i < parameters.Length; i++)
-                    properties = properties.Set(i.ToString(), parameters[i]);
+                    properties = set(properties, i.ToString(), parameters[i]);
             }
 
             return properties;
@@ -106,5 +123,7 @@ namespace Vostok.Logging.Abstractions
 
             return true;
         }
+
+        private delegate ImmutableArrayDictionary<string, object> SetToProperties(ImmutableArrayDictionary<string, object> properties, string key, object value);
     }
 }
