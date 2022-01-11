@@ -5,20 +5,20 @@ using Vostok.Logging.Abstractions.Helpers;
 
 namespace Vostok.Logging.Abstractions
 {
-    [PublicAPI]
+	[PublicAPI]
     public static class LogExtensions
     {
         #region Debug
 
         /// <summary>
-        /// Logs the given <paramref name="message"/> on the <see cref="LogLevel.Debug"/> level without any additional properties.
+        /// Logs the given <paramref name="messageTemplate"/> on the <see cref="LogLevel.Debug"/> level without any additional properties.
         /// </summary>
-        public static void Debug(this ILog log, [CanBeNull] string message)
+        public static void Debug(this ILog log, [CanBeNull] string messageTemplate)
         {
             if (!log.IsEnabledFor(LogLevel.Debug))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Debug, PreciseDateTime.Now, message));
+            log.Log(new LogEvent(LogLevel.Debug, PreciseDateTime.Now, messageTemplate));
         }
 
         /// <summary>
@@ -33,14 +33,14 @@ namespace Vostok.Logging.Abstractions
         }
 
         /// <summary>
-        /// Logs the given <paramref name="message"/> and <paramref name="exception"/> on the <see cref="LogLevel.Debug"/> level without any additional properties.
+        /// Logs the given <paramref name="messageTemplate"/> and <paramref name="exception"/> on the <see cref="LogLevel.Debug"/> level without any additional properties.
         /// </summary>
-        public static void Debug(this ILog log, [CanBeNull] Exception exception, [CanBeNull] string message)
+        public static void Debug(this ILog log, [CanBeNull] Exception exception, [CanBeNull] string messageTemplate)
         {
             if (!log.IsEnabledFor(LogLevel.Debug))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Debug, PreciseDateTime.Now, message, exception));
+            log.Log(new LogEvent(LogLevel.Debug, PreciseDateTime.Now, messageTemplate, exception));
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Debug))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Debug, PreciseDateTime.Now, messageTemplate, LogEventExtensions.GenerateInitialParameters(messageTemplate, parameters), null));
+            log.Log(new LogEvent(LogLevel.Debug, PreciseDateTime.Now, messageTemplate).WithParameters(parameters));
         }
 
         /// <summary>
@@ -96,16 +96,16 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Debug))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Debug, PreciseDateTime.Now, messageTemplate, LogEventExtensions.GenerateInitialParameters(messageTemplate, parameters), exception));
+            log.Log(new LogEvent(LogLevel.Debug, PreciseDateTime.Now, messageTemplate, exception).WithParameters(parameters));
         }
 
         [Obsolete("Use the Debug(ILog, Exception, string) overload instead.")]
-        public static void Debug(this ILog log, [CanBeNull] string message, [CanBeNull] Exception exception)
+        public static void Debug(this ILog log, [CanBeNull] string messageTemplate, [CanBeNull] Exception exception)
         {
             if (!log.IsEnabledFor(LogLevel.Debug))
                 return;
 
-            log.Debug(exception, message);
+            log.Debug(exception, messageTemplate);
         }
 
         /// <summary>
@@ -121,14 +121,14 @@ namespace Vostok.Logging.Abstractions
         #region Info
 
         /// <summary>
-        /// Logs the given <paramref name="message"/> on the <see cref="LogLevel.Info"/> level without any additional properties.
+        /// Logs the given <paramref name="messageTemplate"/> on the <see cref="LogLevel.Info"/> level without any additional properties.
         /// </summary>
-        public static void Info(this ILog log, [CanBeNull] string message)
+        public static void Info(this ILog log, [CanBeNull] string messageTemplate)
         {
             if (!log.IsEnabledFor(LogLevel.Info))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Info, PreciseDateTime.Now, message));
+            log.Log(new LogEvent(LogLevel.Info, PreciseDateTime.Now, messageTemplate));
         }
 
         /// <summary>
@@ -143,14 +143,14 @@ namespace Vostok.Logging.Abstractions
         }
 
         /// <summary>
-        /// Logs the given <paramref name="message"/> and <paramref name="exception"/> on the <see cref="LogLevel.Info"/> level without any additional properties.
+        /// Logs the given <paramref name="messageTemplate"/> and <paramref name="exception"/> on the <see cref="LogLevel.Info"/> level without any additional properties.
         /// </summary>
-        public static void Info(this ILog log, [CanBeNull] Exception exception, [CanBeNull] string message)
+        public static void Info(this ILog log, [CanBeNull] Exception exception, [CanBeNull] string messageTemplate)
         {
             if (!log.IsEnabledFor(LogLevel.Info))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Info, PreciseDateTime.Now, message, exception));
+            log.Log(new LogEvent(LogLevel.Info, PreciseDateTime.Now, messageTemplate, exception));
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Info))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Info, PreciseDateTime.Now, messageTemplate, LogEventExtensions.GenerateInitialParameters(messageTemplate, parameters), null));
+            log.Log(new LogEvent(LogLevel.Info, PreciseDateTime.Now, messageTemplate).WithParameters(parameters));
         }
 
         /// <summary>
@@ -206,16 +206,16 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Info))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Info, PreciseDateTime.Now, messageTemplate, LogEventExtensions.GenerateInitialParameters(messageTemplate, parameters), exception));
+            log.Log(new LogEvent(LogLevel.Info, PreciseDateTime.Now, messageTemplate, exception).WithParameters(parameters));
         }
 
         [Obsolete("Use the Info(ILog, Exception, string) overload instead.")]
-        public static void Info(this ILog log, [CanBeNull] string message, [CanBeNull] Exception exception)
+        public static void Info(this ILog log, [CanBeNull] string messageTemplate, [CanBeNull] Exception exception)
         {
             if (!log.IsEnabledFor(LogLevel.Info))
                 return;
 
-            log.Info(exception, message);
+            log.Info(exception, messageTemplate);
         }
 
         /// <summary>
@@ -231,14 +231,14 @@ namespace Vostok.Logging.Abstractions
         #region Warn
 
         /// <summary>
-        /// Logs the given <paramref name="message"/> on the <see cref="LogLevel.Warn"/> level without any additional properties.
+        /// Logs the given <paramref name="messageTemplate"/> on the <see cref="LogLevel.Warn"/> level without any additional properties.
         /// </summary>
-        public static void Warn(this ILog log, [CanBeNull] string message)
+        public static void Warn(this ILog log, [CanBeNull] string messageTemplate)
         {
             if (!log.IsEnabledFor(LogLevel.Warn))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Warn, PreciseDateTime.Now, message));
+            log.Log(new LogEvent(LogLevel.Warn, PreciseDateTime.Now, messageTemplate));
         }
 
         /// <summary>
@@ -253,14 +253,14 @@ namespace Vostok.Logging.Abstractions
         }
 
         /// <summary>
-        /// Logs the given <paramref name="message"/> and <paramref name="exception"/> on the <see cref="LogLevel.Warn"/> level without any additional properties.
+        /// Logs the given <paramref name="messageTemplate"/> and <paramref name="exception"/> on the <see cref="LogLevel.Warn"/> level without any additional properties.
         /// </summary>
-        public static void Warn(this ILog log, [CanBeNull] Exception exception, [CanBeNull] string message)
+        public static void Warn(this ILog log, [CanBeNull] Exception exception, [CanBeNull] string messageTemplate)
         {
             if (!log.IsEnabledFor(LogLevel.Warn))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Warn, PreciseDateTime.Now, message, exception));
+            log.Log(new LogEvent(LogLevel.Warn, PreciseDateTime.Now, messageTemplate, exception));
         }
 
         /// <summary>
@@ -288,7 +288,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Warn))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Warn, PreciseDateTime.Now, messageTemplate, LogEventExtensions.GenerateInitialParameters(messageTemplate, parameters), null));
+            log.Log(new LogEvent(LogLevel.Warn, PreciseDateTime.Now, messageTemplate).WithParameters(parameters));
         }
 
         /// <summary>
@@ -316,16 +316,16 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Warn))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Warn, PreciseDateTime.Now, messageTemplate, LogEventExtensions.GenerateInitialParameters(messageTemplate, parameters), exception));
+            log.Log(new LogEvent(LogLevel.Warn, PreciseDateTime.Now, messageTemplate, exception).WithParameters(parameters));
         }
 
         [Obsolete("Use the Warn(ILog, Exception, string) overload instead.")]
-        public static void Warn(this ILog log, [CanBeNull] string message, [CanBeNull] Exception exception)
+        public static void Warn(this ILog log, [CanBeNull] string messageTemplate, [CanBeNull] Exception exception)
         {
             if (!log.IsEnabledFor(LogLevel.Warn))
                 return;
 
-            log.Warn(exception, message);
+            log.Warn(exception, messageTemplate);
         }
 
         /// <summary>
@@ -341,14 +341,14 @@ namespace Vostok.Logging.Abstractions
         #region Error
 
         /// <summary>
-        /// Logs the given <paramref name="message"/> on the <see cref="LogLevel.Error"/> level without any additional properties.
+        /// Logs the given <paramref name="messageTemplate"/> on the <see cref="LogLevel.Error"/> level without any additional properties.
         /// </summary>
-        public static void Error(this ILog log, [CanBeNull] string message)
+        public static void Error(this ILog log, [CanBeNull] string messageTemplate)
         {
             if (!log.IsEnabledFor(LogLevel.Error))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Error, PreciseDateTime.Now, message));
+            log.Log(new LogEvent(LogLevel.Error, PreciseDateTime.Now, messageTemplate));
         }
 
         /// <summary>
@@ -363,14 +363,14 @@ namespace Vostok.Logging.Abstractions
         }
 
         /// <summary>
-        /// Logs the given <paramref name="message"/> and <paramref name="exception"/> on the <see cref="LogLevel.Error"/> level without any additional properties.
+        /// Logs the given <paramref name="messageTemplate"/> and <paramref name="exception"/> on the <see cref="LogLevel.Error"/> level without any additional properties.
         /// </summary>
-        public static void Error(this ILog log, [CanBeNull] Exception exception, [CanBeNull] string message)
+        public static void Error(this ILog log, [CanBeNull] Exception exception, [CanBeNull] string messageTemplate)
         {
             if (!log.IsEnabledFor(LogLevel.Error))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Error, PreciseDateTime.Now, message, exception));
+            log.Log(new LogEvent(LogLevel.Error, PreciseDateTime.Now, messageTemplate, exception));
         }
 
         /// <summary>
@@ -398,7 +398,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Error))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Error, PreciseDateTime.Now, messageTemplate, LogEventExtensions.GenerateInitialParameters(messageTemplate, parameters), null));
+            log.Log(new LogEvent(LogLevel.Error, PreciseDateTime.Now, messageTemplate).WithParameters(parameters));
         }
 
         /// <summary>
@@ -426,16 +426,16 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Error))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Error, PreciseDateTime.Now, messageTemplate, LogEventExtensions.GenerateInitialParameters(messageTemplate, parameters), exception));
+            log.Log(new LogEvent(LogLevel.Error, PreciseDateTime.Now, messageTemplate, exception).WithParameters(parameters));
         }
 
         [Obsolete("Use the Error(ILog, Exception, string) overload instead.")]
-        public static void Error(this ILog log, [CanBeNull] string message, [CanBeNull] Exception exception)
+        public static void Error(this ILog log, [CanBeNull] string messageTemplate, [CanBeNull] Exception exception)
         {
             if (!log.IsEnabledFor(LogLevel.Error))
                 return;
 
-            log.Error(exception, message);
+            log.Error(exception, messageTemplate);
         }
 
         /// <summary>
@@ -451,14 +451,14 @@ namespace Vostok.Logging.Abstractions
         #region Fatal
 
         /// <summary>
-        /// Logs the given <paramref name="message"/> on the <see cref="LogLevel.Fatal"/> level without any additional properties.
+        /// Logs the given <paramref name="messageTemplate"/> on the <see cref="LogLevel.Fatal"/> level without any additional properties.
         /// </summary>
-        public static void Fatal(this ILog log, [CanBeNull] string message)
+        public static void Fatal(this ILog log, [CanBeNull] string messageTemplate)
         {
             if (!log.IsEnabledFor(LogLevel.Fatal))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Fatal, PreciseDateTime.Now, message));
+            log.Log(new LogEvent(LogLevel.Fatal, PreciseDateTime.Now, messageTemplate));
         }
 
         /// <summary>
@@ -473,14 +473,14 @@ namespace Vostok.Logging.Abstractions
         }
 
         /// <summary>
-        /// Logs the given <paramref name="message"/> and <paramref name="exception"/> on the <see cref="LogLevel.Fatal"/> level without any additional properties.
+        /// Logs the given <paramref name="messageTemplate"/> and <paramref name="exception"/> on the <see cref="LogLevel.Fatal"/> level without any additional properties.
         /// </summary>
-        public static void Fatal(this ILog log, [CanBeNull] Exception exception, [CanBeNull] string message)
+        public static void Fatal(this ILog log, [CanBeNull] Exception exception, [CanBeNull] string messageTemplate)
         {
             if (!log.IsEnabledFor(LogLevel.Fatal))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Fatal, PreciseDateTime.Now, message, exception));
+            log.Log(new LogEvent(LogLevel.Fatal, PreciseDateTime.Now, messageTemplate, exception));
         }
 
         /// <summary>
@@ -508,7 +508,7 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Fatal))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Fatal, PreciseDateTime.Now, messageTemplate, LogEventExtensions.GenerateInitialParameters(messageTemplate, parameters), null));
+            log.Log(new LogEvent(LogLevel.Fatal, PreciseDateTime.Now, messageTemplate).WithParameters(parameters));
         }
 
         /// <summary>
@@ -536,16 +536,16 @@ namespace Vostok.Logging.Abstractions
             if (!log.IsEnabledFor(LogLevel.Fatal))
                 return;
 
-            log.Log(new LogEvent(LogLevel.Fatal, PreciseDateTime.Now, messageTemplate, LogEventExtensions.GenerateInitialParameters(messageTemplate, parameters), exception));
+            log.Log(new LogEvent(LogLevel.Fatal, PreciseDateTime.Now, messageTemplate, exception).WithParameters(parameters));
         }
 
         [Obsolete("Use the Fatal(ILog, Exception, string) overload instead.")]
-        public static void Fatal(this ILog log, [CanBeNull] string message, [CanBeNull] Exception exception)
+        public static void Fatal(this ILog log, [CanBeNull] string messageTemplate, [CanBeNull] Exception exception)
         {
             if (!log.IsEnabledFor(LogLevel.Fatal))
                 return;
 
-            log.Fatal(exception, message);
+            log.Fatal(exception, messageTemplate);
         }
 
         /// <summary>
