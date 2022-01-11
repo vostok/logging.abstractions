@@ -48,7 +48,7 @@ namespace Vostok.Logging.Abstractions
                         continue;
 
                     //(deniaa): We don't know anything about keys comparer in this dictionary so we need to check keys uniqueness.
-                    properties.SetUnsafe(o.Key, o.Value, false);
+                    properties.SetUnsafe(o.Key, o.Value, true);
                 }
 
                 return properties;
