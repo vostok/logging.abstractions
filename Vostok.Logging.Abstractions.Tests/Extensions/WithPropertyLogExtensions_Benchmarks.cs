@@ -4,7 +4,7 @@ using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Running;
 using NUnit.Framework;
 
-namespace Vostok.Logging.Abstractions.Tests
+namespace Vostok.Logging.Abstractions.Tests.Extensions
 {
     [Explicit]
     public class WithPropertyLogExtensions_Benchmarks
@@ -49,8 +49,8 @@ namespace Vostok.Logging.Abstractions.Tests
         .NET SDK=6.0.101
           [Host]     : .NET 6.0.1 (6.0.121.56705), X64 RyuJIT
           DefaultJob : .NET 6.0.1 (6.0.121.56705), X64 RyuJIT
-        
-        
+
+
         |                     Method | PropertiesCount |     Mean |   Error |  StdDev |  Gen 0 | Gen 1 | Gen 2 | Allocated |
         |--------------------------- |---------------- |---------:|--------:|--------:|-------:|------:|------:|----------:|
         | LogWithPropertiesOnBaseLog |               2 | 266.7 ns | 2.97 ns | 2.63 ns | 0.0877 |     - |     - |     368 B |

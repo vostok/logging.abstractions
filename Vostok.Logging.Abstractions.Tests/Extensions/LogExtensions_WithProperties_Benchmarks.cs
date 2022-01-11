@@ -5,17 +5,17 @@ using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Running;
 using NUnit.Framework;
 
-namespace Vostok.Logging.Abstractions.Tests
+namespace Vostok.Logging.Abstractions.Tests.Extensions
 {
     [Explicit]
-    public class LogInfoWithProperties_Benchmarks
+    public class LogExtensions_WithProperties_Benchmarks
     {
         private ILog log;
 
         [Test]
         public void RunBenchmark()
         {
-            BenchmarkRunner.Run<LogInfoWithProperties_Benchmarks>(
+            BenchmarkRunner.Run<LogExtensions_WithProperties_Benchmarks>(
                 DefaultConfig.Instance
                     .AddDiagnoser(MemoryDiagnoser.Default)
                     .WithOption(ConfigOptions.DisableOptimizationsValidator, true));
