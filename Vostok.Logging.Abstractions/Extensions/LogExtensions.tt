@@ -17,14 +17,14 @@ namespace Vostok.Logging.Abstractions
         #region <#=level #>
 
         /// <summary>
-        /// Logs the given <paramref name="message"/> on the <see cref="LogLevel.<#=level #>"/> level without any additional properties.
+        /// Logs the given <paramref name="messageTemplate"/> on the <see cref="LogLevel.<#=level #>"/> level without any additional properties.
         /// </summary>
-        public static void <#=level #>(this ILog log, [CanBeNull] string message)
+        public static void <#=level #>(this ILog log, [CanBeNull] string messageTemplate)
         {
             if (!log.IsEnabledFor(LogLevel.<#=level #>))
                 return;
 
-            log.Log(new LogEvent(LogLevel.<#=level #>, PreciseDateTime.Now, message));
+            log.Log(new LogEvent(LogLevel.<#=level #>, PreciseDateTime.Now, messageTemplate));
         }
 
         /// <summary>
@@ -39,14 +39,14 @@ namespace Vostok.Logging.Abstractions
         }
 
         /// <summary>
-        /// Logs the given <paramref name="message"/> and <paramref name="exception"/> on the <see cref="LogLevel.<#=level #>"/> level without any additional properties.
+        /// Logs the given <paramref name="messageTemplate"/> and <paramref name="exception"/> on the <see cref="LogLevel.<#=level #>"/> level without any additional properties.
         /// </summary>
-        public static void <#=level #>(this ILog log, [CanBeNull] Exception exception, [CanBeNull] string message)
+        public static void <#=level #>(this ILog log, [CanBeNull] Exception exception, [CanBeNull] string messageTemplate)
         {
             if (!log.IsEnabledFor(LogLevel.<#=level #>))
                 return;
 
-            log.Log(new LogEvent(LogLevel.<#=level #>, PreciseDateTime.Now, message, exception));
+            log.Log(new LogEvent(LogLevel.<#=level #>, PreciseDateTime.Now, messageTemplate, exception));
         }
 
         /// <summary>
@@ -106,12 +106,12 @@ namespace Vostok.Logging.Abstractions
         }
 
         [Obsolete("Use the <#=level #>(ILog, Exception, string) overload instead.")]
-        public static void <#=level #>(this ILog log, [CanBeNull] string message, [CanBeNull] Exception exception)
+        public static void <#=level #>(this ILog log, [CanBeNull] string messageTemplate, [CanBeNull] Exception exception)
         {
             if (!log.IsEnabledFor(LogLevel.<#=level #>))
                 return;
 
-            log.<#=level #>(exception, message);
+            log.<#=level #>(exception, messageTemplate);
         }
 
         /// <summary>
