@@ -134,9 +134,8 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
         }
 
         /*
-
 BenchmarkDotNet=v0.13.0, OS=Windows 10.0.19043.1415 (21H1/May2021Update)
-Intel Core i7-6700 CPU 3.40GHz (Skylake), 1 CPU, 8 logical and 4 physical cores
+Intel Core i7-4771 CPU 3.50GHz (Haswell), 1 CPU, 8 logical and 4 physical cores
 .NET SDK=6.0.101
   [Host]     : .NET 6.0.1 (6.0.121.56705), X64 RyuJIT
   DefaultJob : .NET 6.0.1 (6.0.121.56705), X64 RyuJIT
@@ -144,19 +143,19 @@ Intel Core i7-6700 CPU 3.40GHz (Skylake), 1 CPU, 8 logical and 4 physical cores
 
 |                                    Method |       Mean |      Error |     StdDev | Ratio | RatioSD |  Gen 0 | Gen 1 | Gen 2 | Allocated |
 |------------------------------------------ |-----------:|-----------:|-----------:|------:|--------:|-------:|------:|------:|----------:|
-|                         WithTwoParameters | 400.271 ns |  8.4356 ns | 24.7402 ns |  1.00 |    0.00 | 0.0954 |     - |     - |     400 B |
-|            WithTwoParameters_Interpolated | 312.648 ns |  6.1385 ns |  7.3075 ns |  0.77 |    0.06 | 0.1259 |     - |     - |     528 B |
-|                  Silent_WithTwoParameters |  14.084 ns |  0.1745 ns |  0.1363 ns |  0.03 |    0.00 | 0.0153 |     - |     - |      64 B |
-|     Silent_WithTwoParameters_Interpolated |   6.116 ns |  0.1510 ns |  0.1855 ns |  0.02 |    0.00 |      - |     - |     - |         - |
-|                        WithFourParameters | 499.726 ns | 10.0272 ns | 12.6812 ns |  1.23 |    0.08 | 0.1240 |     - |     - |     520 B |
-|           WithFourParameters_Interpolated | 390.654 ns |  7.7371 ns |  7.2372 ns |  0.94 |    0.06 | 0.1683 |     - |     - |     704 B |
-|                 Silent_WithFourParameters |  22.494 ns |  0.3336 ns |  0.6266 ns |  0.06 |    0.00 | 0.0249 |     - |     - |     104 B |
-|    Silent_WithFourParameters_Interpolated |   7.453 ns |  0.1573 ns |  0.1394 ns |  0.02 |    0.00 |      - |     - |     - |         - |
-|                        WithFiveParameters | 560.296 ns | 10.4555 ns |  9.7801 ns |  1.35 |    0.08 | 0.1469 |     - |     - |     616 B |
-|           WithFiveParameters_Interpolated | 431.541 ns |  5.1139 ns |  4.5334 ns |  1.04 |    0.06 | 0.1874 |     - |     - |     784 B |
-|                 Silent_WithFiveParameters |  28.108 ns |  0.5276 ns |  0.4935 ns |  0.07 |    0.00 | 0.0325 |     - |     - |     136 B |
-|    Silent_WithFiveParameters_Interpolated |   7.790 ns |  0.1407 ns |  0.1248 ns |  0.02 |    0.00 |      - |     - |     - |         - |
-| WithFiveParameters_Interpolated_Formatted | 940.528 ns | 18.2511 ns | 23.0818 ns |  2.32 |    0.15 | 0.2117 |     - |     - |     888 B |
+|                         WithTwoParameters | 262.280 ns |  5.2234 ns | 12.4139 ns |  1.00 |    0.00 | 0.0763 |     - |     - |     320 B |
+|            WithTwoParameters_Interpolated | 264.115 ns |  2.9339 ns |  2.6008 ns |  1.01 |    0.06 | 0.1259 |     - |     - |     528 B |
+|                  Silent_WithTwoParameters |  11.456 ns |  0.0617 ns |  0.0547 ns |  0.04 |    0.00 | 0.0153 |     - |     - |      64 B |
+|     Silent_WithTwoParameters_Interpolated |   6.847 ns |  0.1678 ns |  0.2512 ns |  0.03 |    0.00 |      - |     - |     - |         - |
+|                        WithFourParameters | 329.787 ns |  6.4973 ns |  9.9221 ns |  1.26 |    0.08 | 0.0858 |     - |     - |     360 B |
+|           WithFourParameters_Interpolated | 340.609 ns |  4.9230 ns |  4.6050 ns |  1.29 |    0.07 | 0.1683 |     - |     - |     704 B |
+|                 Silent_WithFourParameters |  18.043 ns |  0.1761 ns |  0.1561 ns |  0.07 |    0.00 | 0.0249 |     - |     - |     104 B |
+|    Silent_WithFourParameters_Interpolated |   6.685 ns |  0.0455 ns |  0.0380 ns |  0.03 |    0.00 |      - |     - |     - |         - |
+|                        WithFiveParameters | 366.327 ns |  7.1660 ns |  9.5665 ns |  1.39 |    0.08 | 0.0992 |     - |     - |     416 B |
+|           WithFiveParameters_Interpolated | 403.327 ns |  8.0130 ns | 16.0029 ns |  1.54 |    0.10 | 0.1874 |     - |     - |     784 B |
+|                 Silent_WithFiveParameters |  23.152 ns |  0.2963 ns |  0.2772 ns |  0.09 |    0.01 | 0.0325 |     - |     - |     136 B |
+|    Silent_WithFiveParameters_Interpolated |   7.094 ns |  0.1665 ns |  0.1557 ns |  0.03 |    0.00 |      - |     - |     - |         - |
+| WithFiveParameters_Interpolated_Formatted | 828.264 ns | 15.9405 ns | 20.7272 ns |  3.13 |    0.19 | 0.2117 |     - |     - |     888 B |
 
          */
     }
