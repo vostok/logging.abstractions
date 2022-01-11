@@ -85,8 +85,8 @@ namespace Vostok.Logging.Abstractions
                 MessageTemplate.Append('{');
                 MessageTemplate.Append(name);
                 MessageTemplate.Append('}');
-
-                Properties = Properties.Set(name, value);
+                
+                Properties.SetUnsafe(name, value, true);
             }
 
             internal bool IsEnabled { get; }
@@ -170,8 +170,8 @@ namespace Vostok.Logging.Abstractions
                 MessageTemplate.Append('{');
                 MessageTemplate.Append(name);
                 MessageTemplate.Append('}');
-
-                Properties = Properties.Set(name, value);
+                
+                Properties.SetUnsafe(name, value, true);
             }
 
             internal bool IsEnabled { get; }
@@ -255,8 +255,8 @@ namespace Vostok.Logging.Abstractions
                 MessageTemplate.Append('{');
                 MessageTemplate.Append(name);
                 MessageTemplate.Append('}');
-
-                Properties = Properties.Set(name, value);
+                
+                Properties.SetUnsafe(name, value, true);
             }
 
             internal bool IsEnabled { get; }
@@ -340,8 +340,8 @@ namespace Vostok.Logging.Abstractions
                 MessageTemplate.Append('{');
                 MessageTemplate.Append(name);
                 MessageTemplate.Append('}');
-
-                Properties = Properties.Set(name, value);
+                
+                Properties.SetUnsafe(name, value, true);
             }
 
             internal bool IsEnabled { get; }
@@ -425,8 +425,8 @@ namespace Vostok.Logging.Abstractions
                 MessageTemplate.Append('{');
                 MessageTemplate.Append(name);
                 MessageTemplate.Append('}');
-
-                Properties = Properties.Set(name, value);
+                
+                Properties.SetUnsafe(name, value, true);
             }
 
             internal bool IsEnabled { get; }
@@ -438,6 +438,7 @@ namespace Vostok.Logging.Abstractions
         }
 
         #endregion
+
     }
 }
 
