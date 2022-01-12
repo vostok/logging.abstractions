@@ -53,6 +53,7 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
             log.Received(1).Log(Arg.Any<LogEvent>());
             var received = lastEvent;
 
+            received.MessageTemplate.Should().Be("myClass = {new MyClass()}, str = {\"asdf qwer\"}, number = {333}");
             received.Properties.Should()
                 .BeEquivalentTo(new Dictionary<string, object>
                 {
@@ -78,6 +79,7 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
             log.Received(1).Log(Arg.Any<LogEvent>());
             var received = lastEvent;
             
+            received.MessageTemplate.Should().Be("number1 = {42} number2 = {43} number3 = {44}");
             received.Properties.Should()
                 .BeEquivalentTo(new Dictionary<string, object>
                 {
