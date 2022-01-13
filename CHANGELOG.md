@@ -1,4 +1,8 @@
-## 1.0.27 (10-01-2021):
+## 1.0.28 (13-01-2022):
+
+Reduced memory traffic in log extensoins, added several optimizations.
+
+## 1.0.27 (10-01-2022):
 
 Added interpolated string handlers.
 
