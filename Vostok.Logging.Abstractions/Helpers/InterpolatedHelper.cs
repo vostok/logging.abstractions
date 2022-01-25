@@ -17,10 +17,11 @@ namespace Vostok.Logging.Abstractions.Helpers
             var copy = name.ToCharArray();
             for (var i = 0; i < copy.Length; i++)
                 if (!IsValidInName(copy[i]))
-                    copy[i] = '_';
+                    copy[i] = Underscore;
             return new string(copy);
         }
-        
+
+        // note (kungurtsev, 25.01.2022): copied from Vostok.Logging.Formatting.Tokenizer.TemplateTokenizer
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool IsValidInName(char c) =>
             char.IsLetterOrDigit(c) || c == Underscore || c == At || c == Dot;
