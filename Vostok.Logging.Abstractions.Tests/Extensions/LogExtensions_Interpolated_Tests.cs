@@ -53,12 +53,12 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
             log.Received(1).Log(Arg.Any<LogEvent>());
             var received = lastEvent;
 
-            received.MessageTemplate.Should().Be("myClass = {new MyClass()}, str = {\"asdf qwer\"}, number = {333}");
+            received.MessageTemplate.Should().Be("myClass = {new_MyClass__}, str = {_asdf_qwer_}, number = {333}");
             received.Properties.Should()
                 .BeEquivalentTo(new Dictionary<string, object>
                 {
-                    ["new MyClass()"] = new MyClass(),
-                    ["\"asdf qwer\""] = "asdf qwer",
+                    ["new_MyClass__"] = new MyClass(),
+                    ["_asdf_qwer_"] = "asdf qwer",
                     ["333"] = 333
                 });
         }
@@ -73,7 +73,7 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
         }
 
         [Test]
-        public void Should_interpolate_with_ToString()
+        public void Should_replace_non_property_name_symbols()
         {
             var c = new[] { "a", "b" };
 
@@ -81,12 +81,12 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
             
             var received = lastEvent;
 
-            received.MessageTemplate.Should().Be("Some thing {c.Length}, {c.Length.ToString()}");
+            received.MessageTemplate.Should().Be("Some thing {c.Length}, {c.Length.ToString__}");
             received.Properties.Should()
                 .BeEquivalentTo(new Dictionary<string, object>
                 {
                     ["c.Length"] = 2,
-                    ["c.Length.ToString()"] = "2",
+                    ["c.Length.ToString__"] = "2",
                 });
         }
         
