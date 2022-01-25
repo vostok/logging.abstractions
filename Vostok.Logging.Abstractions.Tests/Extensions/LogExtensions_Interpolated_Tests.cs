@@ -71,6 +71,24 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
             log.Info($"myClass = {123}, str = {str}, number = {number}");
             log.Received(0).Log(Arg.Any<LogEvent>());
         }
+
+        [Test]
+        public void Should_interpolate_with_ToString()
+        {
+            var c = new[] { "a", "b" };
+
+            log.Info($"Some thing {c.Length}, {c.Length.ToString()}");
+            
+            var received = lastEvent;
+
+            received.MessageTemplate.Should().Be("Some thing {c.Length}, {c.Length.ToString()}");
+            received.Properties.Should()
+                .BeEquivalentTo(new Dictionary<string, object>
+                {
+                    ["c.Length"] = 2,
+                    ["c.Length.ToString()"] = "2",
+                });
+        }
         
         [Test]
         public void Should_format_arguments()
