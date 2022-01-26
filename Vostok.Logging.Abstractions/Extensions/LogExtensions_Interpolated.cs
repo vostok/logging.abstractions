@@ -6,6 +6,7 @@ using System.Text;
 using JetBrains.Annotations;
 using Vostok.Commons.Collections;
 using Vostok.Commons.Time;
+using Vostok.Logging.Abstractions.Helpers;
 
 // ReSharper disable MethodOverloadWithOptionalParameter
 
@@ -82,6 +83,8 @@ namespace Vostok.Logging.Abstractions
 
             public void AppendFormatted(object value, [CallerArgumentExpression("value")] string name = "")
             {
+                name = InterpolatedHelper.EscapeName(name);
+
                 MessageTemplate.Append('{');
                 MessageTemplate.Append(name);
                 MessageTemplate.Append('}');
@@ -167,6 +170,8 @@ namespace Vostok.Logging.Abstractions
 
             public void AppendFormatted(object value, [CallerArgumentExpression("value")] string name = "")
             {
+                name = InterpolatedHelper.EscapeName(name);
+
                 MessageTemplate.Append('{');
                 MessageTemplate.Append(name);
                 MessageTemplate.Append('}');
@@ -252,6 +257,8 @@ namespace Vostok.Logging.Abstractions
 
             public void AppendFormatted(object value, [CallerArgumentExpression("value")] string name = "")
             {
+                name = InterpolatedHelper.EscapeName(name);
+
                 MessageTemplate.Append('{');
                 MessageTemplate.Append(name);
                 MessageTemplate.Append('}');
@@ -337,6 +344,8 @@ namespace Vostok.Logging.Abstractions
 
             public void AppendFormatted(object value, [CallerArgumentExpression("value")] string name = "")
             {
+                name = InterpolatedHelper.EscapeName(name);
+
                 MessageTemplate.Append('{');
                 MessageTemplate.Append(name);
                 MessageTemplate.Append('}');
@@ -422,6 +431,8 @@ namespace Vostok.Logging.Abstractions
 
             public void AppendFormatted(object value, [CallerArgumentExpression("value")] string name = "")
             {
+                name = InterpolatedHelper.EscapeName(name);
+
                 MessageTemplate.Append('{');
                 MessageTemplate.Append(name);
                 MessageTemplate.Append('}');
