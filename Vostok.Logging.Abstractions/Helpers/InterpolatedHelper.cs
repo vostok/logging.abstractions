@@ -1,4 +1,5 @@
-using System.Linq;
+#if NET6_0
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 
 namespace Vostok.Logging.Abstractions.Helpers
@@ -8,17 +9,31 @@ namespace Vostok.Logging.Abstractions.Helpers
         private const char Underscore = '_';
         private const char At = '@';
         private const char Dot = '.';
-        
+
+        [Pure]
         public static string EscapeName(string name)
         {
-            if (name.All(IsValidInName))
+            var shouldEscape = false;
+            // ReSharper disable once ForCanBeConvertedToForeach
+            for (var i = 0; i < name.Length; i++)
+            {
+                if (!IsValidInName(name[i]))
+                {
+                    shouldEscape = true;
+                    break;
+                }
+            }
+
+            if (!shouldEscape)
                 return name;
 
-            var copy = name.ToCharArray();
-            for (var i = 0; i < copy.Length; i++)
-                if (!IsValidInName(copy[i]))
-                    copy[i] = Underscore;
-            return new string(copy);
+            return string.Create(name.Length,
+                name,
+                (chars, buf) =>
+                {
+                    for (var i = 0; i < chars.Length; i++)
+                        chars[i] = IsValidInName(buf[i]) ? buf[i] : Underscore;
+                });
         }
 
         // note (kungurtsev, 25.01.2022): copied from Vostok.Logging.Formatting.Tokenizer.TemplateTokenizer
@@ -27,3 +42,4 @@ namespace Vostok.Logging.Abstractions.Helpers
             char.IsLetterOrDigit(c) || c == Underscore || c == At || c == Dot;
     }
 }
+#endif

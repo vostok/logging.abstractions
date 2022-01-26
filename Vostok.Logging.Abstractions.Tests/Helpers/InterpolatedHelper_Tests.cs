@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿#if NET6_0
+using FluentAssertions;
 using NUnit.Framework;
 using Vostok.Logging.Abstractions.Helpers;
 
@@ -14,7 +15,7 @@ namespace Vostok.Logging.Abstractions.Tests.Helpers
             var result = InterpolatedHelper.EscapeName(str);
             ReferenceEquals(result, str).Should().BeTrue();
         }
-        
+
         [Test]
         public void EscapeName_should_replace_bad_symbols()
         {
@@ -24,3 +25,4 @@ namespace Vostok.Logging.Abstractions.Tests.Helpers
         }
     }
 }
+#endif
