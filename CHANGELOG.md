@@ -1,3 +1,7 @@
+## 1.0.29 (26-01-2022):
+
+Added escaping for interpolated property names.
+
 ## 1.0.28 (13-01-2022):
 
 Reduced memory traffic in log extensoins, added several optimizations.
