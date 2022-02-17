@@ -106,6 +106,28 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
                     ["44"] = " 4.40e+001"
                 });
         }
+        
+        [Test]
+        public void Should_not_interpolate_if_formatted_explicitly()
+        {
+            log.Info(exception, $"myClass = {myClass}, str = {str}, number = {number}".ToString());
+            log.Received(1).Log(Arg.Any<LogEvent>());
+            var received = lastEvent;
+            
+            received.Properties.Should().BeNull();
+            received.MessageTemplate.Should().Be($"myClass = {myClass}, str = {str}, number = {number}");
+        }
+        
+        [Test]
+        public void Should_not_interpolate_if_casted()
+        {
+            log.Info(exception, (string)$"myClass = {myClass}, str = {str}, number = {number}");
+            log.Received(1).Log(Arg.Any<LogEvent>());
+            var received = lastEvent;
+            
+            received.Properties.Should().BeNull();
+            received.MessageTemplate.Should().Be($"myClass = {myClass}, str = {str}, number = {number}");
+        }
 
         private class MyClass
         {
