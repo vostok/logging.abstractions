@@ -7,7 +7,7 @@ namespace Vostok.Logging.Abstractions.Helpers
 {
     internal static class DeconstructionHelper
     {
-        public static bool ShouldDeconstruct<T>([NotNull] string messageTemplate, T properties)
+        public static bool ShouldDeconstruct<T>([CanBeNull] string messageTemplate, T properties)
         {
             if (properties == null)
                 return false;

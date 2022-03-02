@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
 using Vostok.Commons.Collections;
+using Vostok.Logging.Abstractions.Helpers;
 
 namespace Vostok.Logging.Abstractions.Values
 {
@@ -15,14 +16,11 @@ namespace Vostok.Logging.Abstractions.Values
     {
         private volatile string stringRepresentation;
 
-        [CanBeNull]
-        public IReadOnlyDictionary<string, object> Properties { get; }
-
         public OperationContextValue([NotNull] string[] contexts)
             : this(contexts, null)
         {
         }
-        
+
         public OperationContextValue([NotNull] string[] contexts, [CanBeNull] IReadOnlyDictionary<string, object> properties)
             : base(contexts)
         {
@@ -33,15 +31,26 @@ namespace Vostok.Logging.Abstractions.Values
             : this(context, null)
         {
         }
-        
+
         public OperationContextValue(string context, [CanBeNull] IReadOnlyDictionary<string, object> properties)
             : base(context)
         {
             Properties = properties;
         }
 
+        [CanBeNull]
+        public IReadOnlyDictionary<string, object> Properties { get; }
+
         public override string ToString() =>
             stringRepresentation ?? (stringRepresentation = ToStringInternal());
+
+        public static IReadOnlyDictionary<string, object> CreateProperties<T>([CanBeNull] string template, [CanBeNull] T properties) =>
+            DeconstructionHelper.ShouldDeconstruct(template, properties)
+                ? LogPropertiesExtensions.GenerateInitialObjectProperties(properties, true)
+                : CreateProperties(template, (object)properties);
+
+        public static IReadOnlyDictionary<string, object> CreateProperties([CanBeNull] string template, [CanBeNull] params object[] parameters) =>
+            LogEventExtensions.GenerateInitialParameters(template, parameters);
 
         public static OperationContextValue operator+([CanBeNull] OperationContextValue left, [CanBeNull] string right) =>
             left + (right, null);
@@ -55,14 +64,14 @@ namespace Vostok.Logging.Abstractions.Values
                 return new OperationContextValue(right.OperationContext, right.Properties);
 
             var newContexts = right.OperationContext == null ? left.contexts : AppendToContexts(left.contexts, right.OperationContext);
-            var newProperties = CombineProperties(left.Properties, right.Properties); 
+            var newProperties = CombineProperties(left.Properties, right.Properties);
 
-            return ReferenceEquals(left.contexts, newContexts) && ReferenceEquals(left.Properties, newProperties) 
+            return ReferenceEquals(left.contexts, newContexts) && ReferenceEquals(left.Properties, newProperties)
                 ? left
                 : new OperationContextValue(newContexts, newProperties);
         }
 
-        private static IReadOnlyDictionary<string,object> CombineProperties(IReadOnlyDictionary<string, object> left, IReadOnlyDictionary<string,object> right)
+        private static IReadOnlyDictionary<string, object> CombineProperties(IReadOnlyDictionary<string, object> left, IReadOnlyDictionary<string, object> right)
         {
             if (left == null || right == null)
                 return left ?? right;
@@ -102,7 +111,7 @@ namespace Vostok.Logging.Abstractions.Values
             => Equals(other as OperationContextValue);
 
         public override int GetHashCode()
-            => contexts.Aggregate(contexts.Length, (current, value) => current * 397 ^ value.GetHashCode());
+            => contexts.Aggregate(contexts.Length, (current, value) => (current * 397) ^ value.GetHashCode());
 
         #endregion
     }
