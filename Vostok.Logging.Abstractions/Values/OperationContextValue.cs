@@ -44,10 +44,10 @@ namespace Vostok.Logging.Abstractions.Values
         public override string ToString() =>
             stringRepresentation ?? (stringRepresentation = ToStringInternal());
 
-        public static IReadOnlyDictionary<string, object> CreateProperties<T>([CanBeNull] string template, [CanBeNull] T properties) =>
+        public static IReadOnlyDictionary<string, object> CreateProperties([CanBeNull] string template, [CanBeNull] object properties) =>
             DeconstructionHelper.ShouldDeconstruct(template, properties)
                 ? LogPropertiesExtensions.GenerateInitialObjectProperties(properties, true)
-                : CreateProperties(template, (object)properties);
+                : CreateProperties(template, new[] {properties});
 
         public static IReadOnlyDictionary<string, object> CreateProperties([CanBeNull] string template, [CanBeNull] params object[] parameters) =>
             LogEventExtensions.GenerateInitialParameters(template, parameters);
