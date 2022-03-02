@@ -25,7 +25,7 @@ namespace Vostok.Logging.Abstractions
             private StringBuilder template = null!;
             private ImmutableArrayDictionary<string, object> properties = null!;
 
-            public OperationContextStringHandler(int literalLength, int formattedCount, ILog log)
+            public OperationContextStringHandler(int literalLength, int formattedCount)
             {
                 template = new StringBuilder(literalLength);
 
