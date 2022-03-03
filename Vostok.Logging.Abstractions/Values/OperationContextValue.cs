@@ -1,6 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
+using Vostok.Commons.Collections;
+using Vostok.Logging.Abstractions.Helpers;
 
 namespace Vostok.Logging.Abstractions.Values
 {
@@ -13,29 +17,71 @@ namespace Vostok.Logging.Abstractions.Values
         private volatile string stringRepresentation;
 
         public OperationContextValue([NotNull] string[] contexts)
-            : base(contexts)
+            : this(contexts, null)
         {
         }
 
+        public OperationContextValue([NotNull] string[] contexts, [CanBeNull] IReadOnlyDictionary<string, object> properties)
+            : base(contexts)
+        {
+            Properties = properties;
+        }
+
         public OperationContextValue(string context)
-            : base(context)
+            : this(context, null)
         {
         }
+
+        public OperationContextValue(string context, [CanBeNull] IReadOnlyDictionary<string, object> properties)
+            : base(context)
+        {
+            Properties = properties;
+        }
+
+        [CanBeNull]
+        public IReadOnlyDictionary<string, object> Properties { get; }
 
         public override string ToString() =>
             stringRepresentation ?? (stringRepresentation = ToStringInternal());
 
-        public static OperationContextValue operator+([CanBeNull] OperationContextValue left, [CanBeNull] string right)
+        public static IReadOnlyDictionary<string, object> CreateProperties([CanBeNull] string template, [CanBeNull] object properties) =>
+            DeconstructionHelper.ShouldDeconstruct(template, properties)
+                ? LogPropertiesExtensions.GenerateInitialObjectProperties(properties, true)
+                : CreateProperties(template, new[] {properties});
+
+        public static IReadOnlyDictionary<string, object> CreateProperties([CanBeNull] string template, [CanBeNull] params object[] parameters) =>
+            LogEventExtensions.GenerateInitialParameters(template, parameters);
+
+        public static OperationContextValue operator+([CanBeNull] OperationContextValue left, [CanBeNull] string right) =>
+            left + (right, null);
+
+        public static OperationContextValue operator+([CanBeNull] OperationContextValue left, (string OperationContext, IReadOnlyDictionary<string, object> Properties) right)
         {
-            if (string.IsNullOrEmpty(right))
+            if (string.IsNullOrEmpty(right.OperationContext) && right.Properties == null)
                 return left;
 
             if (left == null)
-                return new OperationContextValue(right);
+                return new OperationContextValue(right.OperationContext, right.Properties);
 
-            var newContexts = AppendToContexts(left.contexts, right);
+            var newContexts = right.OperationContext == null ? left.contexts : AppendToContexts(left.contexts, right.OperationContext);
+            var newProperties = CombineProperties(left.Properties, right.Properties);
 
-            return ReferenceEquals(left.contexts, newContexts) ? left : new OperationContextValue(newContexts);
+            return ReferenceEquals(left.contexts, newContexts) && ReferenceEquals(left.Properties, newProperties)
+                ? left
+                : new OperationContextValue(newContexts, newProperties);
+        }
+
+        private static IReadOnlyDictionary<string, object> CombineProperties(IReadOnlyDictionary<string, object> left, IReadOnlyDictionary<string, object> right)
+        {
+            if (left == null || right == null)
+                return left ?? right;
+
+            var result = left as ImmutableArrayDictionary<string, object> ?? new ImmutableArrayDictionary<string, object>(left, StringComparer.Ordinal);
+
+            foreach (var pair in right)
+                result = result.Set(pair.Key, pair.Value);
+
+            return result;
         }
 
         private string ToStringInternal()
@@ -65,7 +111,7 @@ namespace Vostok.Logging.Abstractions.Values
             => Equals(other as OperationContextValue);
 
         public override int GetHashCode()
-            => contexts.Aggregate(contexts.Length, (current, value) => current * 397 ^ value.GetHashCode());
+            => contexts.Aggregate(contexts.Length, (current, value) => (current * 397) ^ value.GetHashCode());
 
         #endregion
     }

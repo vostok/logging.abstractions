@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using Vostok.Logging.Abstractions.Values;
@@ -53,6 +54,60 @@ namespace Vostok.Logging.Abstractions.Tests.Values
         {
             (new OperationContextValue("foo") + "bar" + "baz")
                 .Should().Equal("foo", "bar", "baz");
+        }
+        
+        [Test]
+        public void Plus_operator_should_union_properties()
+        {
+            var props1 = new Dictionary<string, object>
+            {
+                ["k1"] = "x"
+            };
+            var props2 = new Dictionary<string, object>
+            {
+                ["k2"] = "y"
+            };
+            var props3 = new Dictionary<string, object>
+            {
+                ["k1"] = "x",
+                ["k2"] = "y"
+            };
+
+            var value1 = new OperationContextValue("foo", props1);
+            var value2 = value1 + ("bar", props2);
+
+            value2.ToArray().Should().Equal("foo", "bar");
+            value2.Properties.Should().BeEquivalentTo(props3);
+        }
+        
+        [Test]
+        public void Plus_operator_should_work_with_null_left_properties()
+        {
+            var props = new Dictionary<string, object>
+            {
+                ["k1"] = "x"
+            };
+
+            var value1 = new OperationContextValue("foo");
+            var value2 = value1 + ("bar", props);
+
+            value2.ToArray().Should().Equal("foo", "bar");
+            value2.Properties.Should().BeEquivalentTo(props);
+        }
+        
+        [Test]
+        public void Plus_operator_should_work_with_null_right_properties()
+        {
+            var props = new Dictionary<string, object>
+            {
+                ["k1"] = "x"
+            };
+
+            var value1 = new OperationContextValue("foo", props);
+            var value2 = value1 + "bar";
+
+            value2.ToArray().Should().Equal("foo", "bar");
+            value2.Properties.Should().BeEquivalentTo(props);
         }
     }
 }
