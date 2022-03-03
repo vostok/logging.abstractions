@@ -1,3 +1,7 @@
+## 1.0.30 (03-03-2022):
+
+Added `Properties` field to OperationContextValue.
+
 ## 1.0.29 (26-01-2022):
 
 Added escaping for interpolated property names.
