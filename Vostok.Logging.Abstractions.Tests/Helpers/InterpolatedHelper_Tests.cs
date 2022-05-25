@@ -1,4 +1,4 @@
-﻿#if NET6_0
+﻿#if NET6_0_OR_GREATER
 using FluentAssertions;
 using NUnit.Framework;
 using Vostok.Logging.Abstractions.Helpers;
