@@ -23,6 +23,10 @@
     <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <AdditionalFiles Include="PublicAPI/$(TargetFramework)/PublicAPI.Shipped.txt" />
+    <AdditionalFiles Include="PublicAPI/$(TargetFramework)/PublicAPI.Unshipped.txt" />
+  </ItemGroup>
+  <ItemGroup>
     <None Update="Extensions\LogExtensions.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>LogExtensions.cs</LastGenOutput>
