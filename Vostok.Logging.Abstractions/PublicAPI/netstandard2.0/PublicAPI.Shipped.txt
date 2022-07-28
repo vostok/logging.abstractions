@@ -1,0 +1,171 @@
+const Vostok.Logging.Abstractions.WellKnownProperties.OperationContext = "operationContext" -> string
+const Vostok.Logging.Abstractions.WellKnownProperties.SourceContext = "sourceContext" -> string
+const Vostok.Logging.Abstractions.WellKnownProperties.TraceContext = "traceContext" -> string
+override Vostok.Logging.Abstractions.Values.OperationContextValue.Equals(object other) -> bool
+override Vostok.Logging.Abstractions.Values.OperationContextValue.GetHashCode() -> int
+override Vostok.Logging.Abstractions.Values.OperationContextValue.ToString() -> string
+override Vostok.Logging.Abstractions.Values.SourceContextValue.Equals(object other) -> bool
+override Vostok.Logging.Abstractions.Values.SourceContextValue.GetHashCode() -> int
+override Vostok.Logging.Abstractions.Values.SourceContextValue.ToString() -> string
+readonly Vostok.Logging.Abstractions.Values.HierarchicalContextValue.contexts -> string[]
+static Vostok.Logging.Abstractions.EnrichBySourceContextExtensions.EnrichBySourceContext(this Vostok.Logging.Abstractions.ILog log, string context, System.Func<Vostok.Logging.Abstractions.ILog, Vostok.Logging.Abstractions.ILog> enricher) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.FilterByEventLogExtensions.DropEvents(this Vostok.Logging.Abstractions.ILog log, System.Predicate<Vostok.Logging.Abstractions.LogEvent> reject) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.FilterByEventLogExtensions.SelectEvents(this Vostok.Logging.Abstractions.ILog log, System.Predicate<Vostok.Logging.Abstractions.LogEvent> allow) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.FilterByLevelLogExtensions.WithDisabledLevels(this Vostok.Logging.Abstractions.ILog log, params Vostok.Logging.Abstractions.LogLevel[] disabledLevels) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.FilterByLevelLogExtensions.WithMinimumLevel(this Vostok.Logging.Abstractions.ILog log, System.Func<Vostok.Logging.Abstractions.LogLevel> minLevelProvider) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.FilterByLevelLogExtensions.WithMinimumLevel(this Vostok.Logging.Abstractions.ILog log, Vostok.Logging.Abstractions.LogLevel minLevel) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.FilterByPropertyLogExtensions.WithEventsDroppedByProperties(this Vostok.Logging.Abstractions.ILog log, System.Predicate<System.Collections.Generic.IReadOnlyDictionary<string, object>> reject) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.FilterByPropertyLogExtensions.WithEventsDroppedByProperty<T>(this Vostok.Logging.Abstractions.ILog log, string key, System.Predicate<T> reject) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.FilterByPropertyLogExtensions.WithEventsSelectedByProperties(this Vostok.Logging.Abstractions.ILog log, System.Predicate<System.Collections.Generic.IReadOnlyDictionary<string, object>> allow) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.FilterByPropertyLogExtensions.WithEventsSelectedByProperty<T>(this Vostok.Logging.Abstractions.ILog log, string key, System.Predicate<T> allow) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.FilterBySourceContextLogExtensions.WithEventsDroppedBySourceContext(this Vostok.Logging.Abstractions.ILog log, string context) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.FilterBySourceContextLogExtensions.WithEventsDroppedBySourceContext<T>(this Vostok.Logging.Abstractions.ILog log) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.FilterBySourceContextLogExtensions.WithEventsSelectedBySourceContext(this Vostok.Logging.Abstractions.ILog log, string context) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.FilterBySourceContextLogExtensions.WithEventsSelectedBySourceContext<T>(this Vostok.Logging.Abstractions.ILog log) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.FilterBySourceContextLogExtensions.WithMinimumLevelForSourceContext(this Vostok.Logging.Abstractions.ILog log, string context, Vostok.Logging.Abstractions.LogLevel minLevel) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.FilterBySourceContextLogExtensions.WithMinimumLevelForSourceContext<T>(this Vostok.Logging.Abstractions.ILog log, Vostok.Logging.Abstractions.LogLevel minLevel) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.FilterBySourceContextLogExtensions.WithMinimumLevelForSourceContexts(this Vostok.Logging.Abstractions.ILog log, Vostok.Logging.Abstractions.LogLevel minLevel, params string[] contexts) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.LogContextExtensions.ForContext(this Vostok.Logging.Abstractions.ILog log, System.Type type) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.LogContextExtensions.ForContext(this Vostok.Logging.Abstractions.ILog log, System.Type type, bool useFullTypeName) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.LogContextExtensions.ForContext<T>(this Vostok.Logging.Abstractions.ILog log) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.LogContextExtensions.ForContext<T>(this Vostok.Logging.Abstractions.ILog log, bool useFullTypeName) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.LogEventExtensions.WithObjectProperties<T>(this Vostok.Logging.Abstractions.LogEvent event, T object, bool allowOverwrite = true, bool allowNullValues = true) -> Vostok.Logging.Abstractions.LogEvent
+static Vostok.Logging.Abstractions.LogEventExtensions.WithParameters(this Vostok.Logging.Abstractions.LogEvent event, object[] parameters) -> Vostok.Logging.Abstractions.LogEvent
+static Vostok.Logging.Abstractions.LogExtensions.Debug(this Vostok.Logging.Abstractions.ILog log, string messageTemplate) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Debug(this Vostok.Logging.Abstractions.ILog log, string messageTemplate, params object[] parameters) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Debug(this Vostok.Logging.Abstractions.ILog log, string messageTemplate, System.Exception exception) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Debug(this Vostok.Logging.Abstractions.ILog log, System.Exception exception) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Debug(this Vostok.Logging.Abstractions.ILog log, System.Exception exception, string messageTemplate) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Debug(this Vostok.Logging.Abstractions.ILog log, System.Exception exception, string messageTemplate, params object[] parameters) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Debug<T>(this Vostok.Logging.Abstractions.ILog log, string messageTemplate, T properties) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Debug<T>(this Vostok.Logging.Abstractions.ILog log, System.Exception exception, string messageTemplate, T properties) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Error(this Vostok.Logging.Abstractions.ILog log, string messageTemplate) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Error(this Vostok.Logging.Abstractions.ILog log, string messageTemplate, params object[] parameters) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Error(this Vostok.Logging.Abstractions.ILog log, string messageTemplate, System.Exception exception) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Error(this Vostok.Logging.Abstractions.ILog log, System.Exception exception) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Error(this Vostok.Logging.Abstractions.ILog log, System.Exception exception, string messageTemplate) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Error(this Vostok.Logging.Abstractions.ILog log, System.Exception exception, string messageTemplate, params object[] parameters) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Error<T>(this Vostok.Logging.Abstractions.ILog log, string messageTemplate, T properties) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Error<T>(this Vostok.Logging.Abstractions.ILog log, System.Exception exception, string messageTemplate, T properties) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Fatal(this Vostok.Logging.Abstractions.ILog log, string messageTemplate) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Fatal(this Vostok.Logging.Abstractions.ILog log, string messageTemplate, params object[] parameters) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Fatal(this Vostok.Logging.Abstractions.ILog log, string messageTemplate, System.Exception exception) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Fatal(this Vostok.Logging.Abstractions.ILog log, System.Exception exception) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Fatal(this Vostok.Logging.Abstractions.ILog log, System.Exception exception, string messageTemplate) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Fatal(this Vostok.Logging.Abstractions.ILog log, System.Exception exception, string messageTemplate, params object[] parameters) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Fatal<T>(this Vostok.Logging.Abstractions.ILog log, string messageTemplate, T properties) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Fatal<T>(this Vostok.Logging.Abstractions.ILog log, System.Exception exception, string messageTemplate, T properties) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Info(this Vostok.Logging.Abstractions.ILog log, string messageTemplate) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Info(this Vostok.Logging.Abstractions.ILog log, string messageTemplate, params object[] parameters) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Info(this Vostok.Logging.Abstractions.ILog log, string messageTemplate, System.Exception exception) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Info(this Vostok.Logging.Abstractions.ILog log, System.Exception exception) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Info(this Vostok.Logging.Abstractions.ILog log, System.Exception exception, string messageTemplate) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Info(this Vostok.Logging.Abstractions.ILog log, System.Exception exception, string messageTemplate, params object[] parameters) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Info<T>(this Vostok.Logging.Abstractions.ILog log, string messageTemplate, T properties) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Info<T>(this Vostok.Logging.Abstractions.ILog log, System.Exception exception, string messageTemplate, T properties) -> void
+static Vostok.Logging.Abstractions.LogExtensions.IsEnabledForDebug(this Vostok.Logging.Abstractions.ILog log) -> bool
+static Vostok.Logging.Abstractions.LogExtensions.IsEnabledForError(this Vostok.Logging.Abstractions.ILog log) -> bool
+static Vostok.Logging.Abstractions.LogExtensions.IsEnabledForFatal(this Vostok.Logging.Abstractions.ILog log) -> bool
+static Vostok.Logging.Abstractions.LogExtensions.IsEnabledForInfo(this Vostok.Logging.Abstractions.ILog log) -> bool
+static Vostok.Logging.Abstractions.LogExtensions.IsEnabledForWarn(this Vostok.Logging.Abstractions.ILog log) -> bool
+static Vostok.Logging.Abstractions.LogExtensions.Warn(this Vostok.Logging.Abstractions.ILog log, string messageTemplate) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Warn(this Vostok.Logging.Abstractions.ILog log, string messageTemplate, params object[] parameters) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Warn(this Vostok.Logging.Abstractions.ILog log, string messageTemplate, System.Exception exception) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Warn(this Vostok.Logging.Abstractions.ILog log, System.Exception exception) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Warn(this Vostok.Logging.Abstractions.ILog log, System.Exception exception, string messageTemplate) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Warn(this Vostok.Logging.Abstractions.ILog log, System.Exception exception, string messageTemplate, params object[] parameters) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Warn<T>(this Vostok.Logging.Abstractions.ILog log, string messageTemplate, T properties) -> void
+static Vostok.Logging.Abstractions.LogExtensions.Warn<T>(this Vostok.Logging.Abstractions.ILog log, System.Exception exception, string messageTemplate, T properties) -> void
+static Vostok.Logging.Abstractions.LogProvider.Configure(Vostok.Logging.Abstractions.ILog log, bool canOverwrite = false) -> void
+static Vostok.Logging.Abstractions.LogProvider.Get() -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.LogProvider.IsConfigured.get -> bool
+static Vostok.Logging.Abstractions.TransformExtensions.WithTransformation(this Vostok.Logging.Abstractions.ILog log, System.Func<Vostok.Logging.Abstractions.LogEvent, Vostok.Logging.Abstractions.LogEvent> transform) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.TransformLevelsLogExtensions.WithErrorsTransformedToWarns(this Vostok.Logging.Abstractions.ILog log) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.TransformLevelsLogExtensions.WithLevelsTransformation(this Vostok.Logging.Abstractions.ILog log, System.Collections.Generic.IReadOnlyDictionary<Vostok.Logging.Abstractions.LogLevel, Vostok.Logging.Abstractions.LogLevel> mapping) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.Values.HierarchicalContextValue.AppendToContexts(string[] contexts, string value) -> string[]
+static Vostok.Logging.Abstractions.Values.HierarchicalContextValue.MergeContexts(string[] contexts, string[] values) -> string[]
+static Vostok.Logging.Abstractions.Values.OperationContextValue.CreateProperties(string template, object properties) -> System.Collections.Generic.IReadOnlyDictionary<string, object>
+static Vostok.Logging.Abstractions.Values.OperationContextValue.CreateProperties(string template, params object[] parameters) -> System.Collections.Generic.IReadOnlyDictionary<string, object>
+static Vostok.Logging.Abstractions.Values.OperationContextValue.operator +(Vostok.Logging.Abstractions.Values.OperationContextValue left, (string OperationContext, System.Collections.Generic.IReadOnlyDictionary<string, object> Properties) right) -> Vostok.Logging.Abstractions.Values.OperationContextValue
+static Vostok.Logging.Abstractions.Values.OperationContextValue.operator +(Vostok.Logging.Abstractions.Values.OperationContextValue left, string right) -> Vostok.Logging.Abstractions.Values.OperationContextValue
+static Vostok.Logging.Abstractions.Values.SourceContextValue.operator +(Vostok.Logging.Abstractions.Values.SourceContextValue left, string right) -> Vostok.Logging.Abstractions.Values.SourceContextValue
+static Vostok.Logging.Abstractions.Values.SourceContextValue.operator +(Vostok.Logging.Abstractions.Values.SourceContextValue left, Vostok.Logging.Abstractions.Values.SourceContextValue right) -> Vostok.Logging.Abstractions.Values.SourceContextValue
+static Vostok.Logging.Abstractions.WithPropertyLogExtensions.WithObjectProperties<T>(this Vostok.Logging.Abstractions.ILog log, System.Func<T> object, bool allowOverwrite = false, bool allowNullValues = false) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.WithPropertyLogExtensions.WithObjectProperties<T>(this Vostok.Logging.Abstractions.ILog log, T object, bool allowOverwrite = false, bool allowNullValues = false) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.WithPropertyLogExtensions.WithProperties(this Vostok.Logging.Abstractions.ILog log, System.Collections.Generic.IReadOnlyDictionary<string, object> properties, bool allowOverwrite = false, bool allowNullValues = false) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.WithPropertyLogExtensions.WithProperties(this Vostok.Logging.Abstractions.ILog log, System.Func<System.Collections.Generic.IEnumerable<(string, object)>> properties, bool allowOverwrite = false, bool allowNullValues = false) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.WithPropertyLogExtensions.WithProperty<T>(this Vostok.Logging.Abstractions.ILog log, string key, System.Func<T> value, bool allowOverwrite = false, bool allowNullValues = false) -> Vostok.Logging.Abstractions.ILog
+static Vostok.Logging.Abstractions.WithPropertyLogExtensions.WithProperty<T>(this Vostok.Logging.Abstractions.ILog log, string key, T value, bool allowOverwrite = false) -> Vostok.Logging.Abstractions.ILog
+Vostok.Logging.Abstractions.CompositeLog
+Vostok.Logging.Abstractions.CompositeLog.CompositeLog(params Vostok.Logging.Abstractions.ILog[] baseLogs) -> void
+Vostok.Logging.Abstractions.CompositeLog.ForContext(string context) -> Vostok.Logging.Abstractions.ILog
+Vostok.Logging.Abstractions.CompositeLog.IsEnabledFor(Vostok.Logging.Abstractions.LogLevel level) -> bool
+Vostok.Logging.Abstractions.CompositeLog.Log(Vostok.Logging.Abstractions.LogEvent event) -> void
+Vostok.Logging.Abstractions.EnrichBySourceContextExtensions
+Vostok.Logging.Abstractions.FilterByEventLogExtensions
+Vostok.Logging.Abstractions.FilterByLevelLogExtensions
+Vostok.Logging.Abstractions.FilterByPropertyLogExtensions
+Vostok.Logging.Abstractions.FilterBySourceContextLogExtensions
+Vostok.Logging.Abstractions.ILog
+Vostok.Logging.Abstractions.ILog.ForContext(string context) -> Vostok.Logging.Abstractions.ILog
+Vostok.Logging.Abstractions.ILog.IsEnabledFor(Vostok.Logging.Abstractions.LogLevel level) -> bool
+Vostok.Logging.Abstractions.ILog.Log(Vostok.Logging.Abstractions.LogEvent event) -> void
+Vostok.Logging.Abstractions.LogContextExtensions
+Vostok.Logging.Abstractions.LogEvent
+Vostok.Logging.Abstractions.LogEvent.Exception.get -> System.Exception
+Vostok.Logging.Abstractions.LogEvent.Level.get -> Vostok.Logging.Abstractions.LogLevel
+Vostok.Logging.Abstractions.LogEvent.LogEvent(Vostok.Logging.Abstractions.LogLevel level, System.DateTimeOffset timestamp, string messageTemplate, System.Collections.Generic.IReadOnlyDictionary<string, object> properties, System.Exception exception) -> void
+Vostok.Logging.Abstractions.LogEvent.LogEvent(Vostok.Logging.Abstractions.LogLevel level, System.DateTimeOffset timestamp, string messageTemplate, System.Exception exception = null) -> void
+Vostok.Logging.Abstractions.LogEvent.MessageTemplate.get -> string
+Vostok.Logging.Abstractions.LogEvent.Properties.get -> System.Collections.Generic.IReadOnlyDictionary<string, object>
+Vostok.Logging.Abstractions.LogEvent.Timestamp.get -> System.DateTimeOffset
+Vostok.Logging.Abstractions.LogEvent.WithException(System.Exception exception) -> Vostok.Logging.Abstractions.LogEvent
+Vostok.Logging.Abstractions.LogEvent.WithLevel(Vostok.Logging.Abstractions.LogLevel level) -> Vostok.Logging.Abstractions.LogEvent
+Vostok.Logging.Abstractions.LogEvent.WithMessageTemplate(string messageTemplate) -> Vostok.Logging.Abstractions.LogEvent
+Vostok.Logging.Abstractions.LogEvent.WithoutProperty(string key) -> Vostok.Logging.Abstractions.LogEvent
+Vostok.Logging.Abstractions.LogEvent.WithProperty<T>(string key, T value) -> Vostok.Logging.Abstractions.LogEvent
+Vostok.Logging.Abstractions.LogEvent.WithPropertyIfAbsent<T>(string key, T value) -> Vostok.Logging.Abstractions.LogEvent
+Vostok.Logging.Abstractions.LogEvent.WithTimestamp(System.DateTimeOffset timestamp) -> Vostok.Logging.Abstractions.LogEvent
+Vostok.Logging.Abstractions.LogEventExtensions
+Vostok.Logging.Abstractions.LogExtensions
+Vostok.Logging.Abstractions.LogLevel
+Vostok.Logging.Abstractions.LogLevel.Debug = 0 -> Vostok.Logging.Abstractions.LogLevel
+Vostok.Logging.Abstractions.LogLevel.Error = 3 -> Vostok.Logging.Abstractions.LogLevel
+Vostok.Logging.Abstractions.LogLevel.Fatal = 4 -> Vostok.Logging.Abstractions.LogLevel
+Vostok.Logging.Abstractions.LogLevel.Info = 1 -> Vostok.Logging.Abstractions.LogLevel
+Vostok.Logging.Abstractions.LogLevel.Warn = 2 -> Vostok.Logging.Abstractions.LogLevel
+Vostok.Logging.Abstractions.LogProvider
+Vostok.Logging.Abstractions.SilentLog
+Vostok.Logging.Abstractions.SilentLog.ForContext(string context) -> Vostok.Logging.Abstractions.ILog
+Vostok.Logging.Abstractions.SilentLog.IsEnabledFor(Vostok.Logging.Abstractions.LogLevel level) -> bool
+Vostok.Logging.Abstractions.SilentLog.Log(Vostok.Logging.Abstractions.LogEvent event) -> void
+Vostok.Logging.Abstractions.SilentLog.SilentLog() -> void
+Vostok.Logging.Abstractions.TransformExtensions
+Vostok.Logging.Abstractions.TransformLevelsLogExtensions
+Vostok.Logging.Abstractions.Values.HierarchicalContextValue
+Vostok.Logging.Abstractions.Values.HierarchicalContextValue.Count.get -> int
+Vostok.Logging.Abstractions.Values.HierarchicalContextValue.GetEnumerator() -> System.Collections.Generic.IEnumerator<string>
+Vostok.Logging.Abstractions.Values.HierarchicalContextValue.HierarchicalContextValue(string context) -> void
+Vostok.Logging.Abstractions.Values.HierarchicalContextValue.HierarchicalContextValue(string[] contexts) -> void
+Vostok.Logging.Abstractions.Values.HierarchicalContextValue.this[int index].get -> string
+Vostok.Logging.Abstractions.Values.OperationContextValue
+Vostok.Logging.Abstractions.Values.OperationContextValue.Equals(Vostok.Logging.Abstractions.Values.OperationContextValue other) -> bool
+Vostok.Logging.Abstractions.Values.OperationContextValue.OperationContextValue(string context) -> void
+Vostok.Logging.Abstractions.Values.OperationContextValue.OperationContextValue(string context, System.Collections.Generic.IReadOnlyDictionary<string, object> properties) -> void
+Vostok.Logging.Abstractions.Values.OperationContextValue.OperationContextValue(string[] contexts) -> void
+Vostok.Logging.Abstractions.Values.OperationContextValue.OperationContextValue(string[] contexts, System.Collections.Generic.IReadOnlyDictionary<string, object> properties) -> void
+Vostok.Logging.Abstractions.Values.OperationContextValue.Properties.get -> System.Collections.Generic.IReadOnlyDictionary<string, object>
+Vostok.Logging.Abstractions.Values.SourceContextValue
+Vostok.Logging.Abstractions.Values.SourceContextValue.Equals(Vostok.Logging.Abstractions.Values.SourceContextValue other) -> bool
+Vostok.Logging.Abstractions.Values.SourceContextValue.SourceContextValue(string context) -> void
+Vostok.Logging.Abstractions.Values.SourceContextValue.SourceContextValue(string[] contexts) -> void
+Vostok.Logging.Abstractions.WellKnownProperties
+Vostok.Logging.Abstractions.WithPropertyLogExtensions
+Vostok.Logging.Abstractions.Wrappers.SourceContextWrapper
+Vostok.Logging.Abstractions.Wrappers.SourceContextWrapper.BaseLog.get -> Vostok.Logging.Abstractions.ILog
+Vostok.Logging.Abstractions.Wrappers.SourceContextWrapper.Context.get -> Vostok.Logging.Abstractions.Values.SourceContextValue
+Vostok.Logging.Abstractions.Wrappers.SourceContextWrapper.ForContext(string context) -> Vostok.Logging.Abstractions.ILog
+Vostok.Logging.Abstractions.Wrappers.SourceContextWrapper.IsEnabledFor(Vostok.Logging.Abstractions.LogLevel level) -> bool
+Vostok.Logging.Abstractions.Wrappers.SourceContextWrapper.Log(Vostok.Logging.Abstractions.LogEvent event) -> void
+Vostok.Logging.Abstractions.Wrappers.SourceContextWrapper.SourceContextWrapper(Vostok.Logging.Abstractions.ILog log, string context) -> void
+Vostok.Logging.Abstractions.Wrappers.SourceContextWrapper.SourceContextWrapper(Vostok.Logging.Abstractions.ILog log, Vostok.Logging.Abstractions.Values.SourceContextValue context) -> void
