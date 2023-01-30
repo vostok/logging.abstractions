@@ -1,4 +1,4 @@
-﻿#if NET6_0_OR_GREATER
+﻿#if NET6_0
 using System;
 using System.Globalization;
 using System.Runtime.CompilerServices;
@@ -83,13 +83,18 @@ namespace Vostok.Logging.Abstractions
 
             public void AppendFormatted(object value, [CallerArgumentExpression("value")] string name = "")
             {
-                name = InterpolatedHelper.EscapeName(name);
-
-                MessageTemplate.Append('{');
-                MessageTemplate.Append(name);
-                MessageTemplate.Append('}');
+                if (InterpolatedHelper.IsValidName(name))
+                {
+                    MessageTemplate.Append('{');
+                    MessageTemplate.Append(name);
+                    MessageTemplate.Append('}');
                 
-                Properties.SetUnsafe(name, value, true);
+                    Properties.SetUnsafe(name, value, true);
+                }
+                else
+                {
+                    MessageTemplate.Append(value);
+                }
             }
 
             internal bool IsEnabled { get; }
@@ -170,13 +175,18 @@ namespace Vostok.Logging.Abstractions
 
             public void AppendFormatted(object value, [CallerArgumentExpression("value")] string name = "")
             {
-                name = InterpolatedHelper.EscapeName(name);
-
-                MessageTemplate.Append('{');
-                MessageTemplate.Append(name);
-                MessageTemplate.Append('}');
+                if (InterpolatedHelper.IsValidName(name))
+                {
+                    MessageTemplate.Append('{');
+                    MessageTemplate.Append(name);
+                    MessageTemplate.Append('}');
                 
-                Properties.SetUnsafe(name, value, true);
+                    Properties.SetUnsafe(name, value, true);
+                }
+                else
+                {
+                    MessageTemplate.Append(value);
+                }
             }
 
             internal bool IsEnabled { get; }
@@ -257,13 +267,18 @@ namespace Vostok.Logging.Abstractions
 
             public void AppendFormatted(object value, [CallerArgumentExpression("value")] string name = "")
             {
-                name = InterpolatedHelper.EscapeName(name);
-
-                MessageTemplate.Append('{');
-                MessageTemplate.Append(name);
-                MessageTemplate.Append('}');
+                if (InterpolatedHelper.IsValidName(name))
+                {
+                    MessageTemplate.Append('{');
+                    MessageTemplate.Append(name);
+                    MessageTemplate.Append('}');
                 
-                Properties.SetUnsafe(name, value, true);
+                    Properties.SetUnsafe(name, value, true);
+                }
+                else
+                {
+                    MessageTemplate.Append(value);
+                }
             }
 
             internal bool IsEnabled { get; }
@@ -344,13 +359,18 @@ namespace Vostok.Logging.Abstractions
 
             public void AppendFormatted(object value, [CallerArgumentExpression("value")] string name = "")
             {
-                name = InterpolatedHelper.EscapeName(name);
-
-                MessageTemplate.Append('{');
-                MessageTemplate.Append(name);
-                MessageTemplate.Append('}');
+                if (InterpolatedHelper.IsValidName(name))
+                {
+                    MessageTemplate.Append('{');
+                    MessageTemplate.Append(name);
+                    MessageTemplate.Append('}');
                 
-                Properties.SetUnsafe(name, value, true);
+                    Properties.SetUnsafe(name, value, true);
+                }
+                else
+                {
+                    MessageTemplate.Append(value);
+                }
             }
 
             internal bool IsEnabled { get; }
@@ -431,13 +451,18 @@ namespace Vostok.Logging.Abstractions
 
             public void AppendFormatted(object value, [CallerArgumentExpression("value")] string name = "")
             {
-                name = InterpolatedHelper.EscapeName(name);
-
-                MessageTemplate.Append('{');
-                MessageTemplate.Append(name);
-                MessageTemplate.Append('}');
+                if (InterpolatedHelper.IsValidName(name))
+                {
+                    MessageTemplate.Append('{');
+                    MessageTemplate.Append(name);
+                    MessageTemplate.Append('}');
                 
-                Properties.SetUnsafe(name, value, true);
+                    Properties.SetUnsafe(name, value, true);
+                }
+                else
+                {
+                    MessageTemplate.Append(value);
+                }
             }
 
             internal bool IsEnabled { get; }
