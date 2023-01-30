@@ -13,6 +13,7 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
     {
         private DevNullLog log;
         private SilentLog silentLog;
+        private FormattingLog formattingLog;
         
         private int one = 125;
         private string two = "qqq";
@@ -52,6 +53,7 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
         public void SetUp()
         {
             log = new DevNullLog();
+            formattingLog = new FormattingLog();
             silentLog = new SilentLog();
         }
 
@@ -128,6 +130,18 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
         }
         
         [Benchmark]
+        public void WithFormat_WithFiveParameters()
+        {
+            formattingLog.Info("xxx = {one} yyy = {two}, zzzz = {three}, wwwwwww = {four} ({five}).", one, two, three, four, five);
+        }
+        
+        [Benchmark]
+        public void WithFormat_WithFiveParameters_Interpolated()
+        {
+            formattingLog.Info($"xxx = {one} yyy = {two}, zzzz = {three}, wwwwwww = {four} ({five}).");
+        }
+        
+        [Benchmark]
         public void WithFiveParameters_Interpolated_Formatted()
         {
             log.Info($"xxx = {one:D5} yyy = {two,4}, zzzz = {three,-1}, wwwwwww = {four:x8} ({five:10,P}).");
@@ -155,6 +169,8 @@ Intel Core i7-4771 CPU 3.50GHz (Haswell), 1 CPU, 8 logical and 4 physical cores
 |           WithFiveParameters_Interpolated | 403.327 ns |  8.0130 ns | 16.0029 ns |  1.54 |    0.10 | 0.1874 |     - |     - |     784 B |
 |                 Silent_WithFiveParameters |  23.152 ns |  0.2963 ns |  0.2772 ns |  0.09 |    0.01 | 0.0325 |     - |     - |     136 B |
 |    Silent_WithFiveParameters_Interpolated |   7.094 ns |  0.1665 ns |  0.1557 ns |  0.03 |    0.00 |      - |     - |     - |         - |
+|              WithFormat_WithFiveParameters| 1,189.309 ns | 23.5291 ns | 37.3197 ns |  5.05 |    0.17 | 0.1793 |     - |     - |     752 B |
+| WithFormat_WithFiveParameters_Interpolated|   968.415 ns | 17.2323 ns | 39.9386 ns |  4.17 |    0.33 | 0.2670 |     - |     - |   1,120 B |
 | WithFiveParameters_Interpolated_Formatted | 828.264 ns | 15.9405 ns | 20.7272 ns |  3.13 |    0.19 | 0.2117 |     - |     - |     888 B |
 
          */
