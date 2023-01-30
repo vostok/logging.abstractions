@@ -15,6 +15,7 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
         private LogEvent lastEvent;
         private Exception exception;
         private MyClass myClass;
+        private MyClass2 myClass2;
         private string str;
         private int number;
 
@@ -28,6 +29,7 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
 
             exception = new Exception("error");
             myClass = new MyClass();
+            myClass2 = new MyClass2();
             str = "asdf qwer";
             number = 333;
         }
@@ -35,11 +37,11 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
         [Test]
         public void Should_do_the_same_with_interpolated_as_without()
         {
-            log.Info(exception, "myClass = {myClass}, str = {str}, number = {number}", myClass, str, number);
+            log.Info(exception, "myClass = {myClass}, myClass2 = {myClass2}, str = {str}, number = {number}", myClass, myClass2, str, number);
             log.Received(1).Log(Arg.Any<LogEvent>());
             var expected = lastEvent;
             
-            log.Info(exception, $"myClass = {myClass}, str = {str}, number = {number}");
+            log.Info(exception, $"myClass = {myClass}, myClass2 = {myClass2}, str = {str}, number = {number}");
             log.Received(2).Log(Arg.Any<LogEvent>());
             var received = lastEvent;
             
@@ -49,17 +51,16 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
         [Test]
         public void Should_log_without_variables()
         {
-            log.Info(exception, $"myClass = {new MyClass()}, str = {"asdf qwer"}, number = {333}");
+            log.Info(exception, $"myClass = {new MyClass()}, myClass2 = {new MyClass2()}, str = {"asdf qwer"}, number = {number}");
             log.Received(1).Log(Arg.Any<LogEvent>());
             var received = lastEvent;
 
-            received.MessageTemplate.Should().Be("myClass = {new_MyClass__}, str = {_asdf_qwer_}, number = {333}");
+            received.MessageTemplate.Should()
+                .Be("myClass = hello 42, myClass2 = Vostok.Logging.Abstractions.Tests.Extensions.LogExtensions_Interpolated_Tests+MyClass2, str = asdf qwer, number = {number}");
             received.Properties.Should()
                 .BeEquivalentTo(new Dictionary<string, object>
                 {
-                    ["new_MyClass__"] = new MyClass(),
-                    ["_asdf_qwer_"] = "asdf qwer",
-                    ["333"] = 333
+                    ["number"] = 333
                 });
         }
 
@@ -70,24 +71,6 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
             
             log.Info($"myClass = {123}, str = {str}, number = {number}");
             log.Received(0).Log(Arg.Any<LogEvent>());
-        }
-
-        [Test]
-        public void Should_replace_non_property_name_symbols()
-        {
-            var c = new[] { "a", "b" };
-
-            log.Info($"Some thing {c.Length}, {c.Length.ToString()}");
-            
-            var received = lastEvent;
-
-            received.MessageTemplate.Should().Be("Some thing {c.Length}, {c.Length.ToString__}");
-            received.Properties.Should()
-                .BeEquivalentTo(new Dictionary<string, object>
-                {
-                    ["c.Length"] = 2,
-                    ["c.Length.ToString__"] = "2",
-                });
         }
         
         [Test]
@@ -135,6 +118,12 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
             public int I { get; set; } = 42;
             public override string ToString() =>
                 $"{X} {I}";
+        }
+        
+        private class MyClass2
+        {
+            public string X { get; set; } = "hello";
+            public int I { get; set; } = 42;
         }
     }
 }
