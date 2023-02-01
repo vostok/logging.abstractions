@@ -1,4 +1,4 @@
-const Vostok.Logging.Abstractions.WellKnownProperties.OperationContext = "operationContext" -> string
+﻿const Vostok.Logging.Abstractions.WellKnownProperties.OperationContext = "operationContext" -> string
 const Vostok.Logging.Abstractions.WellKnownProperties.SourceContext = "sourceContext" -> string
 const Vostok.Logging.Abstractions.WellKnownProperties.TraceContext = "traceContext" -> string
 override Vostok.Logging.Abstractions.Values.OperationContextValue.Equals(object other) -> bool
@@ -78,6 +78,8 @@ static Vostok.Logging.Abstractions.LogExtensions.Warn<T>(this Vostok.Logging.Abs
 static Vostok.Logging.Abstractions.LogExtensions.Warn<T>(this Vostok.Logging.Abstractions.ILog log, System.Exception exception, string messageTemplate, T properties) -> void
 static Vostok.Logging.Abstractions.LogExtensions_Interpolated.Debug(this Vostok.Logging.Abstractions.ILog log, ref Vostok.Logging.Abstractions.LogExtensions_Interpolated.DebugStringHandler message) -> void
 static Vostok.Logging.Abstractions.LogExtensions_Interpolated.Debug(this Vostok.Logging.Abstractions.ILog log, System.Exception exception, ref Vostok.Logging.Abstractions.LogExtensions_Interpolated.DebugStringHandler message) -> void
+static Vostok.Logging.Abstractions.LogExtensions_Interpolated.Enabled.get -> bool
+static Vostok.Logging.Abstractions.LogExtensions_Interpolated.Enabled.set -> void
 static Vostok.Logging.Abstractions.LogExtensions_Interpolated.Error(this Vostok.Logging.Abstractions.ILog log, ref Vostok.Logging.Abstractions.LogExtensions_Interpolated.ErrorStringHandler message) -> void
 static Vostok.Logging.Abstractions.LogExtensions_Interpolated.Error(this Vostok.Logging.Abstractions.ILog log, System.Exception exception, ref Vostok.Logging.Abstractions.LogExtensions_Interpolated.ErrorStringHandler message) -> void
 static Vostok.Logging.Abstractions.LogExtensions_Interpolated.Fatal(this Vostok.Logging.Abstractions.ILog log, ref Vostok.Logging.Abstractions.LogExtensions_Interpolated.FatalStringHandler message) -> void

@@ -6,7 +6,7 @@
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <PropertyGroup>
-    <VersionPrefix>1.0.31</VersionPrefix>
+    <VersionPrefix>1.0.32</VersionPrefix>
   </PropertyGroup>
   <PropertyGroup>
     <Title>Vostok.Logging.Abstractions</Title>
