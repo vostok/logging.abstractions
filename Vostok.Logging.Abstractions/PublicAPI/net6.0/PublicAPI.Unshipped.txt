@@ -1,0 +1,2 @@
+static Vostok.Logging.Abstractions.LogExtensions_Interpolated.Enabled.get -> bool
+static Vostok.Logging.Abstractions.LogExtensions_Interpolated.Enabled.set -> void

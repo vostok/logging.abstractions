@@ -10,30 +10,17 @@ namespace Vostok.Logging.Abstractions.Helpers
         private const char At = '@';
         private const char Dot = '.';
 
-        [Pure]
-        public static string EscapeName(string name)
+        public static bool IsValidName(string name)
         {
-            var shouldEscape = false;
             // ReSharper disable once ForCanBeConvertedToForeach
+            // ReSharper disable once LoopCanBeConvertedToQuery
             for (var i = 0; i < name.Length; i++)
             {
                 if (!IsValidInName(name[i]))
-                {
-                    shouldEscape = true;
-                    break;
-                }
+                    return false;
             }
 
-            if (!shouldEscape)
-                return name;
-
-            return string.Create(name.Length,
-                name,
-                (chars, buf) =>
-                {
-                    for (var i = 0; i < chars.Length; i++)
-                        chars[i] = IsValidInName(buf[i]) ? buf[i] : Underscore;
-                });
+            return true;
         }
 
         // note (kungurtsev, 25.01.2022): copied from Vostok.Logging.Formatting.Tokenizer.TemplateTokenizer

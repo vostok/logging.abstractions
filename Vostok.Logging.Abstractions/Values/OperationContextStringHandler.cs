@@ -56,13 +56,18 @@ namespace Vostok.Logging.Abstractions.Values
 
         public void AppendFormatted(object value, [CallerArgumentExpression("value")] string name = "")
         {
-            name = InterpolatedHelper.EscapeName(name);
-
-            template.Append('{');
-            template.Append(name);
-            template.Append('}');
-
-            properties.SetUnsafe(name, value, true);
+            if (InterpolatedHelper.IsValidName(name))
+            {
+                template.Append('{');
+                template.Append(name);
+                template.Append('}');
+                
+                properties.SetUnsafe(name, value, true);
+            }
+            else
+            {
+                template.Append(value);
+            }
         }
 
         private static DefaultInterpolatedStringHandler CreateDefaultHandler() =>
