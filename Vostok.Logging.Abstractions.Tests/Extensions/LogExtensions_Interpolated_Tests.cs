@@ -24,6 +24,8 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
         [SetUp]
         public void SetUp()
         {
+            LogExtensions_Interpolated.Enabled = true;
+            
             var template = OutputTemplate.Create()
                 .AddLevel()
                 .AddMessage()
@@ -59,6 +61,17 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
             
             receivedEvent.Should().BeEquivalentTo(expectedEvent, config => config.Excluding(e => e.Timestamp));
             receivedLog.Should().Be(expectedLog);
+        }
+        
+        [Test]
+        public void Should_be_disabable()
+        {
+            LogExtensions_Interpolated.Enabled = false;
+            log.Info(exception, $"myClass = {myClass}, myClass2 = {myClass2}, str = {str}, number = {number}");
+            log.Received(1).Log(Arg.Any<LogEvent>());
+            var (receivedEvent, receivedLog) = (lastEvent, lastLog);
+
+            receivedEvent.MessageTemplate.Should().Be("myClass = hello 42, myClass2 = Vostok.Logging.Abstractions.Tests.Extensions.LogExtensions_Interpolated_Tests+MyClass2, str = asdf qwer, number = 333");
         }
         
         [Test]

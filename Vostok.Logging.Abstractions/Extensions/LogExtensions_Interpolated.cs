@@ -15,6 +15,11 @@ namespace Vostok.Logging.Abstractions
     [PublicAPI]
     public static class LogExtensions_Interpolated
     {
+        /// <summary>
+        /// If set to <c>true</c> <see cref="LogEvent.MessageTemplate"/> and <see cref="LogEvent.Properties"/> will be automatically calculated from the given interpolated string.
+        /// </summary>
+        public static bool Enabled { get; set; } = true;
+
         #region Debug
 
         /// <summary>
@@ -83,7 +88,7 @@ namespace Vostok.Logging.Abstractions
 
             public void AppendFormatted(object value, [CallerArgumentExpression("value")] string name = "")
             {
-                if (InterpolatedHelper.IsValidName(name))
+                if (Enabled && InterpolatedHelper.IsValidName(name))
                 {
                     MessageTemplate.Append('{');
                     MessageTemplate.Append(name);
@@ -175,7 +180,7 @@ namespace Vostok.Logging.Abstractions
 
             public void AppendFormatted(object value, [CallerArgumentExpression("value")] string name = "")
             {
-                if (InterpolatedHelper.IsValidName(name))
+                if (Enabled && InterpolatedHelper.IsValidName(name))
                 {
                     MessageTemplate.Append('{');
                     MessageTemplate.Append(name);
@@ -267,7 +272,7 @@ namespace Vostok.Logging.Abstractions
 
             public void AppendFormatted(object value, [CallerArgumentExpression("value")] string name = "")
             {
-                if (InterpolatedHelper.IsValidName(name))
+                if (Enabled && InterpolatedHelper.IsValidName(name))
                 {
                     MessageTemplate.Append('{');
                     MessageTemplate.Append(name);
@@ -359,7 +364,7 @@ namespace Vostok.Logging.Abstractions
 
             public void AppendFormatted(object value, [CallerArgumentExpression("value")] string name = "")
             {
-                if (InterpolatedHelper.IsValidName(name))
+                if (Enabled && InterpolatedHelper.IsValidName(name))
                 {
                     MessageTemplate.Append('{');
                     MessageTemplate.Append(name);
@@ -451,7 +456,7 @@ namespace Vostok.Logging.Abstractions
 
             public void AppendFormatted(object value, [CallerArgumentExpression("value")] string name = "")
             {
-                if (InterpolatedHelper.IsValidName(name))
+                if (Enabled && InterpolatedHelper.IsValidName(name))
                 {
                     MessageTemplate.Append('{');
                     MessageTemplate.Append(name);
