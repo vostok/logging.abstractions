@@ -1,3 +1,8 @@
+## 1.0.31 (01-02-2023):
+
+- Stopped writing interpolated properties with invalid names
+- Added global `LogExtensions_Interpolated.Enabled` setting
+
 ## 1.0.30 (03-03-2022):
 
 Added `Properties` field to OperationContextValue.
