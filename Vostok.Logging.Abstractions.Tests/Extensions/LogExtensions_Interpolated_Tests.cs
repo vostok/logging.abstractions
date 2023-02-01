@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
+using Vostok.Logging.Formatting;
 
 namespace Vostok.Logging.Abstractions.Tests.Extensions
 {
@@ -13,6 +14,7 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
     {
         private ILog log;
         private LogEvent lastEvent;
+        private string lastLog;
         private Exception exception;
         private MyClass myClass;
         private MyClass2 myClass2;
@@ -22,10 +24,22 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
         [SetUp]
         public void SetUp()
         {
+            LogExtensions_Interpolated.Enabled = true;
+            
+            var template = OutputTemplate.Create()
+                .AddLevel()
+                .AddMessage()
+                .AddNewline()
+                .Build();
+            
             log = Substitute.For<ILog>();
             lastEvent = null!;
             log.IsEnabledFor(Arg.Any<LogLevel>()).Returns(true);
-            log.Log(Arg.Do<LogEvent>(e => lastEvent = e));
+            log.Log(Arg.Do<LogEvent>(e =>
+            {
+                lastEvent = e;
+                lastLog = LogEventFormatter.Format(e, template);
+            }));
 
             exception = new Exception("error");
             myClass = new MyClass();
@@ -39,13 +53,27 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
         {
             log.Info(exception, "myClass = {myClass}, myClass2 = {myClass2}, str = {str}, number = {number}", myClass, myClass2, str, number);
             log.Received(1).Log(Arg.Any<LogEvent>());
-            var expected = lastEvent;
+            var (expectedEvent, expectedLog) = (lastEvent, lastLog);
             
             log.Info(exception, $"myClass = {myClass}, myClass2 = {myClass2}, str = {str}, number = {number}");
             log.Received(2).Log(Arg.Any<LogEvent>());
-            var received = lastEvent;
+            var (receivedEvent, receivedLog) = (lastEvent, lastLog);
             
-            received.Should().BeEquivalentTo(expected, config => config.Excluding(e => e.Timestamp));
+            receivedEvent.Should().BeEquivalentTo(expectedEvent, config => config.Excluding(e => e.Timestamp));
+            receivedLog.Should().Be(expectedLog);
+        }
+        
+        [Test]
+        public void Should_be_disabable()
+        {
+            LogExtensions_Interpolated.Enabled = false;
+            log.Info(exception, $"myClass = {myClass}, myClass2 = {myClass2}, str = {str}, number = {number}");
+            LogExtensions_Interpolated.Enabled = false;
+            
+            log.Received(1).Log(Arg.Any<LogEvent>());
+            var (receivedEvent, receivedLog) = (lastEvent, lastLog);
+
+            receivedEvent.MessageTemplate.Should().Be("myClass = hello 42, myClass2 = Vostok.Logging.Abstractions.Tests.Extensions.LogExtensions_Interpolated_Tests+MyClass2, str = asdf qwer, number = 333");
         }
         
         [Test]
