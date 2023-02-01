@@ -68,6 +68,8 @@ namespace Vostok.Logging.Abstractions.Tests.Extensions
         {
             LogExtensions_Interpolated.Enabled = false;
             log.Info(exception, $"myClass = {myClass}, myClass2 = {myClass2}, str = {str}, number = {number}");
+            LogExtensions_Interpolated.Enabled = false;
+            
             log.Received(1).Log(Arg.Any<LogEvent>());
             var (receivedEvent, receivedLog) = (lastEvent, lastLog);
 
