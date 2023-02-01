@@ -1,19 +1,21 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\..\vostok.devtools\library-common-props\Test-Project.props" />
   <Import Project="..\..\vostok.devtools\git-commit-to-assembly-title\Vostok.Tools.GitCommit2AssemblyTitle.props" />
-
   <PropertyGroup>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.4.1" />
     <PackageReference Include="NSubstitute" Version="3.1.0" />
     <PackageReference Include="BenchmarkDotNet" Version="0.13.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Vostok.Logging.Abstractions\Vostok.Logging.Abstractions.csproj" />
   </ItemGroup>
-
+  <ItemGroup>
+    <Reference Include="Vostok.Logging.Formatting">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\vostok.logging.formatting\Vostok.Logging.Formatting\bin\Release\$(ReferencesFramework)\Vostok.Logging.Formatting.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>
