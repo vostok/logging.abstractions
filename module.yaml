@@ -14,6 +14,21 @@ notests *default:
     - vostok.commons.formatting/src
     - vostok.commons.time/src
 
+net6_0 > notests:
+  build:
+    target: Vostok.Logging.Abstractions.sln
+    configuration: NoTests
+    parameters: build -property:TargetFrameworks=net6.0
+    tool:
+      name: dotnet
+
+  install:
+    - Vostok.Logging.Abstractions/bin/Release/net6.0/Vostok.Logging.Abstractions.dll
+
+  deps:
+    - -vostok.devtools
+    - vostok.devtools@with-net6.0
+
 full-build > notests:
   deps:
     - vostok.logging.formatting
