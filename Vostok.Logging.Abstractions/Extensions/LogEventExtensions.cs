@@ -56,9 +56,23 @@ namespace Vostok.Logging.Abstractions
             if (!(sourceContextValue is SourceContextValue sourceContext))
                 return false;
 
-            return contexts.All(
-                context =>
-                    sourceContext.Any(value => value.StartsWith(context, StringComparison.OrdinalIgnoreCase)));
+            foreach (var context in contexts)
+            {
+                var hasMatching = false;
+                foreach (var value in sourceContext)
+                {
+                    if (value.StartsWith(context, StringComparison.OrdinalIgnoreCase))
+                    {
+                        hasMatching = true;
+                        break;
+                    }
+                }
+
+                if (!hasMatching)
+                    return false;
+            }
+
+            return true;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
