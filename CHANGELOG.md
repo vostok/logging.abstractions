@@ -1,3 +1,7 @@
+## 1.0.32 (24-11-2023):
+
+Minor optimizations
+
 ## 1.0.31 (01-02-2023):
 
 - Stopped writing interpolated properties with invalid names
