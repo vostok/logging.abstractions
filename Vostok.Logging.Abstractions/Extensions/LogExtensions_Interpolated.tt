@@ -1,6 +1,6 @@
 ﻿<#@ template debug="false" hostspecific="true" language="C#" #>
 <#@ output extension=".cs" #>
-#if NET6_0
+#if NET6_0_OR_GREATER
 using System;
 using System.Globalization;
 using System.Runtime.CompilerServices;

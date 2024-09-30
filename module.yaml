@@ -18,8 +18,6 @@ full-build > notests:
   deps:
     - vostok.logging.formatting
     - vostok.logging.abstractions
-    - -vostok.devtools
-    - vostok.devtools@with-net6.0
 
   build:
     target: Vostok.Logging.Abstractions.sln
