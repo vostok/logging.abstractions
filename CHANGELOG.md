@@ -1,3 +1,7 @@
+## 1.0.33 (12-12-2024): 
+
+Bump NuGet deps versions
+
 ## 1.0.32 (24-11-2023):
 
 Minor optimizations
