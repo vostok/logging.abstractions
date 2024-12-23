@@ -13,9 +13,6 @@
     <ProjectReference Include="..\Vostok.Logging.Abstractions\Vostok.Logging.Abstractions.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Vostok.Logging.Formatting">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\vostok.logging.formatting\Vostok.Logging.Formatting\bin\Release\$(ReferencesFramework)\Vostok.Logging.Formatting.dll</HintPath>
-    </Reference>
+    <ModuleReference Include="vostok.logging.formatting" />
   </ItemGroup>
 </Project>
