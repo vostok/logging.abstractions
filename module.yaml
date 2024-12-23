@@ -7,6 +7,16 @@ notests *default:
 
   install:
     - Vostok.Logging.Abstractions/bin/Release/netstandard2.0/Vostok.Logging.Abstractions.dll
+    - groups:
+        - target-framework: "netstandard2.0"
+          libraries:
+            - Vostok.Logging.Abstractions/bin/Release/netstandard2.0/Vostok.Logging.Abstractions.dll
+        - target-framework: "net6.0"
+          libraries:
+            - Vostok.Logging.Abstractions/bin/Release/net6.0/Vostok.Logging.Abstractions.dll
+        - target-framework: "net8.0"
+          libraries:
+            - Vostok.Logging.Abstractions/bin/Release/net8.0/Vostok.Logging.Abstractions.dll
 
   deps:
     - vostok.devtools
@@ -18,6 +28,19 @@ full-build > notests:
   deps:
     - vostok.logging.formatting
     - vostok.logging.abstractions
+
+  install:
+    - Vostok.Logging.Abstractions/bin/Release/netstandard2.0/Vostok.Logging.Abstractions.dll
+    - groups:
+        - target-framework: "netstandard2.0"
+          libraries:
+            - Vostok.Logging.Abstractions/bin/Release/netstandard2.0/Vostok.Logging.Abstractions.dll
+        - target-framework: "net6.0"
+          libraries:
+            - Vostok.Logging.Abstractions/bin/Release/net6.0/Vostok.Logging.Abstractions.dll
+        - target-framework: "net8.0"
+          libraries:
+            - Vostok.Logging.Abstractions/bin/Release/net8.0/Vostok.Logging.Abstractions.dll
 
   build:
     target: Vostok.Logging.Abstractions.sln
